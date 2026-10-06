@@ -1,0 +1,38 @@
+# ELENCO DELLE FONTI CONTROLLATE OGNI GIORNO
+#
+# Ogni riga: Nome | indirizzo | nazionale (facoltativo)
+# - Se l'indirizzo è la home page di un sito, il programma cerca da solo
+#   la sezione "Bandi di concorso", "Selezione del personale" o "Lavora con noi".
+# - Se l'indirizzo è già la pagina con l'elenco dei bandi, la controlla direttamente.
+#   È la scelta più affidabile: se una fonte dà problemi, incolla qui l'indirizzo
+#   esatto della pagina dei bandi presa dal browser.
+# - Scrivi "nazionale" nella terza colonna per le fonti di tutta Italia:
+#   per quelle il programma tiene solo i bandi che riguardano la Sardegna
+#   o che sono nazionali o elenchi di idonei.
+# - Le righe che iniziano con # sono commenti e vengono ignorate.
+
+# --- Portali nazionali ---
+inPA | inpa | nazionale
+Gazzetta Ufficiale - Concorsi | https://www.gazzettaufficiale.it/30giorni/concorsi | nazionale
+
+# --- Regione e lavoro ---
+Regione Sardegna | https://www.regione.sardegna.it/
+SardegnaLavoro (ASPAL) | https://www.sardegnalavoro.it/
+
+# --- Sanità ---
+ARES Sardegna | https://www.aressardegna.it/
+AOU Cagliari | https://www.aoucagliari.it/
+AOU Sassari | https://www.aousassari.it/
+ARNAS Brotzu | https://www.aobrotzu.it/
+
+# --- Università ---
+Università di Cagliari | https://www.unica.it/
+Università di Sassari | https://www.uniss.it/
+
+# --- Società ed enti pubblici sardi ---
+Abbanoa | https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale
+Sardegna Ricerche | https://www.sardegnaricerche.it/
+ARPAS | https://www.sardegnaambiente.it/arpas/
+Forestas | https://www.sardegnaforeste.it/
+Laore e Agris | https://www.sardegnaagricoltura.it/
+CTM Cagliari | https://www.ctmcagliari.it/

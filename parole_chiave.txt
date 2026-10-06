@@ -1,0 +1,22 @@
+# Parole usate per il primo filtro, prima dell'intelligenza artificiale.
+# Basta l'inizio della parola: "informatic" trova informatico, informatica, informatici.
+# Una per riga. Le righe con # sono commenti.
+informatic
+ict
+sistemi informativi
+sistema informativo
+digitale
+analista
+programmator
+sviluppator
+software
+sistemista
+cyber
+sicurezza informatica
+reti e sistemi
+data base
+database
+elenco idonei
+elenchi di idonei
+elenco di idonei
+maxi avviso
