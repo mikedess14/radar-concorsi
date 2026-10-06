@@ -356,6 +356,7 @@ async function gh(percorso, opz = {}) {
   if (!r.ok) {
     const e = new Error(String(r.status));
     e.status = r.status;
+    try { e.dettaglio = (await r.json()).message || ""; } catch { e.dettaglio = ""; }
     throw e;
   }
   return r.status === 204 ? null : r.json();
@@ -364,7 +365,12 @@ async function gh(percorso, opz = {}) {
 function spiegaErrore(e) {
   if (e.status === 401) return "La chiave di accesso non è valida o è scaduta. Controllala nelle impostazioni.";
   if (e.status === 403 || e.status === 404) return "La chiave non ha i permessi necessari su questo repository. Servono Actions e Contents in lettura e scrittura.";
-  if (e.status === 422) return "GitHub non ha accettato la richiesta. Controlla di aver caricato l'ultima versione del file radar.yml.";
+  if (e.status === 422) {
+    const d = e.dettaglio || "";
+    if (/unexpected inputs/i.test(d)) return "Su GitHub c'è ancora la versione vecchia di radar.yml: carica quella nuova nella cartella .github/workflows. (Messaggio di GitHub: " + d + ")";
+    if (/workflow_dispatch/i.test(d)) return "GitHub non riesce a leggere radar.yml: probabilmente il file è danneggiato. Sostituiscilo con quello nuovo. (Messaggio di GitHub: " + d + ")";
+    return "GitHub non ha accettato la richiesta. Controlla di aver caricato l'ultima versione del file radar.yml" + (d ? " (messaggio di GitHub: " + d + ")." : ".");
+  }
   return "GitHub non risponde. Controlla la connessione e riprova.";
 }
 

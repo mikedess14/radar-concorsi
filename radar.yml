@@ -1,0 +1,65 @@
+name: Radar concorsi
+run-name: ${{ inputs.richiesta && format('Ricerca approfondita {0}', inputs.richiesta) || 'Controllo completo' }}
+
+on:
+  schedule:
+    - cron: "0 19 * * *"   # ogni sera alle 21:00 (ora legale) o alle 20:00 (ora solare)
+  workflow_dispatch:        # avvio a mano o dalla web app ("Ricerca approfondita")
+    inputs:
+      richiesta:
+        description: "Identificativo della ricerca (lo imposta la web app, lascia vuoto per un controllo completo)"
+        required: false
+        default: ""
+      profilo:
+        description: "info = profilo.txt, parole = solo le parole chiave"
+        required: false
+        default: "info"
+      parole:
+        description: "Parole chiave separate da | (vuoto = parole_chiave.txt)"
+        required: false
+        default: ""
+      ambiti:
+        description: "Ambiti separati da virgola: R,NS,NN,EL (vuoto = tutti)"
+        required: false
+        default: ""
+      fonti:
+        description: "Fonti separate da | (vuoto = tutte)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency: radar
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Installa i componenti
+        run: pip install -r requirements.txt
+      - name: Controlla le fonti
+        run: python radar.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RADAR_MODALITA: ${{ inputs.richiesta && 'approfondita' || 'serale' }}
+          RADAR_PROFILO: ${{ inputs.profilo }}
+          RADAR_PAROLE: ${{ inputs.parole }}
+          RADAR_AMBITI: ${{ inputs.ambiti }}
+          RADAR_FONTI: ${{ inputs.fonti }}
+      - name: Salva i risultati
+        if: always()
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Aggiornamento concorsi $(date +%F)"
+          git pull --rebase --autostash || true
+          git push
