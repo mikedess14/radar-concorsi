@@ -13,17 +13,19 @@
 
 # --- Portali nazionali ---
 inPA | inpa | nazionale
-Gazzetta Ufficiale - Concorsi | https://www.gazzettaufficiale.it/30giorni/concorsi | nazionale
+Gazzetta Ufficiale - Concorsi | https://www.gazzettaufficiale.it/30giorni/concorsi
 
 # --- Regione e lavoro ---
 Regione Sardegna | https://www.regione.sardegna.it/
-SardegnaLavoro (ASPAL) | https://www.sardegnalavoro.it/
+# SardegnaLavoro blocca i server di GitHub: i bandi ASPAL arrivano comunque da inPA e Regione
+# SardegnaLavoro (ASPAL) | https://www.sardegnalavoro.it/
 
 # --- Sanità ---
 ARES Sardegna | https://www.aressardegna.it/
-AOU Cagliari | https://www.aoucagliari.it/
+# AOU Cagliari blocca i server di GitHub: i suoi bandi arrivano comunque da inPA e Gazzetta
+# AOU Cagliari | https://www.aoucagliari.it/
 AOU Sassari | https://www.aousassari.it/
-ARNAS Brotzu | https://www.aobrotzu.it/
+ARNAS Brotzu | https://www.aobrotzu.it/aobinforma/concorsi.html
 
 # --- Università ---
 Università di Cagliari | https://www.unica.it/
@@ -35,4 +37,5 @@ Sardegna Ricerche | https://www.sardegnaricerche.it/
 ARPAS | https://www.sardegnaambiente.it/arpas/
 Forestas | https://www.sardegnaforeste.it/
 Laore e Agris | https://www.sardegnaagricoltura.it/
-CTM Cagliari | https://www.ctmcagliari.it/
+# CTM blocca i server di GitHub: i suoi bandi si possono aggiungere con "Aggiungi bando" nell'app in Claude
+# CTM Cagliari | https://www.ctmcagliari.it/

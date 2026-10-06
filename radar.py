@@ -16,17 +16,23 @@ import datetime as dt
 import hashlib
 import html
 import json
+import logging
 import os
 import re
+import ssl
 import sys
 import time
 import unicodedata
+from collections import deque
 from io import BytesIO
 from urllib import robotparser
 from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+
+logging.getLogger("pypdf").setLevel(logging.ERROR)  # nasconde gli avvisi tecnici sui PDF malformati
 
 try:
     from pypdf import PdfReader
@@ -36,12 +42,13 @@ except Exception:  # pypdf non indispensabile: senza, i PDF vengono saltati
 # ---------------------------------------------------------------- impostazioni
 
 OGGI = dt.date.today().isoformat()
-UA = "RadarConcorsiPersonale/1.0 (uso personale, una visita al giorno)"
+BOT = "RadarConcorsiPersonale"
+UA = f"Mozilla/5.0 (compatible; {BOT}/1.1; uso personale, una visita al giorno)"
 STATO = "data/stato.json"
 EXPORT = "data/concorsi.json"
 PAGINA = "CONCORSI.md"
 
-MAX_DETTAGLI_PER_FONTE = int(os.getenv("MAX_DETTAGLI_PER_FONTE", "25"))  # pagine lette per fonte e per giorno
+MAX_DETTAGLI_PER_FONTE = int(os.getenv("MAX_DETTAGLI_PER_FONTE", "40"))  # pagine lette per fonte e per giorno
 MAX_AI = int(os.getenv("MAX_AI", "40"))  # bandi analizzati dall'AI per giorno
 PAUSA_AI = 7  # secondi tra due chiamate a Gemini (resta sotto i limiti gratuiti)
 PAUSA_WEB = 1.5  # secondi tra due pagine dello stesso sito
@@ -55,6 +62,13 @@ TG_CHAT = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
 INPA_API = "https://portale.inpa.gov.it/concorsi-smart/api/concorso-public-area/search-better"
 INPA_DETTAGLIO = "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id={}"
+INPA_ARGOMENTI = [
+    "profili informatici o ICT presso enti con sede in Sardegna",
+    "funzionario informatico o funzionario sistemi informativi in Sardegna",
+    "istruttore informatico in comuni, unioni di comuni o province della Sardegna",
+    "profili informatici in concorsi nazionali con sedi in tutta Italia, comprese le sedi in Sardegna",
+    "elenchi di idonei o selezioni uniche nazionali per enti locali che comprendono profili informatici",
+]
 INPA_RICERCHE = ["informatico", "informatica", "informatici", "ICT", "sistemi informativi",
                  "transizione digitale", "analista", "programmatore", "cybersecurity", "elenco idonei"]
 
@@ -64,9 +78,13 @@ PAROLE_SARDEGNA = ["sardegna", "sardo", "sarda", "sardi", "cagliari", "sassari",
                    "quartu", "nazionale", "intero territorio", "tutto il territorio", "idonei"]
 
 SEMBRA_BANDO = re.compile(r"concors|selezion|avvis|bando|bandi|mobilit|idone|reclutament|assunzion|"
-                          r"recruit|lavora con noi|offerte di lavoro|incaric", re.I)
-SOLO_AGGIORNAMENTO = re.compile(r"graduatori|esito|ammess|diario|calendario|convocazion|rettific|"
-                                r"commissione|punteggi|verbale", re.I)
+                          r"recruit|lavora con noi|offerte di lavoro|caricaDettaglio", re.I)
+SOLO_AGGIORNAMENTO = re.compile(r"graduatori|esit[oi]|ammess|diario|calendario|convocazion|rettific|"
+                                r"commissione|punteggi|verbal|tracce|sede (della |delle )?prov|"
+                                r"tabella riepilogativa|espletat|stabilizzazion|bandi di gara|gare e contratti", re.I)
+SOCIAL = re.compile(r"facebook\.com|twitter\.com|x\.com/intent|linkedin\.com|whatsapp|telegram\.me|"
+                    r"instagram\.com|youtube\.com|mailto:", re.I)
+DATATA = re.compile(r"\b\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}\b|n[°o.]\s*\d+", re.I)
 SEZIONE = re.compile(r"bandi di concorso|concorsi e selezioni|concorsi|selezion[ei] del personale|"
                      r"selezioni|lavora con noi|reclutamento|avvisi di selezione|offerte di lavoro|"
                      r"opportunit[aà] di lavoro", re.I)
@@ -80,8 +98,21 @@ AREE = {"F": "Funzionari (ex D)", "I": "Istruttori (ex C)", "O": "Operatori", "D
 PROVE = {"titoli": "Titoli", "pre": "Preselezione", "pre_ev": "Preselezione eventuale",
          "scritta": "Scritta", "pratica": "Pratica", "orale": "Orale"}
 
+class SSLCompatibile(HTTPAdapter):
+    """Per i siti con certificati o protocolli datati."""
+    def init_poolmanager(self, *args, **kwargs):
+        ctx = ssl.create_default_context()
+        ctx.set_ciphers("DEFAULT:@SECLEVEL=1")
+        ctx.options |= getattr(ssl, "OP_LEGACY_SERVER_CONNECT", 0x4)
+        kwargs["ssl_context"] = ctx
+        return super().init_poolmanager(*args, **kwargs)
+
+
 sessione = requests.Session()
 sessione.headers.update({"User-Agent": UA, "Accept-Language": "it-IT,it;q=0.9"})
+sessione_compatibile = requests.Session()
+sessione_compatibile.headers.update(sessione.headers)
+sessione_compatibile.mount("https://", SSLCompatibile())
 _robots = {}
 _ultima_visita = {}
 
@@ -159,7 +190,7 @@ def consentito(url):
         except Exception:
             rp.parse([])
         _robots[base] = rp
-    return _robots[base].can_fetch(UA, url)
+    return _robots[base].can_fetch(BOT, url)
 
 
 def scarica(url):
@@ -171,7 +202,12 @@ def scarica(url):
     if attesa > 0:
         time.sleep(attesa)
     _ultima_visita[host] = time.time()
-    r = sessione.get(url, timeout=30, allow_redirects=True)
+    try:
+        r = sessione.get(url, timeout=30, allow_redirects=True)
+    except requests.exceptions.SSLError:
+        r = sessione_compatibile.get(url, timeout=30, allow_redirects=True)
+    if r.status_code in (401, 403):
+        raise PermissionError(f"il sito blocca le visite automatiche dai server di GitHub (errore {r.status_code})")
     r.raise_for_status()
     return r
 
@@ -180,8 +216,11 @@ def testo_da_risposta(r):
     tipo = r.headers.get("content-type", "").lower()
     if "pdf" in tipo or r.url.lower().endswith(".pdf"):
         return testo_pdf(r.content), None
-    soup = BeautifulSoup(r.text, "html.parser")
-    for tag in soup(["script", "style", "noscript"]):
+    soup = BeautifulSoup(r.content, "html.parser")  # legge la codifica dichiarata nella pagina
+    for tag in soup(["script", "style", "noscript", "nav", "header", "footer", "form"]):
+        tag.decompose()
+    for tag in soup.select('[role=navigation], [class*=breadcrumb], [id*=breadcrumb], [class*=social], '
+                           '[class*=share], [id*=cookie], [class*=cookie]'):
         tag.decompose()
     return re.sub(r"\s+", " ", soup.get_text(" ", strip=True)), soup
 
@@ -200,6 +239,16 @@ def testo_pdf(contenuto):
     except Exception as e:
         log("   PDF non leggibile:", e)
         return ""
+
+
+def link_utile(url, base, testo, intorno):
+    if SOCIAL.search(url):
+        return False
+    if not (stesso_sito(url, base) or url.lower().split("?")[0].endswith(".pdf")):
+        return False
+    if SOLO_AGGIORNAMENTO.search(testo):
+        return False
+    return bool(SEMBRA_BANDO.search(f"{testo} {intorno} {url}"))
 
 
 def link_della_pagina(soup, base):
@@ -282,22 +331,25 @@ def sezioni_da_controllare(fonte, stato):
 
 
 def raccogli_da_pagine(fonte, stato):
-    """Link ai bandi presenti nelle sezioni della fonte."""
-    candidati = []
-    for sezione in sezioni_da_controllare(fonte, stato):
-        r = scarica(sezione)
+    """Link ai bandi presenti nelle sezioni della fonte e negli elenchi scoperti in passato."""
+    candidati, visti = [], set()
+    pagine = sezioni_da_controllare(fonte, stato) + stato.setdefault("elenchi", {}).get(fonte["nome"], [])
+    for sezione in dict.fromkeys(pagine):
+        try:
+            r = scarica(sezione)
+        except Exception as e:
+            log("   pagina elenco non letta:", sezione, "-", e)
+            continue
         _, soup = testo_da_risposta(r)
         if soup is None:
             continue
         for url, testo, intorno in link_della_pagina(soup, r.url):
-            if url == sezione or url.rstrip("/") == fonte["url"].rstrip("/"):
+            if url in visti or url == sezione or url.rstrip("/") == fonte["url"].rstrip("/"):
                 continue
-            insieme = f"{testo} {intorno} {url}"
-            if not SEMBRA_BANDO.search(insieme):
+            if not link_utile(url, r.url, testo, intorno):
                 continue
-            if SOLO_AGGIORNAMENTO.search(testo):
-                continue
-            candidati.append({"url": url, "titolo": testo[:200], "contesto": intorno})
+            visti.add(url)
+            candidati.append({"url": url, "titolo": testo[:200], "contesto": intorno, "livello": 1})
     return candidati
 
 
@@ -311,8 +363,8 @@ def primo_valore(diz, chiavi):
 def raccogli_da_inpa(stato):
     """Usa il servizio di ricerca pubblico del portale inPA (lo stesso usato dal sito)."""
     if not consentito(INPA_API):
-        log("   inPA non consente l'accesso automatico al servizio di ricerca: fonte saltata.")
-        return []
+        log("   il servizio di ricerca interno di inPA non è consentito: cerco le pagine dei bandi con Google")
+        return cerca_inpa_con_google()
     trovati = {}
     campione_mostrato = False
     for testo in INPA_RICERCHE:
@@ -351,24 +403,73 @@ def raccogli_da_inpa(stato):
     return candidati
 
 
-def leggi_dettaglio(url):
-    """Testo completo di un bando: pagina più l'eventuale PDF del bando collegato."""
+def cerca_inpa_con_google():
+    """Chiede a Gemini, con la ricerca Google, le pagine di dettaglio inPA dei bandi pertinenti."""
+    if not GEMINI_KEY:
+        log("   manca GEMINI_API_KEY: ricerca inPA saltata")
+        return []
+    trovati = {}
+    for argomento in INPA_ARGOMENTI:
+        domanda = (f"Oggi è il {OGGI}. Cerca sul portale inPA (www.inpa.gov.it) i bandi di concorso, gli avvisi "
+                   f"di selezione e gli elenchi di idonei ancora aperti per: {argomento}. Per ognuno scrivi "
+                   "l'indirizzo completo della pagina di dettaglio inPA, quella che contiene "
+                   "'dettaglio-bando-avviso/?concorso_id='. Rispondi solo con gli indirizzi, uno per riga.")
+        corpo = {"contents": [{"parts": [{"text": domanda}]}], "tools": [{"google_search": {}}]}
+        risposta = None
+        for modello in list(GEMINI_MODELLI):
+            try:
+                r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{modello}:generateContent",
+                                  json=corpo, headers={"x-goog-api-key": GEMINI_KEY}, timeout=(15, 90))
+            except Exception as e:
+                log(f"   ricerca Google non riuscita ({modello}): {e}")
+                continue
+            if r.status_code == 200:
+                risposta = r.json()
+                break
+            log(f"   ricerca Google con {modello}: risposta {r.status_code} {r.text[:200]}")
+        if not risposta:
+            continue
+        cand = (risposta.get("candidates") or [{}])[0]
+        testo = "".join(p.get("text", "") for p in cand.get("content", {}).get("parts", []))
+        indirizzi = set(re.findall(r"https?://[^\s)\]\"'<>]+", testo))
+        for ch in cand.get("groundingMetadata", {}).get("groundingChunks", []):
+            if ch.get("web", {}).get("uri"):
+                indirizzi.add(ch["web"]["uri"])
+        for u in indirizzi:
+            if "grounding-api-redirect" in u or "vertexaisearch" in u:
+                try:  # i risultati di Google arrivano come link di reindirizzamento: ricavo l'indirizzo vero
+                    u = requests.head(u, allow_redirects=True, timeout=20, headers={"User-Agent": UA}).url
+                except Exception:
+                    continue
+            m = re.search(r"concorso_id=([0-9a-fA-F]{16,})", u)
+            if "inpa.gov.it" in u and m:
+                trovati[m.group(1).lower()] = INPA_DETTAGLIO.format(m.group(1).lower())
+        time.sleep(PAUSA_AI)
+    log(f"   inPA tramite Google: {len(trovati)} pagine di bandi trovate")
+    return [{"url": u, "titolo": "", "contesto": "", "livello": 2} for u in trovati.values()]
+
+
+def leggi_pagina(url):
+    """Testo completo di una pagina (più l'eventuale PDF del bando) e i link ai bandi che contiene."""
     r = scarica(url)
     testo, soup = testo_da_risposta(r)
-    if soup is not None and len(testo) < MAX_TESTO:
-        pdf = [u for u, t, _ in link_della_pagina(soup, r.url)
-               if (".pdf" in u.lower() or "download" in u.lower() or "media" in u.lower())
-               and re.search(r"bando|avviso|selezion|concors", f"{t} {u}", re.I)][:2]
-        for u in pdf:
-            try:
-                rp = scarica(u)
-                aggiunta, _ = testo_da_risposta(rp)
-                testo += " \n[BANDO PDF] " + aggiunta
-            except Exception as e:
-                log("   PDF non scaricato:", u, "-", e)
-            if len(testo) > MAX_TESTO:
-                break
-    return testo[:MAX_TESTO]
+    link = []
+    if soup is not None:
+        tutti = link_della_pagina(soup, r.url)
+        link = [(u, t, c) for u, t, c in tutti if u != r.url and link_utile(u, r.url, t, c)]
+        if len(testo) < MAX_TESTO and len(link) < 8:
+            pdf = [u for u, t, _ in tutti
+                   if (".pdf" in u.lower() or "download" in u.lower() or "media" in u.lower())
+                   and re.search(r"bando|avviso|selezion|concors", f"{t} {u}", re.I) and consentito(u)][:2]
+            for u in pdf:
+                try:
+                    aggiunta, _ = testo_da_risposta(scarica(u))
+                    testo += " \n[BANDO PDF] " + aggiunta
+                except Exception as e:
+                    log("   PDF non scaricato:", u, "-", e)
+                if len(testo) > MAX_TESTO:
+                    break
+    return testo[:MAX_TESTO], link
 
 
 # ---------------------------------------------------------------- intelligenza artificiale
@@ -419,9 +520,10 @@ def chiedi_gemini(prompt):
                  "generationConfig": {"responseMimeType": "application/json", "temperature": 0.1}}
         for tentativo in range(3):
             try:
-                r = requests.post(url, json=corpo, headers={"x-goog-api-key": GEMINI_KEY}, timeout=90)
+                r = requests.post(url, json=corpo, headers={"x-goog-api-key": GEMINI_KEY}, timeout=(15, 75))
             except Exception as e:
                 ultimo_errore = f"rete: {e}"
+                log(f"   Gemini non risponde ({modello}, tentativo {tentativo + 1}): {e}")
                 time.sleep(15)
                 continue
             if r.status_code == 200:
@@ -609,32 +711,61 @@ def main():
             candidati = raccogli_da_inpa(stato) if fonte["url"].lower() == "inpa" else raccogli_da_pagine(fonte, stato)
             nuovi = [c for c in candidati if c["url"] not in stato["visti"]]
             log(f"   {len(candidati)} link a bandi, {len(nuovi)} nuovi")
+            da_leggere = deque(nuovi)
+            gia_in_coda = {v["url"] for v in stato["coda"]}
             letti = 0
-            for c in nuovi:
+            while da_leggere:
                 if letti >= MAX_DETTAGLI_PER_FONTE:
                     log(f"   raggiunto il limite di {MAX_DETTAGLI_PER_FONTE} pagine: le altre domani")
                     break
-                testo_breve = f"{c['titolo']} {c['contesto']}"
+                c = da_leggere.popleft()
+                if c["url"] in stato["visti"]:
+                    continue
                 try:
-                    testo = leggi_dettaglio(c["url"])
+                    testo, link = leggi_pagina(c["url"])
                 except Exception as e:
-                    testo = ""
                     log("   pagina non letta:", c["url"], "-", e)
+                    stato["visti"][c["url"]] = {"d": OGGI, "t": c["titolo"][:120], "f": nome, "x": "errore"}
+                    letti += 1
+                    continue
                 letti += 1
-                tutto = f"{testo_breve} {testo}"
                 stato["visti"][c["url"]] = {"d": OGGI, "t": c["titolo"][:120], "f": nome}
+                tutto = f"{c['titolo']} {c['contesto']} {testo}"
+
+                # Pagina che elenca altri bandi (es. "Selezioni aperte", un numero della Gazzetta): ne seguo i link
+                if len(link) >= 8 and c.get("livello", 1) < 2:
+                    grande = len(link) > 30
+                    aggiunti = 0
+                    for u, t, ctx in link:
+                        if u in stato["visti"] or u == c["url"]:
+                            continue
+                        if grande and not contiene_parole(f"{t} {ctx}", parole):
+                            continue  # elenchi lunghi: seguo solo i titoli che contengono le parole chiave
+                        da_leggere.append({"url": u, "titolo": t[:200], "contesto": ctx, "livello": 2})
+                        aggiunti += 1
+                    log(f"   elenco di bandi: {(c['titolo'] or c['url'])[:70]} ({aggiunti} link da leggere)")
+                    if not DATATA.search(c["titolo"]):
+                        elenchi = stato.setdefault("elenchi", {}).setdefault(nome, [])
+                        if c["url"] not in elenchi and len(elenchi) < 6:
+                            elenchi.append(c["url"])  # lo ricontrollo ogni giorno, come una sezione
+                    if len(link) >= 15:
+                        continue
+
                 if not contiene_parole(tutto, parole):
                     continue
                 if fonte["nazionale"] and not riguarda_sardegna(tutto):
                     continue
-                stato["coda"].append({"url": c["url"], "fonte": nome, "testo": tutto[:MAX_TESTO]})
-                log("   + da analizzare:", c["titolo"][:90])
+                if c["url"] not in gia_in_coda:
+                    stato["coda"].append({"url": c["url"], "fonte": nome, "testo": tutto[:MAX_TESTO]})
+                    gia_in_coda.add(c["url"])
+                    log("   + da analizzare:", (c["titolo"] or c["url"])[:90])
             stato["errori"].pop(nome, None)
         except Exception as e:
             log("   ERRORE:", e)
             stato["errori"][nome] = stato["errori"].get(nome, 0) + 1
             problemi.append(f"{nome}: {str(e)[:120]}")
         salva_stato(stato)
+    scrivi_pagina(stato)  # la pagina esiste anche se l'analisi successiva venisse interrotta
 
     # 4. analisi con l'intelligenza artificiale
     nuovi_concorsi = []
@@ -643,6 +774,7 @@ def main():
     log(f"\n== Analisi AI: {len(coda)} bandi in coda")
     while coda and analizzati < MAX_AI:
         voce = coda[0]
+        log(f"   analizzo {analizzati + 1}/{min(len(coda) + analizzati, MAX_AI)}: {voce['url'][:100]}")
         try:
             scheda = pulisci_scheda(chiedi_gemini(prompt_ai(voce["fonte"], voce["url"], voce["testo"], profilo)))
         except QuotaEsaurita as e:
