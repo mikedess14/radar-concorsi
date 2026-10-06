@@ -146,6 +146,13 @@
   .kwadd input { flex:1; padding:9px 12px; border:1px solid var(--slate-300); border-radius:var(--radius); font:inherit; }
   .kwfoot { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:center; padding:12px 16px; border-top:1px solid var(--slate-200); font-size:13px; color:var(--slate-600); }
   .sezione { margin-top:18px; }
+  .kwhead { width:100%; display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px 16px;
+    border:0; background:none; text-align:left; font:inherit; color:inherit; border-radius:14px; }
+  .kwhead:hover { background:var(--slate-50); }
+  .kwhead .t { display:block; font-size:17px; font-weight:600; color:var(--slate-900); }
+  .kwhead .s { display:block; font-size:13px; color:var(--slate-600); font-weight:400; }
+  .kwhead svg { width:20px; height:20px; flex-shrink:0; color:var(--slate-500); transition:transform .15s; }
+  .kwhead[aria-expanded=true] svg { transform:rotate(180deg); }
   .sezione h2 { margin:0; font-size:17px; font-weight:600; }
   details summary { cursor:pointer; font-weight:600; font-size:15px; }
   .campo { display:flex; flex-direction:column; gap:4px; margin-top:12px; font-size:14px; }
@@ -180,7 +187,7 @@
     </select>
 
     <p class="lbl">Parole chiave</p>
-    <div class="kwlink"><span id="kwcount"></span><a href="#parole">Gestisci parole chiave ↓</a></div>
+    <div class="kwlink"><span id="kwcount"></span><a href="#parole" id="kwapri">Gestisci parole chiave ↓</a></div>
 
     <p class="lbl">Ambito</p>
     <div class="chips" id="ambiti"></div>
@@ -209,9 +216,15 @@
   </section>
 
   <section class="card sezione" id="parole" aria-labelledby="t-parole">
-    <div class="pad" style="padding-bottom:12px">
-      <h2 id="t-parole">Parole chiave</h2>
-      <p class="nota" style="margin:4px 0 0">Usate nella ricerca e, se attivi l'opzione qui sotto, anche nel controllo serale. Basta l'inizio della parola: "informatic" trova informatico, informatica e informatici.</p>
+    <h2 id="t-parole" style="margin:0">
+      <button type="button" class="kwhead" id="kwtoggle" aria-expanded="false" aria-controls="kwcorpo">
+        <span><span class="t">Parole chiave</span><span class="s" id="kwsommario"></span></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </h2>
+    <div id="kwcorpo" hidden>
+    <div class="pad" style="padding-top:0;padding-bottom:12px">
+      <p class="nota" style="margin:0">Usate nella ricerca e, se attivi l'opzione qui sotto, anche nel controllo serale. Basta l'inizio della parola: "informatic" trova informatico, informatica e informatici.</p>
       <div class="kwadd">
         <input type="text" id="kwin" placeholder="sistemista" aria-label="Nuova parola chiave">
         <button class="btn outline" type="button" id="kwadd">Aggiungi</button>
@@ -222,6 +235,8 @@
     <div class="kwfoot">
       <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="kwsync"> Usale anche nel controllo serale</label>
       <span id="kwstato"></span>
+      <button class="linkbtn" type="button" id="kwchiudi">Chiudi</button>
+    </div>
     </div>
   </section>
 
@@ -440,11 +455,22 @@ function disegnaParole() {
     : lista.length ? lista.map((p, i) => `<div class="kwrow"><span>${esc(p)}</span>
         <button type="button" class="icon" data-kwdel="${i}" aria-label="Elimina ${esc(p)}">${ICONE.cestino}</button></div>`).join("")
     : '<p class="nota" style="padding:10px 16px;margin:0">Nessuna parola chiave. Aggiungine una qui sopra.</p>';
+  const n = lista.length;
+  $("kwsommario").textContent = !parolePronte ? "Carico le parole chiave…"
+    : `${n === 1 ? "1 parola attiva" : n + " parole attive"}, ${pref.sincronizza && puoScrivere() ? "usate anche nel controllo serale" : "salvate solo in questo browser"}`;
   const sync = $("kwsync");
   sync.checked = pref.sincronizza && puoScrivere();
   sync.disabled = !puoScrivere();
   sync.parentElement.title = puoScrivere() ? "" : "Per salvarle nel repository aggiungi la chiave di accesso nelle impostazioni";
   if (!puoScrivere() && !$("kwstato").textContent) statoParole("Salvate solo in questo browser. Per usarle anche la sera aggiungi la chiave di accesso nelle impostazioni.");
+}
+
+function apriParole(aperta, scorri = false) {
+  $("kwcorpo").hidden = !aperta;
+  $("kwtoggle").setAttribute("aria-expanded", String(aperta));
+  if (aperta && scorri) $("parole").scrollIntoView({ behavior: "smooth", block: "start" });
+  if (aperta) setTimeout(() => $("kwin").focus({ preventScroll: true }), 300);
+  if (!aperta && scorri) $("parole").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function aggiungiParola() {
@@ -864,6 +890,9 @@ $("vai").addEventListener("click", () => {
   $("risultati").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 $("kwadd").addEventListener("click", aggiungiParola);
+$("kwtoggle").addEventListener("click", () => apriParole($("kwcorpo").hidden));
+$("kwchiudi").addEventListener("click", () => apriParole(false, true));
+$("kwapri").addEventListener("click", (e) => { e.preventDefault(); apriParole(true, true); });
 $("kwin").addEventListener("keydown", (e) => { if (e.key === "Enter") aggiungiParola(); });
 $("kwin").addEventListener("input", () => ($("kwerr").textContent = ""));
 $("kwsync").addEventListener("change", (e) => {
