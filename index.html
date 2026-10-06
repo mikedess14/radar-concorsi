@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar concorsi</title>
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Radar concorsi">
+<style>
+  :root {
+    --teal-50:#f0fdfa; --teal-600:#0d9488; --teal-700:#0f766e; --teal-800:#115e59; --teal-900:#134e4a;
+    --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-200:#e2e8f0; --slate-300:#cbd5e1; --slate-400:#94a3b8;
+    --slate-500:#64748b; --slate-600:#475569; --slate-700:#334155; --slate-800:#1e293b; --slate-900:#0f172a;
+    --amber-100:#fef3c7; --amber-700:#b45309; --amber-800:#92400e; --red-700:#b91c1c;
+    --radius:8px;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--slate-50); color:var(--slate-900);
+    font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; -webkit-text-size-adjust:100%; }
+  a { color:var(--teal-700); }
+  button { font:inherit; cursor:pointer; }
+  .wrap { max-width:920px; margin:0 auto; padding:24px 14px 40px; }
+  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:8px; margin-bottom:18px; }
+  h1 { margin:0; font-size:28px; letter-spacing:-.02em; color:var(--teal-900); }
+  .sub { margin:2px 0 0; color:var(--slate-600); }
+  .muted { color:var(--slate-500); font-size:13px; margin:0; }
+  .card { background:#fff; border:1px solid var(--slate-200); border-radius:14px; }
+  .pad { padding:16px; }
+  .lbl { margin:14px 0 6px; font-size:13px; color:var(--slate-600); }
+  input[type=search] { width:100%; padding:10px 12px; border:1px solid var(--slate-300); border-radius:var(--radius);
+    font:inherit; background:#fff; }
+  input[type=search]:focus, button:focus-visible, a:focus-visible { outline:2px solid var(--teal-600); outline-offset:1px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { display:inline-flex; align-items:center; gap:6px; padding:6px 11px; border:1px solid var(--slate-300);
+    border-radius:var(--radius); background:#fff; color:var(--slate-600); font-size:14px; }
+  .chip[aria-pressed=true] { border-color:var(--teal-600); background:var(--teal-50); color:var(--teal-800); }
+  .chip[aria-pressed=true]::before { content:"✓"; font-size:12px; }
+  .dd { position:relative; }
+  .dd > button { display:inline-flex; align-items:center; gap:6px; max-width:240px; padding:6px 11px;
+    border:1px solid var(--slate-300); border-radius:var(--radius); background:#fff; color:var(--slate-700); font-size:14px; }
+  .dd > button.on { border-color:var(--teal-600); background:var(--teal-50); color:var(--teal-800); }
+  .dd > button span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .dd > button[disabled] { opacity:.5; cursor:not-allowed; }
+  .panel { position:absolute; z-index:20; left:0; top:calc(100% + 4px); width:260px; max-height:300px; overflow:auto;
+    background:#fff; border:1px solid var(--slate-200); border-radius:12px; box-shadow:0 10px 25px rgba(15,23,42,.12); padding:4px 0; }
+  .panel label { display:flex; align-items:center; gap:10px; padding:8px 12px; font-size:14px; color:var(--slate-700); cursor:pointer; }
+  .panel label:hover { background:var(--slate-50); }
+  .panel input { width:16px; height:16px; accent-color:var(--teal-700); }
+  .panel .cnt { margin-left:auto; color:var(--slate-400); font-size:12px; }
+  .panel .reset { display:block; width:100%; text-align:left; padding:8px 12px; border:0; border-bottom:1px solid var(--slate-100);
+    background:none; color:var(--teal-700); font-size:14px; }
+  .actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:16px; padding-top:14px; border-top:1px solid var(--slate-100); }
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:var(--radius); font-size:14px; text-decoration:none; }
+  .btn.primary { background:var(--teal-700); color:#fff; border:0; }
+  .btn.primary:hover { background:var(--teal-800); }
+  .btn.outline { background:#fff; color:var(--slate-700); border:1px solid var(--slate-300); }
+  .linkbtn { border:0; background:none; color:var(--teal-700); padding:0; font-size:14px; }
+  .results { margin-top:18px; }
+  .rhead { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px 16px; }
+  .rhead p { margin:0; font-weight:600; color:var(--slate-800); }
+  ul.list { list-style:none; margin:0; padding:0; }
+  li.item { border-top:1px solid var(--slate-200); }
+  li.item.seen { background:var(--slate-50); }
+  .row { display:flex; gap:14px; align-items:flex-start; padding:14px 16px; }
+  .dl { width:72px; flex-shrink:0; text-align:center; }
+  .dl .big { font-size:28px; font-weight:650; line-height:1.1; font-variant-numeric:tabular-nums; }
+  .dl .big.word { font-size:19px; }
+  .dl .small, .dl .date { font-size:12px; }
+  .dl .date { color:var(--slate-500); margin-top:2px; }
+  .c-ok { color:var(--teal-800); } .c-warn { color:var(--amber-700); } .c-urg { color:var(--red-700); } .c-off { color:var(--slate-400); }
+  .main { flex:1; min-width:0; text-align:left; border:0; background:none; padding:0; color:inherit; }
+  .title { margin:0; font-weight:600; color:var(--slate-900); }
+  li.seen .title { color:var(--slate-600); }
+  .ente { margin:2px 0 0; font-size:14px; color:var(--slate-600); }
+  .ral { margin:4px 0 0; font-size:14px; color:var(--slate-800); }
+  .ral b { font-variant-numeric:tabular-nums; }
+  .ral span { color:var(--slate-500); }
+  .badges { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+  .b { font-size:12px; padding:2px 8px; border-radius:6px; background:var(--slate-100); color:var(--slate-700); }
+  .b.new { background:var(--amber-100); color:var(--amber-800); }
+  .b.R { background:var(--teal-50); color:var(--teal-800); }
+  .b.NS { background:#eef2ff; color:#3730a3; }
+  .b.EL, .b.E { background:#f5f3ff; color:#5b21b6; }
+  .b.S { background:#ecfeff; color:#155e75; }
+  .b.ind { background:#ecfdf5; color:#065f46; }
+  .b.det { background:#fff7ed; color:#9a3412; }
+  .icons { display:flex; gap:2px; flex-shrink:0; }
+  .icon { width:38px; height:38px; display:grid; place-items:center; border:0; border-radius:8px; background:none; color:var(--slate-500); }
+  .icon:hover { background:var(--slate-100); }
+  .icon svg { width:20px; height:20px; }
+  .icon.fav { color:#f59e0b; }
+  .icon.fav svg { fill:#fbbf24; }
+  .chev svg { transition:transform .15s; }
+  .open .chev svg { transform:rotate(180deg); }
+  .detail { padding:0 16px 18px 102px; }
+  dl.kv { display:grid; grid-template-columns:150px 1fr; gap:6px 16px; margin:0; font-size:14px; }
+  dl.kv dt { color:var(--slate-500); } dl.kv dd { margin:0; color:var(--slate-800); }
+  .box { margin-top:14px; padding:12px; border:1px solid var(--slate-200); border-radius:10px; background:#fff; font-size:14px; }
+  .box .k { margin:0; color:var(--slate-500); }
+  .box p { margin:4px 0 0; color:var(--slate-700); }
+  .box .v { font-weight:600; color:var(--slate-900); }
+  .steps { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:8px 0 0; padding:0; list-style:none; }
+  .steps li { display:flex; align-items:center; gap:6px; }
+  .steps .s { padding:4px 10px; border-radius:7px; background:var(--teal-50); color:var(--teal-900); }
+  .steps .s.ev { background:none; border:1px dashed var(--slate-400); color:var(--slate-700); }
+  .steps .arr { color:var(--slate-400); }
+  .links { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .note { margin:12px 0 0; font-size:12px; color:var(--slate-500); }
+  .empty { padding:44px 20px; text-align:center; border-top:1px solid var(--slate-200); }
+  .empty p { margin:4px 0; }
+  footer { margin-top:18px; font-size:13px; color:var(--slate-500); }
+  @media (max-width:640px) {
+    h1 { font-size:24px; }
+    .row { gap:10px; padding:12px; }
+    .dl { width:56px; }
+    .dl .big { font-size:24px; }
+    .icon { width:34px; height:34px; }
+    .detail { padding:0 12px 16px; }
+    dl.kv { grid-template-columns:1fr; gap:0 0; }
+    dl.kv dd { margin-bottom:8px; }
+    .panel { width:min(260px, 86vw); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Radar concorsi</h1>
+      <p class="sub">Concorsi pubblici con sede in Sardegna, per il tuo profilo</p>
+    </div>
+    <p class="muted" id="aggiornato"></p>
+  </header>
+
+  <section class="card pad" aria-label="Filtri">
+    <input type="search" id="q" placeholder="Cerca per parola, ente o città" aria-label="Cerca tra i concorsi">
+    <p class="lbl">Ambito</p>
+    <div class="chips" id="ambiti"></div>
+    <p class="lbl">Filtra per</p>
+    <div class="chips" id="menu"></div>
+    <p class="lbl">Mostra</p>
+    <div class="chips" id="toggles"></div>
+    <div class="actions">
+      <a class="btn primary" id="avvia" target="_blank" rel="noopener">Avvia un controllo ora</a>
+      <button class="linkbtn" id="azzera" type="button">Azzera filtri</button>
+    </div>
+  </section>
+
+  <section class="card results" aria-live="polite">
+    <div class="rhead"><p id="conta">Carico i concorsi…</p></div>
+    <ul class="list" id="lista"></ul>
+    <div id="vuoto"></div>
+  </section>
+
+  <footer>
+    I concorsi trovati su più fonti compaiono una volta sola. Preferiti e concorsi visti restano salvati in questo browser.
+    Dati estratti automaticamente: verifica sempre requisiti e scadenze sul bando ufficiale.
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* ------------------------------------------------------------ configurazione */
+
+const AMBITI = { R: "Enti sardi", NS: "Nazionali con sede in Sardegna", NN: "Nazionali con scelta sede", EL: "Elenchi di idonei nazionali" };
+const CONTRATTI = { indeterminato: "Tempo indeterminato", determinato: "Tempo determinato", mobilita: "Mobilità", altro: "Altro contratto" };
+const AREE = { F: "Funzionari (ex D)", I: "Istruttori (ex C)", O: "Operatori", D: "Dirigenti", P: "Contratto privato" };
+const PROVE = { titoli: "Valutazione titoli", pre: "Preselezione", pre_ev: "Preselezione eventuale", scritta: "Prova scritta", pratica: "Prova pratica", orale: "Prova orale" };
+const PROVE_BREVI = { titoli: "Titoli", pre: "Preselezione", pre_ev: "Preselezione eventuale", scritta: "Scritta", pratica: "Pratica", orale: "Orale" };
+const COMPARTI = { FC: "Funzioni centrali", FL: "Funzioni locali", SAN: "Sanità", IR: "Università e ricerca", RAS: "Regione Sardegna", PRIV: "privato", ALTRO: "altro contratto" };
+
+/* Retribuzione annua lorda di ingresso, tempo pieno, dalle tabelle ufficiali dei contratti 2022-2024
+   (stessi valori della app in Claude). */
+const RAL = {
+  FL: { F: [27643, "Stipendio tabellare dell'area Funzionari con tredicesima e indennità di comparto, secondo il CCNL Funzioni locali 2022-2024.", "A questo si aggiunge il salario accessorio, che varia da ente a ente."],
+        I: [24902, "Stipendio tabellare dell'area Istruttori con tredicesima, secondo il CCNL Funzioni locali 2022-2024.", "A questo si aggiungono l'indennità di comparto e il salario accessorio."] },
+  FC: { F: [27477, "Stipendio tabellare dell'area Funzionari con tredicesima, secondo il CCNL Funzioni centrali 2022-2024.", "A questo si aggiungono l'indennità di amministrazione e il salario accessorio, che variano da ente a ente."],
+        I: [22625, "Stipendio tabellare dell'area Assistenti con tredicesima, secondo il CCNL Funzioni centrali 2022-2024.", "A questo si aggiungono l'indennità di amministrazione e il salario accessorio, che variano da ente a ente."] },
+  SAN: { F: [26996, "Stipendio tabellare dell'area Professionisti della salute e Funzionari con tredicesima, secondo il CCNL Sanità 2022-2024.", "A questo si aggiungono le indennità previste dal contratto e il salario accessorio."],
+         I: [24875, "Stipendio tabellare dell'area Assistenti con tredicesima, secondo il CCNL Sanità 2022-2024.", "A questo si aggiungono le indennità previste dal contratto e il salario accessorio."] },
+  IR: { F: [30658, "Stipendio tabellare dell'area Funzionari con tredicesima e indennità di Ateneo, secondo il CCNL Istruzione e Ricerca 2022-2024.", "Il contratto 2025-2027, firmato in via provvisoria ad aprile 2026, prevede ulteriori aumenti. A questo si aggiunge il salario accessorio."],
+        I: [24221, "Stipendio tabellare dell'area Collaboratori con tredicesima, secondo il CCNL Istruzione e Ricerca 2022-2024.", "A questo si aggiungono l'indennità di Ateneo e il salario accessorio."] },
+  RAS: { F: [32837, "Retribuzione fissa della categoria D, livello D1, con tredicesima, secondo il contratto regionale (CCRL) 2022-2024 della Regione Sardegna.", "A questo si aggiunge il salario accessorio, che varia tra Regione, agenzie ed enti regionali."] },
+};
+
+const CHIAVE = "radar-concorsi-web-v1";
+const VISTA_INIZIALE = { ambiti: Object.keys(AMBITI), fonti: [], citta: [], prov: [], contratto: [], prove: [],
+                         nascondiScaduti: true, soloPreferiti: false, nascondiVisti: false, q: "" };
+
+/* ------------------------------------------------------------ utilità */
+
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const norm = (t) => String(t ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+const oggiISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const giorni = (da, a) => Math.round((new Date(a + "T00:00:00") - new Date(da + "T00:00:00")) / 86400000);
+const dataIt = (iso, opz = { day: "numeric", month: "long", year: "numeric" }) => iso ? new Date(iso + "T00:00:00").toLocaleDateString("it-IT", opz) : "";
+const euro = (v) => new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(v));
+const valido = (u) => /^https?:\/\//i.test(String(u || ""));
+const OGGI = oggiISO();
+
+const ICONE = {
+  stella: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg>',
+  occhio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  occhioNo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></svg>',
+  giu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>',
+};
+
+/* ------------------------------------------------------------ stato */
+
+let concorsi = [];
+let aperto = null;
+let pref = caricaPref();
+const ultimaVisitaPrecedente = pref.ultimaVisita || null;
+pref.ultimaVisita = OGGI;
+salvaPref();
+
+function caricaPref() {
+  try {
+    const p = JSON.parse(localStorage.getItem(CHIAVE) || "{}");
+    return { fav: p.fav || {}, visti: p.visti || {}, ultimaVisita: p.ultimaVisita, vista: { ...VISTA_INIZIALE, ...(p.vista || {}) } };
+  } catch { return { fav: {}, visti: {}, vista: { ...VISTA_INIZIALE } }; }
+}
+function salvaPref() { try { localStorage.setItem(CHIAVE, JSON.stringify(pref)); } catch {} }
+const vista = () => pref.vista;
+
+/* ------------------------------------------------------------ dati derivati */
+
+function isNuovo(c) {
+  if (pref.visti[c.id] || !c.trovato) return false;
+  if (ultimaVisitaPrecedente) return c.trovato >= ultimaVisitaPrecedente;
+  return giorni(c.trovato, OGGI) <= 7;
+}
+
+function linkBando(c) {
+  if (valido(c.link_bando)) return c.link_bando;
+  return (c.link || []).find(valido) || "";
+}
+
+function retribuzione(c) {
+  const r = Number(c.retribuzione_annua);
+  if (r > 5000 && r < 200000) return { v: r, tipo: "bando", nota: "Importo indicato nel bando." };
+  const t = RAL[c.comparto] && RAL[c.comparto][c.area];
+  if (t) return { v: Math.round(t[0] / 100) * 100, tipo: "stima", nota: t[1], extra: t[2] };
+  return null;
+}
+
+function motivoSenzaStima(c) {
+  if (c.area === "P" || c.comparto === "PRIV") return "È una società con contratto privato: la retribuzione dipende dal livello indicato nel bando.";
+  if (!c.comparto) return "Il contratto applicato non è stato riconosciuto, quindi non è possibile una stima.";
+  if (c.comparto === "ALTRO") return "L'ente applica un contratto per cui non ci sono tabelle ufficiali verificate.";
+  if (!c.area) return "L'area di inquadramento non è stata riconosciuta, quindi non è possibile una stima.";
+  return `Per questa area nel contratto ${COMPARTI[c.comparto]} non ci sono tabelle ufficiali verificate.`;
+}
+
+const chiaveProve = (c) => (c.prove || []).join("+");
+const testoProve = (lista) => (lista || []).map((p) => PROVE_BREVI[p] || p).join(" + ");
+
+function opzioni(estrai, etichetta = (v) => v) {
+  const mappa = new Map();
+  concorsi.forEach((c) => new Set(estrai(c).filter(Boolean)).forEach((v) => {
+    const k = norm(v);
+    const o = mappa.get(k) || { valore: k, etichetta: etichetta(v), n: 0 };
+    o.n++; mappa.set(k, o);
+  }));
+  return [...mappa.values()].sort((a, b) => b.n - a.n || a.etichetta.localeCompare(b.etichetta, "it"));
+}
+
+const MENU = [
+  { id: "fonti", nome: "Fonti", estrai: (c) => c.fonti || [] },
+  { id: "citta", nome: "Città", estrai: (c) => c.comuni || [] },
+  { id: "prov", nome: "Provincia", estrai: (c) => c.province || [] },
+  { id: "contratto", nome: "Contratto", estrai: (c) => [c.contratto], etichetta: (v) => CONTRATTI[v] || v },
+  { id: "prove", nome: "Prove", estrai: (c) => [chiaveProve(c)], etichetta: (v) => testoProve(v.split("+")) },
+];
+
+function filtrati() {
+  const v = vista();
+  const parole = norm(v.q).split(" ").filter(Boolean);
+  const dentro = (sel, valori) => !sel.length || valori.some((x) => sel.includes(norm(x)));
+  return concorsi.filter((c) => {
+    if (c.ambito && !v.ambiti.includes(c.ambito)) return false;
+    if (v.nascondiScaduti && c.scadenza && c.scadenza < OGGI && !pref.fav[c.id]) return false;
+    if (v.soloPreferiti && !pref.fav[c.id]) return false;
+    if (v.nascondiVisti && pref.visti[c.id]) return false;
+    if (!dentro(v.fonti, c.fonti || [])) return false;
+    if (!dentro(v.citta, c.comuni || [])) return false;
+    if (!dentro(v.prov, c.province || [])) return false;
+    if (!dentro(v.contratto, [c.contratto || ""])) return false;
+    if (!dentro(v.prove, [chiaveProve(c)])) return false;
+    if (parole.length) {
+      const testo = norm([c.titolo, c.ente, c.sede, c.titolo_studio, c.posti, ...(c.comuni || []), ...(c.province || [])].join(" "));
+      if (!parole.every((p) => testo.includes(p))) return false;
+    }
+    return true;
+  }).sort((a, b) => (a.scadenza || "9999").localeCompare(b.scadenza || "9999"));
+}
+
+/* ------------------------------------------------------------ disegno */
+
+function disegnaFiltri() {
+  const v = vista();
+  $("q").value = v.q;
+  $("ambiti").innerHTML = Object.entries(AMBITI).map(([k, n]) =>
+    `<button type="button" class="chip" data-ambito="${k}" aria-pressed="${v.ambiti.includes(k)}">${esc(n)}</button>`).join("");
+  $("toggles").innerHTML = [
+    ["nascondiScaduti", "Nascondi scaduti"], ["soloPreferiti", "Solo preferiti"], ["nascondiVisti", "Nascondi già visti"],
+  ].map(([k, n]) => `<button type="button" class="chip" data-toggle="${k}" aria-pressed="${!!v[k]}">${n}</button>`).join("");
+  $("menu").innerHTML = MENU.map((m) => {
+    const opz = opzioni(m.estrai, m.etichetta);
+    const sel = v[m.id];
+    const testo = !sel.length ? `${m.nome}: tutte`
+      : sel.length === 1 ? `${m.nome}: ${(opz.find((o) => o.valore === sel[0]) || { etichetta: sel[0] }).etichetta}`
+      : `${m.nome}: ${sel.length} scelte`;
+    return `<div class="dd" data-menu="${m.id}">
+      <button type="button" class="${sel.length ? "on" : ""}" aria-haspopup="true" aria-expanded="false" ${opz.length ? "" : "disabled"}>
+        <span>${esc(testo)}</span>${ICONE.giu.replace("<svg", '<svg width="14" height="14"')}
+      </button>
+      <div class="panel" hidden>
+        ${sel.length ? `<button type="button" class="reset" data-reset="${m.id}">Mostra tutte</button>` : ""}
+        ${opz.map((o) => `<label><input type="checkbox" data-opz="${m.id}" value="${esc(o.valore)}" ${sel.includes(o.valore) ? "checked" : ""}>
+          <span>${esc(o.etichetta)}</span><span class="cnt">${o.n}</span></label>`).join("")}
+      </div></div>`;
+  }).join("");
+}
+
+function scadenzaHtml(c) {
+  if (!c.scadenza) return `<div class="dl"><div class="big c-off">–</div><div class="small c-off">scadenza non indicata</div></div>`;
+  const g = giorni(OGGI, c.scadenza);
+  const col = g < 0 ? "c-off" : g <= 3 ? "c-urg" : g <= 10 ? "c-warn" : "c-ok";
+  const big = g < 0 ? "–" : g === 0 ? "oggi" : String(g);
+  const small = g < 0 ? "scaduto" : g === 0 ? "ultimo giorno" : g === 1 ? "giorno" : "giorni";
+  return `<div class="dl"><div class="big ${col} ${g === 0 ? "word" : ""}">${big}</div><div class="small ${col}">${small}</div>
+    <div class="date">${esc(dataIt(c.scadenza, { day: "numeric", month: "short" }))}</div></div>`;
+}
+
+function dettaglioHtml(c) {
+  const r = retribuzione(c);
+  const righe = [
+    ["Scadenza", c.scadenza ? dataIt(c.scadenza) + (c.ora ? `, ore ${c.ora}` : "") : ""],
+    ["Tipo di contratto", CONTRATTI[c.contratto]],
+    ["Area", AREE[c.area]],
+    ["Posti", c.posti],
+    ["Sede", c.sede],
+    ["Comuni", (c.comuni || []).join(", ")],
+    ["Provincia", (c.province || []).join(", ")],
+    ["Titolo di studio", c.titolo_studio],
+    ["Come candidarsi", c.come_candidarsi],
+    ["Trovato il", dataIt(c.trovato)],
+    ["Fonti", (c.fonti || []).join(", ")],
+  ].filter(([, v]) => v);
+  const prove = (c.prove || []).length
+    ? `<ol class="steps" aria-label="Sequenza delle prove">${c.prove.map((p, i) =>
+        `<li>${i ? '<span class="arr" aria-hidden="true">→</span>' : ""}<span class="s ${p === "pre_ev" ? "ev" : ""}">${esc(PROVE[p] || p)}</span></li>`).join("")}</ol>
+       ${c.prove.length === 1 ? "<p>È prevista una sola prova.</p>" : ""}
+       ${c.prove.includes("pre_ev") ? "<p>La preselezione si svolge solo se le domande superano la soglia fissata dal bando.</p>" : ""}`
+    : "<p>Non indicate. Controlla nel bando l'articolo sulle prove d'esame.</p>";
+  const bando = linkBando(c);
+  const altri = (c.link || []).filter((u) => valido(u) && u !== bando);
+  return `<div class="detail">
+    <dl class="kv">${righe.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+    <div class="box"><p class="k">Prove d'esame</p>${prove}</div>
+    <div class="box"><p class="k">Retribuzione annua lorda, tempo pieno</p>
+      ${r ? `<p class="v">${r.tipo === "stima" ? "Circa " : ""}${euro(r.v)} <span style="font-weight:400;color:var(--slate-600)">${r.tipo === "bando" ? "(indicata nel bando)" : "(stima dal contratto)"}</span></p>
+             <p>${esc(r.nota)}</p>${r.extra ? `<p>${esc(r.extra)}</p>` : ""}`
+          : `<p>Non indicata nel bando. ${esc(motivoSenzaStima(c))} Controlla nel bando la parte sul trattamento economico.</p>`}
+    </div>
+    <div class="links">
+      ${bando ? `<a class="btn primary" href="${esc(bando)}" target="_blank" rel="noopener">Apri bando</a>` : ""}
+      ${altri.map((u) => `<a class="btn outline" href="${esc(u)}" target="_blank" rel="noopener">Pagina della fonte</a>`).join("")}
+      ${valido(c.link_candidatura) ? `<a class="btn outline" href="${esc(c.link_candidatura)}" target="_blank" rel="noopener">Candidati</a>` : ""}
+    </div>
+    ${!bando && !valido(c.link_candidatura) ? "<p class=\"note\">Link non disponibile. Cerca il bando sul sito dell'ente.</p>" : ""}
+    <p class="note">Dati estratti automaticamente. Verifica sempre requisiti e scadenze sul bando ufficiale.</p>
+  </div>`;
+}
+
+function rigaHtml(c) {
+  const fav = !!pref.fav[c.id], visto = !!pref.visti[c.id], apri = aperto === c.id;
+  const r = retribuzione(c);
+  const badge = [
+    isNuovo(c) ? '<span class="b new">Nuovo</span>' : "",
+    c.ambito && AMBITI[c.ambito] ? `<span class="b ${c.ambito}">${AMBITI[c.ambito]}</span>` : "",
+    c.tipo === "E" ? '<span class="b E">Elenco di idonei</span>' : "",
+    c.tipo === "S" ? '<span class="b S">Società pubblica</span>' : "",
+    c.contratto ? `<span class="b ${c.contratto === "indeterminato" ? "ind" : "det"}">${CONTRATTI[c.contratto] || esc(c.contratto)}</span>` : "",
+    (c.prove || []).length ? `<span class="b">Prove: ${esc(testoProve(c.prove))}</span>` : "",
+    (c.fonti || []).length ? `<span class="b">${(c.fonti.length > 1 ? "Fonti: " : "Fonte: ") + esc(c.fonti.join(", "))}</span>` : "",
+  ].join("");
+  return `<li class="item ${visto ? "seen" : ""} ${apri ? "open" : ""}" data-id="${esc(c.id)}">
+    <div class="row">
+      ${scadenzaHtml(c)}
+      <button type="button" class="main" data-act="apri" aria-expanded="${apri}">
+        <p class="title">${esc(c.titolo || "Bando senza titolo")}</p>
+        <p class="ente">${esc(c.ente || "")}${c.sede ? ", " + esc(c.sede) : ""}</p>
+        ${r ? `<p class="ral"><b>${r.tipo === "stima" ? "Circa " : ""}${euro(r.v)}</b> lordi annui<span>${r.tipo === "bando" ? ", dal bando" : ", stima dal contratto"}</span></p>` : ""}
+        <div class="badges">${badge}</div>
+      </button>
+      <div class="icons">
+        <button type="button" class="icon ${fav ? "fav" : ""}" data-act="fav" aria-pressed="${fav}" aria-label="${fav ? "Togli dai preferiti" : "Salva nei preferiti"}">${ICONE.stella}</button>
+        <button type="button" class="icon" data-act="visto" aria-pressed="${visto}" aria-label="${visto ? "Segna come da vedere" : "Segna come visto"}">${visto ? ICONE.occhioNo : ICONE.occhio}</button>
+        <button type="button" class="icon chev" data-act="apri" aria-label="${apri ? "Chiudi dettagli" : "Apri dettagli"}">${ICONE.giu}</button>
+      </div>
+    </div>
+    ${apri ? dettaglioHtml(c) : ""}
+  </li>`;
+}
+
+function disegnaLista() {
+  const elenco = filtrati();
+  const n = elenco.length;
+  $("conta").innerHTML = `${n === 1 ? "1 concorso" : n + " concorsi"}${n !== concorsi.length ? ` <span style="font-weight:400;color:var(--slate-500)">su ${concorsi.length} in archivio</span>` : ""}`;
+  $("lista").innerHTML = elenco.map(rigaHtml).join("");
+  $("vuoto").innerHTML = n ? "" : concorsi.length
+    ? `<div class="empty"><p><b>Nessun concorso corrisponde ai filtri attivi</b></p><p><button class="btn outline" type="button" id="mostraTutto">Mostra tutto l'archivio</button></p></div>`
+    : `<div class="empty"><p><b>Ancora nessun concorso in archivio</b></p><p class="muted">Il primo controllo giornaliero li aggiungerà qui.</p></div>`;
+}
+
+function disegna() { disegnaFiltri(); disegnaLista(); }
+
+/* ------------------------------------------------------------ eventi */
+
+document.addEventListener("click", (e) => {
+  const t = e.target;
+  const ambito = t.closest("[data-ambito]");
+  if (ambito) {
+    const k = ambito.dataset.ambito, a = vista().ambiti;
+    vista().ambiti = a.includes(k) ? a.filter((x) => x !== k) : [...a, k];
+    salvaPref(); return disegna();
+  }
+  const tog = t.closest("[data-toggle]");
+  if (tog) { vista()[tog.dataset.toggle] = !vista()[tog.dataset.toggle]; salvaPref(); return disegna(); }
+
+  const reset = t.closest("[data-reset]");
+  if (reset) { vista()[reset.dataset.reset] = []; salvaPref(); return disegna(); }
+
+  const dd = t.closest(".dd");
+  document.querySelectorAll(".dd .panel").forEach((p) => {
+    if (!dd || !dd.contains(p)) { p.hidden = true; p.previousElementSibling.setAttribute("aria-expanded", "false"); }
+  });
+  if (dd && t.closest(".dd > button")) {
+    const p = dd.querySelector(".panel");
+    p.hidden = !p.hidden;
+    dd.querySelector("button").setAttribute("aria-expanded", String(!p.hidden));
+    return;
+  }
+
+  if (t.id === "mostraTutto") {
+    pref.vista = { ...VISTA_INIZIALE, nascondiScaduti: false };
+    salvaPref(); return disegna();
+  }
+
+  const act = t.closest("[data-act]");
+  if (act) {
+    const id = act.closest("li.item").dataset.id;
+    if (act.dataset.act === "fav") { pref.fav[id] ? delete pref.fav[id] : (pref.fav[id] = true); }
+    if (act.dataset.act === "visto") { pref.visti[id] ? delete pref.visti[id] : (pref.visti[id] = true); }
+    if (act.dataset.act === "apri") aperto = aperto === id ? null : id;
+    salvaPref(); disegnaLista();
+  }
+});
+
+document.addEventListener("change", (e) => {
+  const box = e.target.closest("[data-opz]");
+  if (!box) return;
+  const k = box.dataset.opz, sel = vista()[k];
+  vista()[k] = box.checked ? [...sel, box.value] : sel.filter((x) => x !== box.value);
+  salvaPref();
+  const menuAperto = box.closest(".dd").dataset.menu;
+  disegna();
+  const dd = document.querySelector(`.dd[data-menu="${menuAperto}"]`);
+  if (dd) { dd.querySelector(".panel").hidden = false; dd.querySelector("button").setAttribute("aria-expanded", "true"); }
+});
+
+$("q").addEventListener("input", (e) => { vista().q = e.target.value; salvaPref(); disegnaLista(); });
+$("azzera").addEventListener("click", () => {
+  pref.vista = { ...VISTA_INIZIALE, ambiti: vista().ambiti, nascondiScaduti: vista().nascondiScaduti };
+  salvaPref(); disegna();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") document.querySelectorAll(".dd .panel").forEach((p) => (p.hidden = true));
+});
+
+/* Pulsante "Avvia un controllo ora": apre la pagina del workflow su GitHub */
+(function () {
+  const a = $("avvia");
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
+  const repo = location.pathname.split("/").filter(Boolean)[0];
+  if (m && repo) a.href = `https://github.com/${m[1]}/${repo}/actions/workflows/radar.yml`;
+  else a.style.display = "none";
+})();
+
+/* ------------------------------------------------------------ avvio */
+
+fetch("data/concorsi.json?t=" + Date.now(), { cache: "no-store" })
+  .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then((d) => {
+    const lista = Array.isArray(d) ? d : d.concorsi || [];
+    concorsi = lista.map((c, i) => ({ ...c, id: String(c.id || i) }));
+    if (d.aggiornato) {
+      $("aggiornato").textContent = "Ultimo controllo: " + new Date(d.aggiornato).toLocaleString("it-IT", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+    }
+    disegna();
+  })
+  .catch(() => {
+    $("conta").textContent = "Dati non ancora disponibili";
+    $("vuoto").innerHTML = '<div class="empty"><p><b>Non trovo i risultati</b></p><p class="muted">Avvia il primo controllo dalla scheda Actions del repository: al termine i concorsi compariranno qui.</p></div>';
+    disegnaFiltri();
+  });
+</script>
+</body>
+</html>

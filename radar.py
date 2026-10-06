@@ -387,12 +387,16 @@ Rispondi solo con un oggetto JSON, senza altro testo:
 "ambito": "R|NS|NN|EL", "tipo": "C|E|S", "area": "F|I|O|D|P", "sede": "sede di lavoro", "comuni": [], "province": [],
 "scadenza": "YYYY-MM-DD", "ora": "HH:MM", "posti": "numero posti", "contratto": "indeterminato|determinato|mobilita|altro",
 "titolo_studio": "breve", "prove": ["titoli","pre","pre_ev","scritta","pratica","orale"], "come_candidarsi": "breve",
-"link_bando": "url", "link_candidatura": "url", "retribuzione_annua": 0}}
+"link_bando": "url", "link_candidatura": "url", "retribuzione_annua": 0,
+"comparto": "FC|FL|SAN|IR|RAS|PRIV|ALTRO"}}
 
 Legenda: ambito R ente sardo, NS ente nazionale con sede in Sardegna, NN nazionale con scelta della sede,
 EL elenco di idonei o selezione unica nazionale. tipo C concorso di ente pubblico, E elenco di idonei, S selezione
 di società pubblica. area F funzionari o ex categoria D, I istruttori o ex C, O operatori, D dirigenti,
-P contratto privato. prove: solo i codici indicati, nell'ordine; pre_ev è la preselezione che si svolge solo oltre
+P contratto privato. comparto è il contratto applicato: FC funzioni centrali (ministeri, agenzie, INPS, INAIL),
+FL funzioni locali (comuni, unioni di comuni, province, camere di commercio), SAN sanità, IR università e ricerca,
+RAS contratto regionale della Sardegna (Regione, agenzie ed enti regionali), PRIV contratto privato, ALTRO.
+prove: solo i codici indicati, nell'ordine; pre_ev è la preselezione che si svolge solo oltre
 una soglia di domande. retribuzione_annua: solo se scritta nel bando, altrimenti 0.
 Non inventare nulla: se un dato manca usa "" oppure []. Se la pagina non è un bando, metti "pertinente": false.
 
@@ -546,8 +550,13 @@ def pulisci_scheda(s):
 def scrivi_pagina(stato):
     aperti = [c for c in stato["concorsi"].values() if not c.get("scadenza") or c["scadenza"] >= OGGI]
     aperti.sort(key=lambda c: c.get("scadenza") or "9999")
+    limite = (dt.date.today() - dt.timedelta(days=60)).isoformat()
+    per_web = [dict(c, id=k) for k, c in stato["concorsi"].items()
+               if not c.get("scadenza") or c["scadenza"] >= limite]
     with open(EXPORT, "w", encoding="utf-8") as f:
-        json.dump(aperti, f, ensure_ascii=False, indent=1)
+        json.dump({"aggiornato": dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes"),
+                   "fonti": [x["nome"] for x in leggi_fonti()], "concorsi": per_web},
+                  f, ensure_ascii=False, indent=1)
     righe = [f"# Concorsi aperti\n\nAggiornato il {data_it(OGGI)}. Concorsi aperti: {len(aperti)}.\n",
              "| Scadenza | Concorso | Ente e sede | Contratto | Prove | Bando |",
              "|---|---|---|---|---|---|"]

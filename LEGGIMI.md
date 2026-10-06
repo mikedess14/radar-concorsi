@@ -1,9 +1,10 @@
 # Radar concorsi
 
 Ogni mattina questo progetto controlla le fonti elencate in `fonti.txt`, cerca i bandi
-per i profili descritti in `profilo.txt` e ti avvisa su Telegram quando ne trova di nuovi.
+per i profili descritti in `profilo.txt` e pubblica i risultati nella web app
+(`index.html`, pubblicata con GitHub Pages). Se hai configurato Telegram, ti avvisa anche lì.
 
-L'elenco aggiornato dei concorsi aperti è nel file [CONCORSI.md](CONCORSI.md).
+L'elenco è disponibile anche in forma semplice nel file [CONCORSI.md](CONCORSI.md).
 
 ## Cosa puoi modificare
 
@@ -17,7 +18,13 @@ e premi "Commit changes".
 
 ## Avviare un controllo a mano
 
-Scheda **Actions** > **Radar concorsi** > **Run workflow**.
+Dalla web app premi "Avvia un controllo ora", oppure: scheda **Actions** > **Radar concorsi** > **Run workflow**.
+
+## Attivare Telegram in un secondo momento
+
+1. Su Telegram crea un bot con @BotFather e mandagli un messaggio.
+2. Aggiungi il segreto `TELEGRAM_BOT_TOKEN` e avvia il workflow: nel registro trovi il tuo chat id.
+3. Aggiungi il segreto `TELEGRAM_CHAT_ID`.
 
 ## Se qualcosa non va
 
