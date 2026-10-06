@@ -1,12 +1,11 @@
 # Parole usate per il primo filtro, prima dell'intelligenza artificiale.
 # Basta l'inizio della parola: "informatic" trova informatico, informatica, informatici.
-# Una per riga. Le righe con # sono commenti.
+# Una per riga. Le righe con # sono commenti. Questo file si può modificare anche dalla web app.
 informatic
 ict
 sistemi informativi
 sistema informativo
 transizione digitale
-analista
 programmator
 sviluppator
 software
