@@ -2,14 +2,28 @@
  "coda": [],
  "concorsi": {},
  "elenchi": {
+  "AOU Sassari": [
+   "https://www.aousassari.it/amministrazione-trasparente/bandi-di-concorso/bandi-di-concorso-e-selezione/"
+  ],
   "Abbanoa": [
-   "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-Scadute/node_4486/Selezione-del-direttore-direttrice-generale-di-Abbanoa-s.p.a"
+   "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-Scadute/node_4486/Selezione-del-direttore-direttrice-generale-di-Abbanoa-s.p.a",
+   "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-Scadute",
+   "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-ante-2025"
+  ],
+  "Università di Cagliari": [
+   "https://www.unica.it/unica/it/ateneo_s14.page"
+  ],
+  "Università di Sassari": [
+   "https://www.uniss.it/it/bandi-docenti",
+   "https://www.uniss.it/it/bandi-pta",
+   "https://www.uniss.it/it/bandi-gli-studenti-e-post-lauream",
+   "https://www.uniss.it/it/altri-bandi"
   ]
  },
  "errori": {
   "AOU Cagliari": 1,
   "CTM Cagliari": 1,
-  "Forestas": 2,
+  "Forestas": 3,
   "SardegnaLavoro (ASPAL)": 1
  },
  "sezioni": {
@@ -67,7 +81,8 @@
   "http://old.aousassari.it/index.php?xsl=16&s=11&v=9&c=2904&id=355772&va=&tipodoc=2&b=": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Pubblico concorso unificato per titolo ed esami, per l’assunzione a tempo indeterminato di n° 11 Dirigenti Medici Area M"
+   "t": "Pubblico concorso unificato per titolo ed esami, per l’assunzione a tempo indeterminato di n° 11 Dirigenti Medici Area M",
+   "x": "errore"
   },
   "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.abbanoa.it%2FSocieta-Trasparente%2FSelezione-del-Personale": {
    "d": "2026-10-06",
@@ -77,27 +92,32 @@
   "https://old.aousassari.it/documenti/11_393_20240229111035.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Sintesi finale Trasp. Anticorruzione-Radiodiagnostica[file.pdf]"
+   "t": "Sintesi finale Trasp. Anticorruzione-Radiodiagnostica[file.pdf]",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_393_20240730133111.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA, A TEMPO PIENO E INDETERMINATO, DI N. 02 POSTI DI DIR"
+   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA, A TEMPO PIENO E INDETERMINATO, DI N. 02 POSTI DI DIR",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_393_20240730133310.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA, A TEMPO PIENO E INDETERMINATO, DI N. 15 POSTI DI DIR"
+   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA, A TEMPO PIENO E INDETERMINATO, DI N. 15 POSTI DI DIR",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_394_20231108114042.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA, A TEMPO PIENO E INDETERMINATO, DI N. 05 POSTI DI DIR"
+   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA, A TEMPO PIENO E INDETERMINATO, DI N. 05 POSTI DI DIR",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_45_20230131112019.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "– Criteri di Valutazione"
+   "t": "– Criteri di Valutazione",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_45_20230131112051.pdf": {
    "d": "2026-10-06",
@@ -107,7 +127,8 @@
   "https://old.aousassari.it/documenti/11_45_20230131113137.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "– Criteri di valutazione"
+   "t": "– Criteri di valutazione",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_45_20230131113206.pdf": {
    "d": "2026-10-06",
@@ -117,22 +138,26 @@
   "https://old.aousassari.it/documenti/11_45_20240523121042.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA A TEMPO PIENO ED INDETERMINATO DI N.20 POSTI PER DIRI"
+   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA A TEMPO PIENO ED INDETERMINATO DI N.20 POSTI PER DIRI",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_45_20240523121133.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA A TEMPO PIENO ED INDETERMINATO DI N.19 POSTI PER DIRI"
+   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA A TEMPO PIENO ED INDETERMINATO DI N.19 POSTI PER DIRI",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_45_20240523121210.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA A TEMPO PIENO ED INDETERMINATO DI N.4 POSTI PER DIRIG"
+   "t": "PUBBLICO CONCORSO UNIFICATO, PER TITOLI ED ESAMI, PER LA COPERTURA A TEMPO PIENO ED INDETERMINATO DI N.4 POSTI PER DIRIG",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_578_20210205101103.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Criteri di valutazione"
+   "t": "Criteri di valutazione",
+   "x": "errore"
   },
   "https://old.aousassari.it/documenti/11_578_20210205101154.pdf": {
    "d": "2026-10-06",
@@ -148,7 +173,8 @@
   "https://old.aousassari.it/documenti/11_602_20231128095839.pdf": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Concorso unificato per n. 22 posti di Dirigente Medico – disciplina Medicina Fisica e riabilitazione – Sintesi"
+   "t": "Concorso unificato per n. 22 posti di Dirigente Medico – disciplina Medicina Fisica e riabilitazione – Sintesi",
+   "x": "errore"
   },
   "https://old.aousassari.it/index.php?xsl=16&s=11&v=9&c=2904&id=355778&va=&tipodoc=2&b=": {
    "d": "2026-10-06",
@@ -159,22 +185,26 @@
   "https://old.aousassari.it/index.php?xsl=16&s=11&v=9&c=2904&id=402644&va=&tipodoc=2&b=": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Pubblico concorso unificato, per titoli ed esami, per la copertura, a tempo pieno e indeterminato, di numero 31 posti di"
+   "t": "Pubblico concorso unificato, per titoli ed esami, per la copertura, a tempo pieno e indeterminato, di numero 31 posti di",
+   "x": "errore"
   },
   "https://old.aousassari.it/index.php?xsl=16&s=11&v=9&c=2904&id=403316&va=&tipodoc=2&b=": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Pubblico concorso unificato, per titoli ed esami, per l ’assunzione a tempo pieno e indeterminato di n. 5 Dirigenti Medi"
+   "t": "Pubblico concorso unificato, per titoli ed esami, per l ’assunzione a tempo pieno e indeterminato di n. 5 Dirigenti Medi",
+   "x": "errore"
   },
   "https://old.aousassari.it/index.php?xsl=16&s=11&v=9&c=2905&id=384249&va=&tipodoc=2": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Pubblico concorso, per titoli ed esami, per la copertura a tempo pieno ed indeterminato, di n. 1 posto di Dirigente Inge"
+   "t": "Pubblico concorso, per titoli ed esami, per la copertura a tempo pieno ed indeterminato, di n. 1 posto di Dirigente Inge",
+   "x": "errore"
   },
   "https://old.aousassari.it/index.php?xsl=16&s=11&v=9&c=2905&id=394519&va=&tipodoc=2": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Pubblico concorso , per titoli ed esami, per la copertura a tempo pieno ed indeterminato di n. 2 posti di Dirigente Medi"
+   "t": "Pubblico concorso , per titoli ed esami, per la copertura a tempo pieno ed indeterminato di n. 2 posti di Dirigente Medi",
+   "x": "errore"
   },
   "https://old.regione.sardegna.it/servizi/cittadino/concorsi/": {
    "d": "2026-10-06",
@@ -185,6 +215,46 @@
    "d": "2026-10-06",
    "f": "Abbanoa",
    "t": "Twitter"
+  },
+  "https://web.unica.it/unica/it/ateneo.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "Ateneo"
+  },
+  "https://web.unica.it/unica/it/ateneo_incarichi_ricerca.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "Selezioni per incarichi di ricerca"
+  },
+  "https://web.unica.it/unica/it/ateneo_s14_ss1.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "Selezioni per contratti di lavoro autonomo"
+  },
+  "https://web.unica.it/unica/it/ateneo_s14_ss2.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "Selezioni per incarichi di insegnamento e tutoraggio"
+  },
+  "https://web.unica.it/unica/it/ateneo_s14_ss3.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "Selezioni"
+  },
+  "https://web.unica.it/unica/it/homepage.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "UniCa"
+  },
+  "https://web.unica.it/unica/it/laureati_s07_ss01.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "Selezioni per borse di ricerca"
+  },
+  "https://web.unica.it/unica/it/selezioni_rpd.page": {
+   "d": "2026-10-06",
+   "f": "Università di Cagliari",
+   "t": "Selezioni RPD"
   },
   "https://www.abbanoa.it/Documenti-e-dati/Documenti-funzionamento-interno/Regolamento-per-il-reclutamento-del-personale": {
    "d": "2026-10-06",
@@ -321,6 +391,16 @@
    "f": "Abbanoa",
    "t": "Selezioni Scadute"
   },
+  "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-Scadute/Ulteriori-selezioni-scadute": {
+   "d": "2026-10-06",
+   "f": "Abbanoa",
+   "t": "Ulteriori selezioni scadute"
+  },
+  "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-Scadute/node_4486": {
+   "d": "2026-10-06",
+   "f": "Abbanoa",
+   "t": "..."
+  },
   "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-Scadute/node_4486/Selezione-del-direttore-direttrice-generale-di-Abbanoa-s.p.a": {
    "d": "2026-10-06",
    "f": "Abbanoa",
@@ -330,6 +410,16 @@
    "d": "2026-10-06",
    "f": "Abbanoa",
    "t": "Selezioni ante 2025"
+  },
+  "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-ante-2025/Selezioni-Chiuse": {
+   "d": "2026-10-06",
+   "f": "Abbanoa",
+   "t": "Selezioni Chiuse"
+  },
+  "https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale/Reclutamento-del-Personale/Selezioni-ante-2025/Selezioni-in-Corso": {
+   "d": "2026-10-06",
+   "f": "Abbanoa",
+   "t": "Selezioni in Corso"
   },
   "https://www.aousassari.it/albo-pretorio/bandi-di-concorso-e-selezione/": {
    "d": "2026-10-06",
@@ -354,17 +444,20 @@
   "https://www.aousassari.it/amministrazione-trasparente/bandi-di-concorso/bandi-di-concorso-e-selezione/index.html": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Vai ai contenuti"
+   "t": "Vai ai contenuti",
+   "x": "errore"
   },
   "https://www.aousassari.it/amministrazione-trasparente/bandi-di-concorso/index.html": {
    "d": "2026-10-06",
    "f": "AOU Sassari",
-   "t": "Vai ai contenuti"
+   "t": "Vai ai contenuti",
+   "x": "errore"
   },
   "https://www.aressardegna.it/albo-pretorio/bandi-di-concorso-e-selezione/index.html": {
    "d": "2026-10-06",
    "f": "ARES Sardegna",
-   "t": "Vai ai contenuti"
+   "t": "Vai ai contenuti",
+   "x": "errore"
   },
   "https://www.aressardegna.it/albo-pretorio/bandi-e-gare/": {
    "d": "2026-10-06",
@@ -664,17 +757,17 @@
   "https://www.sardegnaambiente.it/index.php?xsl=612&s=472692&v=2&c=5012&idsito=21": {
    "d": "2026-10-06",
    "f": "ARPAS",
-   "t": "QualitÃ dell'aria nel mese di luglio 2026"
+   "t": "Qualità dell'aria nel mese di luglio 2026"
   },
   "https://www.sardegnaambiente.it/index.php?xsl=612&s=472821&v=2&c=5012&idsito=21": {
    "d": "2026-10-06",
    "f": "ARPAS",
-   "t": "QualitÃ dell'aria nel mese di agosto 2026"
+   "t": "Qualità dell'aria nel mese di agosto 2026"
   },
   "https://www.sardegnaambiente.it/index.php?xsl=612&s=472933&v=2&c=94594&idsito=21": {
    "d": "2026-10-06",
    "f": "ARPAS",
-   "t": "Avviso cessione a titolo gratuito di beni diversi da dismettere di proprietÃ dellâARPAS"
+   "t": "Avviso cessione a titolo gratuito di beni diversi da dismettere di proprietà dell’ARPAS"
   },
   "https://www.sardegnaricerche.it/appaltieselezioni/": {
    "d": "2026-10-06",
@@ -726,6 +819,11 @@
    "f": "Università di Sassari",
    "t": "Altri bandi"
   },
+  "https://www.uniss.it/it/altri-bandi-attivi": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Attivi"
+  },
   "https://www.uniss.it/it/bandi-di-gara": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
@@ -736,15 +834,190 @@
    "f": "Università di Sassari",
    "t": "Bandi per docenti, ricercatori e assegnisti di ricerca"
   },
+  "https://www.uniss.it/it/bandi-docenti-attivi": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Attivi"
+  },
+  "https://www.uniss.it/it/bandi-docenti-scaduti": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Scaduti"
+  },
   "https://www.uniss.it/it/bandi-gli-studenti-e-post-lauream": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
    "t": "Bandi per gli studenti e post-lauream"
   },
+  "https://www.uniss.it/it/bandi-gli-studenti-e-post-lauream-attivi": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Attivi"
+  },
+  "https://www.uniss.it/it/bandi-gli-studenti-e-post-lauream-scaduti": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Scaduti"
+  },
   "https://www.uniss.it/it/bandi-pta": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
    "t": "Bandi per il personale tecnico amministrativo"
+  },
+  "https://www.uniss.it/it/bandi-pta-attivi": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Attivi"
+  },
+  "https://www.uniss.it/it/bandi-pta-scaduti": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Scaduti"
+  },
+  "https://www.uniss.it/it/bandi/agraria-procedura-comparativa-pubblica-titoli-e-colloquio-lattribuzione-di-incarichi-di": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AGRARIA-Procedura comparativa pubblica, per titoli e colloquio, per l’attribuzione di incarichi di docenza retribuita, d"
+  },
+  "https://www.uniss.it/it/bandi/assegnazione-di-contributi-favore-di-studentesse-e-studenti-con-patologie-oncologiche": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Assegnazione di contributi a favore di studentesse e studenti con patologie oncologiche, sclerosi multipla e leucemia"
+  },
+  "https://www.uniss.it/it/bandi/avviso-di-mobilita-esterna-area-sistemi-informativi-settore-desktop-serviceart-30-dlgs": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AVVISO di MOBILITÀ ESTERNA Area Sistemi Informativi / Settore Desktop as a Service_art. 30 Dlgs. 165/2001_Università deg"
+  },
+  "https://www.uniss.it/it/bandi/avviso-di-mobilita-esterna-area-sistemi-informativi-settore-rete-dati-e-telecomunicazioniart": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AVVISO di MOBILITÀ ESTERNA Area Sistemi Informativi / Settore Rete, Dati e Telecomunicazioni_art. 30 Dlgs. 165/2001_Univ"
+  },
+  "https://www.uniss.it/it/bandi/avviso-di-mobilita-esterna-presso-universita-degli-studi-magna-graecia-di-catanzaro": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AVVISO DI MOBILITÀ ESTERNA presso Università degli Studi \"Magna Græcia\" di Catanzaro"
+  },
+  "https://www.uniss.it/it/bandi/avviso-mobilita-n-2-posti-di-tecnico-con-competenze-materia-di-salute-e-sicurezza-sul-luogo": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Avviso mobilità per n. 2 posti di tecnico con competenze in materia di salute e sicurezza sul luogo di lavoro, audit e s"
+  },
+  "https://www.uniss.it/it/bandi/avviso-pubblico-lindividuazione-di-n-1-unita-di-personale-dellarea-dei-collaboratori-settore": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Avviso pubblico per l’individuazione di n. 1 unità di personale dell’Area dei Collaboratori – settore della comunicazion"
+  },
+  "https://www.uniss.it/it/bandi/bando-di-ammissione-alla-scuola-di-specializzazione-beni-archeologici-laa-20262027": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Bando di ammissione alla Scuola di Specializzazione in Beni Archeologici per l’A.A. 2026/2027"
+  },
+  "https://www.uniss.it/it/bandi/bando-erasmus-sta-2026-27-mobilita-fini-di-docenza": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Bando Erasmus+ STA 2026-27 - Mobilità a fini di docenza"
+  },
+  "https://www.uniss.it/it/bandi/bando-erasmus-stt-2025-26-mobilita-fini-di-formazione": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Bando Erasmus+ STT 2025-26 - Mobilità a fini di formazione"
+  },
+  "https://www.uniss.it/it/bandi/bando-erasmus-traineeship-202627": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Bando Erasmus Traineeship 2026/27"
+  },
+  "https://www.uniss.it/it/bandi/bando-il-conferimento-di-incarichi-di-insegnamento-vacanti-aa-20262027-dumas-cds-l-39-lm-87": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "BANDO PER IL CONFERIMENTO DI INCARICHI DI INSEGNAMENTO VACANTI A.A. 2026/2027 - DUMAS - CDS L-39 - LM-87"
+  },
+  "https://www.uniss.it/it/bandi/bando-lammissione-agli-anni-successivi-al-primo-i-corsi-di-studio-numero-programmato-locale": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "BANDO PER L’AMMISSIONE AGLI ANNI SUCCESSIVI AL PRIMO PER I CORSI DI STUDIO A NUMERO PROGRAMMATO LOCALE ANNO ACCADEMICO 2"
+  },
+  "https://www.uniss.it/it/bandi/bando-lammissione-agli-esami-di-stato-di-abilitazione-allesercizio-delle-professioni-i-e-ii-0": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Bando per l'ammissione agli esami di Stato di abilitazione all'esercizio delle professioni - I e II sessione 2026"
+  },
+  "https://www.uniss.it/it/bandi/bando-lammissione-al-corso-di-laurea-interclasse-scienze-degli-alimenti-e-della-cultura-0": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "BANDO PER L’AMMISSIONE AL CORSO DI LAUREA INTERCLASSE IN SCIENZE DEGLI ALIMENTI E DELLA CULTURA ENOGASTRONOMICA MEDITERR"
+  },
+  "https://www.uniss.it/it/bandi/bando-lammissione-al-corso-di-laurea-orticoltura-e-florovivaismo-classe-di-laurea-lp-02-0": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "BANDO PER L’AMMISSIONE AL CORSO DI LAUREA IN ORTICOLTURA E FLOROVIVAISMO (CLASSE DI LAUREA LP-02) ANNO ACCADEMICO 2026/2"
+  },
+  "https://www.uniss.it/it/bandi/concorso-pubblico-esami-e-titoli-la-copertura-di-n-3-posti-larea-dei-collaboratori-settore": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Concorso pubblico, per esami e titoli, per la copertura di n. 3 posti per l’Area dei Collaboratori, Settore delle Biblio"
+  },
+  "https://www.uniss.it/it/bandi/dadu-bando-lassegnazione-di-n-4-borse-di-studio-studenti-internazionali": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DADU - Bando per l'assegnazione di n. 4 borse di studio per studenti internazionali"
+  },
+  "https://www.uniss.it/it/bandi/dadu-borsa-di-studio-post-lauream-relativa-ad-attivita-di-indagine-sulla-vivibilita-e-sul": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DADU - Borsa di studio post lauream, relativa ad “Attività di indagine sulla vivibilità e sul senso di appartenenza degl"
+  },
+  "https://www.uniss.it/it/bandi/disea-bando-una-borsa-di-studio-di-6-mesi-la-ricerca-dal-titolo-strumenti-di-controllo-di": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DISEA - Bando per una borsa di studio di 6 mesi per la ricerca dal titolo \"Strumenti di controllo di gestione a supporto"
+  },
+  "https://www.uniss.it/it/bandi/dissuf-procedura-comparativa-pubblica-titoli-assegnazione-di-n-1-contratto-di-lavoro-9": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DISSUF - PROCEDURA COMPARATIVA PUBBLICA PER TITOLI ASSEGNAZIONE DI N. 1 CONTRATTO DI LAVORO AUTONOMO DI NATURA OCCASIONA"
+  },
+  "https://www.uniss.it/it/bandi/dissuf-procedura-comparativa-pubblica-titoli-n-1-contratto-autonomo-occasionale-titolo": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DISSUF - PROCEDURA COMPARATIVA PUBBLICA PER TITOLI N. 1 CONTRATTO AUTONOMO OCCASIONALE Titolo Tutorato di 60 ore per il "
+  },
+  "https://www.uniss.it/it/bandi/dissuf-procedura-comparativa-pubblica-titoli-n-1-contratto-lavoro-autonomo-occasionale-0": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DISSUF - PROCEDURA COMPARATIVA PUBBLICA PER TITOLI N. 1 CONTRATTO LAVORO AUTONOMO OCCASIONALE Titolo Tutorato di 40 ore "
+  },
+  "https://www.uniss.it/it/bandi/procedura-di-valutazione-il-passaggio-nel-ruolo-dei-professori-associati-dott-matteo-spinelli": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Procedura di valutazione per il passaggio nel ruolo dei Professori associati - Dott. Matteo Spinelli - SSD BIOS-06/A – “"
+  },
+  "https://www.uniss.it/it/bandi/procedura-di-valutazione-il-passaggio-nel-ruolo-dei-professori-associati-dottssa-francesca": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Procedura di valutazione per il passaggio nel ruolo dei Professori associati – Dott.ssa Francesca Ginatempo - SSD BIOS-0"
+  },
+  "https://www.uniss.it/it/bandi/procedura-di-valutazione-il-passaggio-nel-ruolo-dei-professori-associati-dottssa-maria-laura": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Procedura di valutazione per il passaggio nel ruolo dei Professori associati – Dott.ssa Maria Laura Idda - SSD MEDS-01/A"
+  },
+  "https://www.uniss.it/it/bandi/procedura-di-valutazione-il-passaggio-nel-ruolo-dei-professori-associati-dottssa-maria-lidia": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Procedura di valutazione per il passaggio nel ruolo dei Professori associati – Dott.ssa Maria Lidia Mascia – SSD PSIC-01"
+  },
+  "https://www.uniss.it/it/bandi/procedura-selettiva-pubblica-titoli-ed-esami-n-1-posto-di-tecnologo-area-dei-funzionari": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "PROCEDURA SELETTIVA PUBBLICA PER TITOLI ED ESAMI PER N. 1 POSTO DI TECNOLOGO AREA DEI FUNZIONARI, SETTORE SCIENTIFICO – "
+  },
+  "https://www.uniss.it/it/bandi/universita-degli-studi-di-napoli-parthenopeavviso-di-mobilita-compartimentale-e": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Università degli Studi di Napoli Parthenope_Avviso di mobilità compartimentale e intercompartimentale ai sensi dell’art."
   }
  }
 }
