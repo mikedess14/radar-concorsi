@@ -146,13 +146,20 @@
   .kwadd input { flex:1; padding:9px 12px; border:1px solid var(--slate-300); border-radius:var(--radius); font:inherit; }
   .kwfoot { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:center; padding:12px 16px; border-top:1px solid var(--slate-200); font-size:13px; color:var(--slate-600); }
   .sezione { margin-top:18px; }
-  .kwhead { width:100%; display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px 16px;
-    border:0; background:none; text-align:left; font:inherit; color:inherit; border-radius:14px; }
-  .kwhead:hover { background:var(--slate-50); }
-  .kwhead .t { display:block; font-size:17px; font-weight:600; color:var(--slate-900); }
-  .kwhead .s { display:block; font-size:13px; color:var(--slate-600); font-weight:400; }
-  .kwhead svg { width:20px; height:20px; flex-shrink:0; color:var(--slate-500); transition:transform .15s; }
-  .kwhead[aria-expanded=true] svg { transform:rotate(180deg); }
+  dialog#kwdialog { border:0; padding:0; border-radius:16px; width:min(540px, 94vw); max-height:88vh;
+    box-shadow:0 20px 50px rgba(15,23,42,.25); color:var(--slate-900); overflow:hidden; }
+  dialog#kwdialog::backdrop { background:rgba(15,23,42,.45); }
+  .dlg { display:flex; flex-direction:column; max-height:88vh; }
+  .dlg-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding:16px 18px 6px; }
+  .dlg-head h2 { margin:0; font-size:18px; font-weight:600; }
+  .dlg-head p { margin:2px 0 0; }
+  .dlg-list { overflow:auto; margin-top:12px; border-top:1px solid var(--slate-200); flex:1 1 auto; min-height:120px; }
+  .dlg-list .kwrow:first-child { border-top:0; }
+  .dlg-foot { border-top:1px solid var(--slate-200); padding:12px 18px 16px; display:flex; flex-direction:column; gap:10px; }
+  .dlg-btns { display:flex; justify-content:flex-end; gap:8px; }
+  .avviso { background:#fffbeb; color:var(--amber-800); padding:9px 12px; border-radius:8px; font-size:13px; }
+  .avviso button { margin-left:10px; }
+  .btn[disabled] { opacity:.6; cursor:wait; }
   .sezione h2 { margin:0; font-size:17px; font-weight:600; }
   details summary { cursor:pointer; font-weight:600; font-size:15px; }
   .campo { display:flex; flex-direction:column; gap:4px; margin-top:12px; font-size:14px; }
@@ -187,7 +194,8 @@
     </select>
 
     <p class="lbl">Parole chiave</p>
-    <div class="kwlink"><span id="kwcount"></span><a href="#parole" id="kwapri">Gestisci parole chiave ↓</a></div>
+    <div class="kwlink"><span id="kwcount"></span><button type="button" class="linkbtn" id="kwapri" aria-haspopup="dialog">Gestisci parole chiave</button></div>
+    <p class="ok" id="kwesito" style="margin:4px 0 0"></p>
 
     <p class="lbl">Ambito</p>
     <div class="chips" id="ambiti"></div>
@@ -215,30 +223,30 @@
     <div id="vuoto"></div>
   </section>
 
-  <section class="card sezione" id="parole" aria-labelledby="t-parole">
-    <h2 id="t-parole" style="margin:0">
-      <button type="button" class="kwhead" id="kwtoggle" aria-expanded="false" aria-controls="kwcorpo">
-        <span><span class="t">Parole chiave</span><span class="s" id="kwsommario"></span></span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-    </h2>
-    <div id="kwcorpo" hidden>
-    <div class="pad" style="padding-top:0;padding-bottom:12px">
-      <p class="nota" style="margin:0">Usate nella ricerca e, se attivi l'opzione qui sotto, anche nel controllo serale. Basta l'inizio della parola: "informatic" trova informatico, informatica e informatici.</p>
-      <div class="kwadd">
+  <dialog id="kwdialog" aria-labelledby="kwtitolo">
+    <div class="dlg">
+      <div class="dlg-head">
+        <div><h2 id="kwtitolo">Parole chiave</h2><p class="nota" id="kwnum"></p></div>
+        <button type="button" class="icon" id="kwx" aria-label="Chiudi la finestra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <p class="nota" style="margin:0 18px">Basta l'inizio della parola: "informatic" trova informatico, informatica e informatici.</p>
+      <div class="kwadd" style="margin:12px 18px 0">
         <input type="text" id="kwin" placeholder="sistemista" aria-label="Nuova parola chiave">
         <button class="btn outline" type="button" id="kwadd">Aggiungi</button>
       </div>
-      <p class="err" id="kwerr"></p>
+      <p class="err" id="kwerr" style="margin:6px 18px 0"></p>
+      <div class="dlg-list" id="kwlista"></div>
+      <div class="dlg-foot">
+        <label style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" id="kwsync"> Usale anche nel controllo serale</label>
+        <p class="nota" id="kwstato" style="margin:0"></p>
+        <div class="avviso" id="kwavviso" hidden>Hai modifiche non salvate.<button type="button" class="linkbtn" id="kwesci">Esci senza salvare</button><button type="button" class="linkbtn" id="kwcontinua">Continua a modificare</button></div>
+        <div class="dlg-btns">
+          <button class="btn outline" type="button" id="kwannulla">Annulla</button>
+          <button class="btn primary" type="button" id="kwsalva">Salva</button>
+        </div>
+      </div>
     </div>
-    <div id="kwlista"></div>
-    <div class="kwfoot">
-      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="kwsync"> Usale anche nel controllo serale</label>
-      <span id="kwstato"></span>
-      <button class="linkbtn" type="button" id="kwchiudi">Chiudi</button>
-    </div>
-    </div>
-  </section>
+  </dialog>
 
   <section class="card pad sezione" id="impostazioni">
     <details id="impDettagli">
@@ -413,74 +421,102 @@ async function caricaParole() {
   disegnaRicerca();
 }
 
-let salvataggioInCorso = Promise.resolve();
-function salvaParoleRepo(nuove) {
-  statoParole("Salvataggio…");
-  salvataggioInCorso = salvataggioInCorso.then(async () => {
-    try {
-      const f = await gh("/contents/parole_chiave.txt");
-      const testo = INTESTAZIONE_PAROLE.join("\n") + "\n" + nuove.join("\n") + "\n";
-      await gh("/contents/parole_chiave.txt", { method: "PUT", body: JSON.stringify({
-        message: "Parole chiave aggiornate dalla web app", content: aTesto(testo), sha: f.sha }) });
-      statoParole("Salvate nel repository: il controllo di stasera le userà e rileggerà anche i bandi già visti");
-    } catch (e) {
-      statoParole(spiegaErrore(e), true);
-    }
-  });
+let bozza = null;            // copia di lavoro mentre la finestra è aperta
+let bozzaSync = true;
+let bozzaModificata = false;
+
+async function salvaParoleRepo(nuove) {
+  const f = await gh("/contents/parole_chiave.txt");
+  const testo = INTESTAZIONE_PAROLE.join("\n") + "\n" + nuove.join("\n") + "\n";
+  await gh("/contents/parole_chiave.txt", { method: "PUT", body: JSON.stringify({
+    message: "Parole chiave aggiornate dalla web app", content: aTesto(testo), sha: f.sha }) });
 }
 
 function statoParole(testo, errore = false) {
   const el = $("kwstato");
   el.textContent = testo;
-  el.className = errore ? "err" : "ok";
+  el.className = errore ? "err" : "nota";
+  el.style.margin = "0";
 }
 
-function cambiaParole(nuove) {
-  if (pref.sincronizza && puoScrivere()) {
-    paroleRepo = nuove;
-    salvaParoleRepo(nuove);
-  } else {
-    pref.paroleLocali = nuove;
-    salvaPref();
-    statoParole("Salvate solo in questo browser");
-  }
+function apriPopupParole() {
+  bozza = [...paroleAttive()];
+  bozzaSync = pref.sincronizza && puoScrivere();
+  bozzaModificata = false;
+  $("kwavviso").hidden = true;
+  $("kwerr").textContent = "";
+  $("kwin").value = "";
+  statoParole(puoScrivere() ? "" : "Senza chiave di accesso le parole restano solo in questo browser. Aggiungila nelle impostazioni per usarle anche nel controllo serale.");
   disegnaParole();
-  disegnaRicerca();
-  disegnaLista();
+  $("kwdialog").showModal();
+  setTimeout(() => $("kwin").focus(), 50);
+}
+
+function chiudiPopupParole(forza = false) {
+  if (bozzaModificata && !forza) { $("kwavviso").hidden = false; return; }
+  $("kwdialog").close();
+  bozza = null;
+  bozzaModificata = false;
+}
+
+function segnaModifica() {
+  bozzaModificata = true;
+  $("kwavviso").hidden = true;
+  statoParole("Modifiche non ancora salvate: premi Salva per confermarle.");
 }
 
 function disegnaParole() {
-  const lista = paroleAttive();
-  $("kwlista").innerHTML = !parolePronte ? '<p class="nota" style="padding:10px 16px;margin:0">Carico le parole chiave…</p>'
-    : lista.length ? lista.map((p, i) => `<div class="kwrow"><span>${esc(p)}</span>
+  if (!bozza) return;
+  $("kwlista").innerHTML = !parolePronte ? '<p class="nota" style="padding:10px 18px;margin:0">Carico le parole chiave…</p>'
+    : bozza.length ? bozza.map((p, i) => `<div class="kwrow" style="padding:8px 18px"><span>${esc(p)}</span>
         <button type="button" class="icon" data-kwdel="${i}" aria-label="Elimina ${esc(p)}">${ICONE.cestino}</button></div>`).join("")
-    : '<p class="nota" style="padding:10px 16px;margin:0">Nessuna parola chiave. Aggiungine una qui sopra.</p>';
-  const n = lista.length;
-  $("kwsommario").textContent = !parolePronte ? "Carico le parole chiave…"
-    : `${n === 1 ? "1 parola attiva" : n + " parole attive"}, ${pref.sincronizza && puoScrivere() ? "usate anche nel controllo serale" : "salvate solo in questo browser"}`;
+    : '<p class="nota" style="padding:10px 18px;margin:0">Nessuna parola chiave. Aggiungine una qui sopra.</p>';
+  $("kwnum").textContent = bozza.length === 1 ? "1 parola" : `${bozza.length} parole`;
   const sync = $("kwsync");
-  sync.checked = pref.sincronizza && puoScrivere();
+  sync.checked = bozzaSync;
   sync.disabled = !puoScrivere();
   sync.parentElement.title = puoScrivere() ? "" : "Per salvarle nel repository aggiungi la chiave di accesso nelle impostazioni";
-  if (!puoScrivere() && !$("kwstato").textContent) statoParole("Salvate solo in questo browser. Per usarle anche la sera aggiungi la chiave di accesso nelle impostazioni.");
-}
-
-function apriParole(aperta, scorri = false) {
-  $("kwcorpo").hidden = !aperta;
-  $("kwtoggle").setAttribute("aria-expanded", String(aperta));
-  if (aperta && scorri) $("parole").scrollIntoView({ behavior: "smooth", block: "start" });
-  if (aperta) setTimeout(() => $("kwin").focus({ preventScroll: true }), 300);
-  if (!aperta && scorri) $("parole").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function aggiungiParola() {
   const v = $("kwin").value.trim().toLowerCase();
   if (!v) { $("kwerr").textContent = "Scrivi una parola prima di aggiungerla."; return; }
-  const lista = paroleAttive();
-  if (lista.includes(v)) { $("kwerr").textContent = "Questa parola è già nell'elenco."; return; }
+  if (bozza.includes(v)) { $("kwerr").textContent = "Questa parola è già nell'elenco."; return; }
   $("kwerr").textContent = "";
   $("kwin").value = "";
-  cambiaParole([v, ...lista]);
+  bozza.unshift(v);
+  segnaModifica();
+  disegnaParole();
+  $("kwin").focus();
+}
+
+async function salvaPopupParole() {
+  const nuove = [...bozza];
+  const btn = $("kwsalva");
+  btn.disabled = true;
+  statoParole("Salvataggio…");
+  try {
+    let esito;
+    if (bozzaSync && puoScrivere()) {
+      await salvaParoleRepo(nuove);
+      paroleRepo = nuove;
+      pref.sincronizza = true;
+      esito = "Parole chiave salvate: il controllo di stasera le userà e rileggerà anche i bandi già visti.";
+    } else {
+      pref.paroleLocali = nuove;
+      if (puoScrivere()) pref.sincronizza = false;
+      esito = "Parole chiave salvate solo in questo browser.";
+    }
+    salvaPref();
+    $("kwesito").textContent = esito;
+    chiudiPopupParole(true);
+    disegnaRicerca();
+    disegnaLista();
+  } catch (e) {
+    statoParole(spiegaErrore(e), true);
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 /* ------------------------------------------------------------ dati derivati */
@@ -588,7 +624,9 @@ function disegnaRicerca() {
   document.querySelectorAll("[data-modo]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.modo === v.modo)));
   $("profilo").value = v.profilo;
   const n = paroleAttive().length;
-  $("kwcount").textContent = parolePronte ? `${n === 1 ? "1 parola attiva" : n + " parole attive"}` : "Carico le parole chiave…";
+  $("kwcount").textContent = parolePronte
+    ? `${n === 1 ? "1 parola attiva" : n + " parole attive"}, ${pref.sincronizza && puoScrivere() ? "usate anche nel controllo serale" : "salvate solo in questo browser"}.`
+    : "Carico le parole chiave…";
   $("ambiti").innerHTML = Object.entries(AMBITI).map(([k, nome]) =>
     `<button type="button" class="chip" data-ambito="${k}" aria-pressed="${v.ambiti.includes(k)}">${esc(nome)}</button>`).join("");
   $("menuFonti").innerHTML = menuHtml(MENU_FONTI[0]);
@@ -840,7 +878,7 @@ document.addEventListener("click", (e) => {
   const reset = t.closest("[data-reset]");
   if (reset) { vista()[reset.dataset.reset] = []; salvaPref(); return disegna(); }
   const del = t.closest("[data-kwdel]");
-  if (del) { const l = [...paroleAttive()]; l.splice(Number(del.dataset.kwdel), 1); return cambiaParole(l); }
+  if (del && bozza) { bozza.splice(Number(del.dataset.kwdel), 1); segnaModifica(); return disegnaParole(); }
 
   const dd = t.closest(".dd");
   document.querySelectorAll(".dd .panel").forEach((p) => {
@@ -889,19 +927,18 @@ $("vai").addEventListener("click", () => {
   if (vista().modo === "approfondita") return avviaApprofondita();
   $("risultati").scrollIntoView({ behavior: "smooth", block: "start" });
 });
+$("kwapri").addEventListener("click", apriPopupParole);
 $("kwadd").addEventListener("click", aggiungiParola);
-$("kwtoggle").addEventListener("click", () => apriParole($("kwcorpo").hidden));
-$("kwchiudi").addEventListener("click", () => apriParole(false, true));
-$("kwapri").addEventListener("click", (e) => { e.preventDefault(); apriParole(true, true); });
 $("kwin").addEventListener("keydown", (e) => { if (e.key === "Enter") aggiungiParola(); });
 $("kwin").addEventListener("input", () => ($("kwerr").textContent = ""));
-$("kwsync").addEventListener("change", (e) => {
-  pref.sincronizza = e.target.checked;
-  if (!pref.sincronizza && !pref.paroleLocali) pref.paroleLocali = [...paroleRepo];
-  salvaPref();
-  statoParole(pref.sincronizza ? "Le modifiche verranno salvate nel repository" : "Le modifiche restano solo in questo browser");
-  disegnaParole(); disegnaRicerca(); disegnaLista();
-});
+$("kwsync").addEventListener("change", (e) => { bozzaSync = e.target.checked; segnaModifica(); });
+$("kwsalva").addEventListener("click", salvaPopupParole);
+$("kwannulla").addEventListener("click", () => chiudiPopupParole());
+$("kwx").addEventListener("click", () => chiudiPopupParole());
+$("kwesci").addEventListener("click", () => chiudiPopupParole(true));
+$("kwcontinua").addEventListener("click", () => { $("kwavviso").hidden = true; $("kwin").focus(); });
+$("kwdialog").addEventListener("cancel", (e) => { e.preventDefault(); chiudiPopupParole(); });   // tasto Esc
+$("kwdialog").addEventListener("click", (e) => { if (e.target === $("kwdialog")) chiudiPopupParole(); });  // clic fuori dalla finestra
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") document.querySelectorAll(".dd .panel").forEach((p) => (p.hidden = true));
 });
@@ -946,7 +983,6 @@ function applicaDati(d) {
 }
 
 disegna();
-disegnaParole();
 disegnaAvanzamento();
 caricaParole();
 fetch("data/concorsi.json?t=" + Date.now(), { cache: "no-store" })
