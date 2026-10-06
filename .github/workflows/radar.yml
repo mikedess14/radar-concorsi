@@ -1,0 +1,37 @@
+name: Radar concorsi
+
+on:
+  schedule:
+    - cron: "15 5 * * *"   # ogni giorno alle 7:15 (ora legale italiana)
+  workflow_dispatch:        # permette di avviarlo a mano dalla scheda Actions
+
+permissions:
+  contents: write
+
+concurrency: radar
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Installa i componenti
+        run: pip install -r requirements.txt
+      - name: Controlla le fonti
+        run: python radar.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Salva i risultati
+        if: always()
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          git add -A data CONCORSI.md || true
+          git diff --cached --quiet || git commit -m "Aggiornamento concorsi $(date +%F)"
+          git push
