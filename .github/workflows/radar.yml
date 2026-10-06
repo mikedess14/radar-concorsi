@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Installa i componenti
@@ -32,6 +32,7 @@ jobs:
         run: |
           git config user.name "radar-bot"
           git config user.email "radar-bot@users.noreply.github.com"
-          git add -A data CONCORSI.md || true
+          git add -A
           git diff --cached --quiet || git commit -m "Aggiornamento concorsi $(date +%F)"
+          git pull --rebase --autostash || true
           git push
