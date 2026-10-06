@@ -17,15 +17,17 @@
    "https://www.uniss.it/it/bandi-docenti",
    "https://www.uniss.it/it/bandi-pta",
    "https://www.uniss.it/it/bandi-gli-studenti-e-post-lauream",
-   "https://www.uniss.it/it/altri-bandi"
+   "https://www.uniss.it/it/altri-bandi",
+   "https://www.uniss.it/it/altri-bandi-scaduti"
   ]
  },
  "errori": {
   "AOU Cagliari": 1,
   "CTM Cagliari": 1,
-  "Forestas": 3,
+  "Forestas": 4,
   "SardegnaLavoro (ASPAL)": 1
  },
+ "firma_parole": "506fce319f20",
  "sezioni": {
   "https://www.aobrotzu.it/": {
    "d": "2026-10-06",
@@ -484,6 +486,16 @@
    "f": "ARES Sardegna",
    "t": "Mobilità Esterna Volontaria ex art. 30 D.Lgs. n. 165/2001 a carattere regionale ed interregionale di Dirigente Medico di"
   },
+  "https://www.aressardegna.it/ap/pubblica-selezione-per-il-conferimento-di-un-incarico-quinquennale-della-sc-igiene-degli-alimenti-e-della-nutrizione-sian-afferente-al-dipartimento-di-prevenzione-della-asl-n-8-ca-0259/": {
+   "d": "2026-10-06",
+   "f": "ARES Sardegna",
+   "t": "Pubblica selezione per il conferimento di un incarico quinquennale della SC Igiene Degli Alimenti e della Nutrizione (SI"
+  },
+  "https://www.aressardegna.it/ap/pubblica-selezione-per-il-conferimento-di-un-incarico-quinquennale-rinnovabile-di-direttore-s-c-chirurgia-generale-della-asl-n-2-della-gallura-0258/": {
+   "d": "2026-10-06",
+   "f": "ARES Sardegna",
+   "t": "Pubblica selezione per il conferimento di un incarico quinquennale, rinnovabile, di Direttore S.C.CHIRURGIA GENERALE, de"
+  },
   "https://www.aressardegna.it/wp-content/uploads/2022/12/Concorsi-espletati-anno-2022-1.pdf": {
    "d": "2026-10-06",
    "f": "ARES Sardegna",
@@ -639,6 +651,11 @@
    "f": "Gazzetta Ufficiale - Concorsi",
    "t": "Consulta PDF paginato"
   },
+  "https://www.gazzettaufficiale.it/do/gazzetta/concorsi/0/pdfPaginato?dataPubblicazioneGazzetta=20261006&numeroGazzetta=77&tipoSerie=S4&tipoSupplemento=GU&numeroSupplemento=0&progressivo=0&numPagina=1&edizione=0&elenco30giorni=true": {
+   "d": "2026-10-06",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "Consulta PDF paginato"
+  },
   "https://www.gazzettaufficiale.it/gazzetta/concorsi/caricaDettaglio?dataPubblicazioneGazzetta=2026-09-08&numeroGazzetta=69&elenco30giorni=true": {
    "d": "2026-10-06",
    "f": "Gazzetta Ufficiale - Concorsi",
@@ -678,6 +695,11 @@
    "d": "2026-10-06",
    "f": "Gazzetta Ufficiale - Concorsi",
    "t": "n° 76 del 02-10-2026"
+  },
+  "https://www.gazzettaufficiale.it/gazzetta/concorsi/caricaDettaglio?dataPubblicazioneGazzetta=2026-10-06&numeroGazzetta=77&elenco30giorni=true": {
+   "d": "2026-10-06",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "n° 77 del 06-10-2026"
   },
   "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.abbanoa.it%2FSocieta-Trasparente%2FSelezione-del-Personale&title=Selezione del Personale&ro=false&source=www.abbanoa.it": {
    "d": "2026-10-06",
@@ -824,6 +846,11 @@
    "f": "Università di Sassari",
    "t": "Attivi"
   },
+  "https://www.uniss.it/it/altri-bandi-scaduti": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Scaduti"
+  },
   "https://www.uniss.it/it/bandi-di-gara": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
@@ -879,6 +906,26 @@
    "f": "Università di Sassari",
    "t": "AGRARIA-Procedura comparativa pubblica, per titoli e colloquio, per l’attribuzione di incarichi di docenza retribuita, d"
   },
+  "https://www.uniss.it/it/bandi/agraria-procedura-comparativa-titoli-e-colloquio-1-contratto-di-lavoro-autonomo-occasionale": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AGRARIA-Procedura comparativa, per titoli e colloquio, per 1 contratto di lavoro autonomo occasionale di 1 mese nell'amb"
+  },
+  "https://www.uniss.it/it/bandi/agraria-procedura-comparativa-titoli-e-colloquio-un-incarico-con-contratto-di-lavoro-1": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AGRARIA-Procedura comparativa, per titoli e colloquio, per un incarico con contratto di lavoro autonomo di natura coordi"
+  },
+  "https://www.uniss.it/it/bandi/agraria-procedura-comparativa-titoli-e-colloquio-un-incarico-di-lavoro-autonomo-occasionale": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AGRARIA-Procedura comparativa, per titoli e colloquio, per un incarico di lavoro autonomo occasionale di 2 mesi per “Cat"
+  },
+  "https://www.uniss.it/it/bandi/agraria-procedura-di-valutazione-comparativa-titoli-una-prestazione-dopera-professionale-lo": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "AGRARIA-Procedura di valutazione comparativa, per titoli, per una prestazione d’opera professionale per lo svolgimento d"
+  },
   "https://www.uniss.it/it/bandi/assegnazione-di-contributi-favore-di-studentesse-e-studenti-con-patologie-oncologiche": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
@@ -908,6 +955,11 @@
    "d": "2026-10-06",
    "f": "Università di Sassari",
    "t": "Avviso pubblico per l’individuazione di n. 1 unità di personale dell’Area dei Collaboratori – settore della comunicazion"
+  },
+  "https://www.uniss.it/it/bandi/bando-3-visiting-professorscientist-2026-open-call-visiting-professorscientist-2026": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Bando per 3 Visiting Professor/Scientist 2026 / Open Call Visiting Professor/Scientist 2026"
   },
   "https://www.uniss.it/it/bandi/bando-di-ammissione-alla-scuola-di-specializzazione-beni-archeologici-laa-20262027": {
    "d": "2026-10-06",
@@ -954,6 +1006,11 @@
    "f": "Università di Sassari",
    "t": "BANDO PER L’AMMISSIONE AL CORSO DI LAUREA IN ORTICOLTURA E FLOROVIVAISMO (CLASSE DI LAUREA LP-02) ANNO ACCADEMICO 2026/2"
   },
+  "https://www.uniss.it/it/bandi/cla-avviso-di-selezione-corsi-di-formazione-civico-linguistica-cittadini-di-paesi-terzi-del": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "CLA - AVVISO DI SELEZIONE PER CORSI DI FORMAZIONE CIVICO-LINGUISTICA PER CITTADINI DI PAESI TERZI DEL TERRITORIO DELLA C"
+  },
   "https://www.uniss.it/it/bandi/concorso-pubblico-esami-e-titoli-la-copertura-di-n-3-posti-larea-dei-collaboratori-settore": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
@@ -968,6 +1025,41 @@
    "d": "2026-10-06",
    "f": "Università di Sassari",
    "t": "DADU - Borsa di studio post lauream, relativa ad “Attività di indagine sulla vivibilità e sul senso di appartenenza degl"
+  },
+  "https://www.uniss.it/it/bandi/dipartimento-di-ingegneria-bando-laffidamento-dellincarico-di-insegnamento-retribuito-di": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DIPARTIMENTO DI INGEGNERIA - Bando per l’affidamento dell'incarico di insegnamento retribuito di Fisica 2 , Dipartimento"
+  },
+  "https://www.uniss.it/it/bandi/dipvet-bando-di-selezione-titoli-e-colloquio-n-1-incarico-di-lavoro-autonomo-attivita-di": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DIPVET - Bando di selezione, per titoli e colloquio, per n. 1 incarico di lavoro autonomo per attività di tutorato, acco"
+  },
+  "https://www.uniss.it/it/bandi/dipvet-bando-di-selezione-titoli-e-colloquio-n-1-incarico-di-lavoro-autonomo-attivita-di-0": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DIPVET - Bando di selezione, per titoli e colloquio, per n. 1 incarico di lavoro autonomo per attività di tutorato, acco"
+  },
+  "https://www.uniss.it/it/bandi/dipvet-procedura-di-selezione-soli-titoli-il-conferimento-di-n-2-incarichi-di-lavoro-autonomo": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DIPVET - Procedura di selezione, per soli titoli, per il conferimento di n. 2 incarichi di lavoro autonomo, con 2 divers"
+  },
+  "https://www.uniss.it/it/bandi/disci-procedura-comparativa-pubblica-titoli-e-colloquio-lattribuzione-di-un-contratto-lavoro": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DiSci - Procedura comparativa pubblica, per titoli e colloquio, per l’attribuzione di un contratto lavoro autonomo di na"
+  },
+  "https://www.uniss.it/it/bandi/disci-procedura-comparativa-soli-titoli-lattribuzione-di-un-contratto-di-collaborazione": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DiSci - Procedura comparativa per soli titoli per l’attribuzione di un contratto di collaborazione esterna di lavoro aut"
+  },
+  "https://www.uniss.it/it/bandi/disea-bando-insegnamento-risorse-e-ambiente-ssd-econ-10a-36-ore-didattica-frontale-1deg": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "DISEA Bando insegnamento Risorse e ambiente (SSD ECON-10/A) 36 ore didattica frontale 1° trimestre Corso di laurea in Ec"
   },
   "https://www.uniss.it/it/bandi/disea-bando-una-borsa-di-studio-di-6-mesi-la-ricerca-dal-titolo-strumenti-di-controllo-di": {
    "d": "2026-10-06",
@@ -989,6 +1081,21 @@
    "f": "Università di Sassari",
    "t": "DISSUF - PROCEDURA COMPARATIVA PUBBLICA PER TITOLI N. 1 CONTRATTO LAVORO AUTONOMO OCCASIONALE Titolo Tutorato di 40 ore "
   },
+  "https://www.uniss.it/it/bandi/procedura-comparativa-pubblica-colloquio-e-titoli-attivazione-di-un-contratto-copertura-dei": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "PROCEDURA COMPARATIVA PUBBLICA, COLLOQUIO E TITOLI, PER ATTIVAZIONE DI UN CONTRATTO PER COPERTURA DEI SERVIZI PER ATTIVI"
+  },
+  "https://www.uniss.it/it/bandi/procedura-comparativa-pubblica-colloquio-e-titoli-il-conferimento-di-n-3-contratti-di-0": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "Procedura comparativa pubblica, per colloquio e titoli, per il conferimento di n. 3 contratti di lavoro autonomo profess"
+  },
+  "https://www.uniss.it/it/bandi/procedura-comparativa-soli-titoli-n-2-incarichi-di-lavoro-autonomo-attivita-di-creazione-di": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "PROCEDURA COMPARATIVA, PER SOLI TITOLI, PER N. 2 INCARICHI DI LAVORO AUTONOMO PER ATTIVITÀ DI CREAZIONE DI CONTENUTI DIG"
+  },
   "https://www.uniss.it/it/bandi/procedura-di-valutazione-il-passaggio-nel-ruolo-dei-professori-associati-dott-matteo-spinelli": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
@@ -1009,10 +1116,20 @@
    "f": "Università di Sassari",
    "t": "Procedura di valutazione per il passaggio nel ruolo dei Professori associati – Dott.ssa Maria Lidia Mascia – SSD PSIC-01"
   },
+  "https://www.uniss.it/it/bandi/procedura-due-incarichi-di-collaborazione-attivita-di-gestione-campioni-ematici-preparazione": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "PROCEDURA PER DUE INCARICHI DI COLLABORAZIONE PER ATTIVITA' DI GESTIONE CAMPIONI EMATICI, PREPARAZIONE DNA GENOMICO FINA"
+  },
   "https://www.uniss.it/it/bandi/procedura-selettiva-pubblica-titoli-ed-esami-n-1-posto-di-tecnologo-area-dei-funzionari": {
    "d": "2026-10-06",
    "f": "Università di Sassari",
    "t": "PROCEDURA SELETTIVA PUBBLICA PER TITOLI ED ESAMI PER N. 1 POSTO DI TECNOLOGO AREA DEI FUNZIONARI, SETTORE SCIENTIFICO – "
+  },
+  "https://www.uniss.it/it/bandi/procedura-un-incarico-di-collaborazione-attivita-di-analisi-bioinformatiche-dei-dati-di": {
+   "d": "2026-10-06",
+   "f": "Università di Sassari",
+   "t": "PROCEDURA PER UN INCARICO DI COLLABORAZIONE PER ATTIVITA' DI ANALISI BIOINFORMATICHE DEI DATI DI METAGENOMICA E METAPROT"
   },
   "https://www.uniss.it/it/bandi/universita-degli-studi-di-napoli-parthenopeavviso-di-mobilita-compartimentale-e": {
    "d": "2026-10-06",
