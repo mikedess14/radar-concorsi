@@ -12,7 +12,6 @@ sistemista
 cyber
 sicurezza informatica
 reti e sistemi
-database
 elenco idonei
 elenchi di idonei
 elenco di idonei
