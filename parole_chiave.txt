@@ -5,7 +5,6 @@ informatic
 ict
 sistemi informativi
 sistema informativo
-transizione digitale
 programmator
 sviluppator
 software
