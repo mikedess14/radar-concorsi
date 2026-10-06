@@ -57,6 +57,18 @@ MAX_TESTO = 15000  # caratteri di testo inviati all'AI per ogni bando
 GEMINI_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 GEMINI_MODELLI = [m for m in [os.getenv("GEMINI_MODEL", "").strip(),
                               "gemini-flash-lite-latest", "gemini-flash-latest", "gemini-2.5-flash-lite"] if m]
+# Ricerca approfondita avviata dalla web app: profilo, parole, ambiti e fonti scelti nella pagina
+MODALITA = os.getenv("RADAR_MODALITA", "serale").strip() or "serale"
+PROFILO_MODO = "parole" if os.getenv("RADAR_PROFILO", "").strip() == "parole" else "info"
+PAROLE_RICHIESTA = [p.strip() for p in os.getenv("RADAR_PAROLE", "").split("|") if p.strip()]
+AMBITI_RICHIESTA = {a.strip().upper() for a in os.getenv("RADAR_AMBITI", "").split(",") if a.strip()}
+FONTI_RICHIESTA = {f.strip() for f in os.getenv("RADAR_FONTI", "").split("|") if f.strip()}
+APPROFONDITA = MODALITA == "approfondita"
+AMBITI_TESTO = {"R": "posti in enti con sede in Sardegna",
+                "NS": "enti nazionali con posti in sedi in Sardegna",
+                "NN": "concorsi nazionali con possibilità di scegliere una sede in Sardegna",
+                "EL": "elenchi di idonei o selezioni uniche nazionali da cui possono assumere enti sardi"}
+
 TG_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 TG_CHAT = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
@@ -272,8 +284,21 @@ def link_della_pagina(soup, base):
 # ---------------------------------------------------------------- filtri
 
 def carica_parole():
-    parole = [norm(p) for p in leggi_righe("parole_chiave.txt")]
-    return [p for p in parole if p]
+    sorgente = PAROLE_RICHIESTA or leggi_righe("parole_chiave.txt")
+    parole = [norm(p) for p in sorgente]
+    return [p for p in dict.fromkeys(parole) if p]
+
+
+def testo_profilo(modo, parole):
+    if modo == "parole":
+        return ("bandi che corrispondono ad almeno una di queste parole chiave, in qualsiasi area di inquadramento: "
+                + ", ".join(parole) + ". Considera anche sinonimi e denominazioni equivalenti usate nella PA. "
+                "Escludi incarichi di consulenza o collaborazione autonoma.")
+    base = " ".join(leggi_righe("profilo.txt"))
+    if parole:
+        base += (" Considera pertinenti anche i bandi che corrispondono ad almeno una di queste parole chiave "
+                 "scelte dall'utente, in qualsiasi area di inquadramento: " + ", ".join(parole) + ".")
+    return base
 
 
 def contiene_parole(testo, parole):
@@ -409,7 +434,10 @@ def cerca_inpa_con_google():
         log("   manca GEMINI_API_KEY: ricerca inPA saltata")
         return []
     trovati = {}
-    for argomento in INPA_ARGOMENTI:
+    argomenti = INPA_ARGOMENTI
+    if PROFILO_MODO == "parole" and PAROLE_RICHIESTA:
+        argomenti = [f"bandi per {p} con sede in Sardegna, oppure nazionali con sedi in Sardegna" for p in PAROLE_RICHIESTA[:6]]
+    for argomento in argomenti:
         domanda = (f"Oggi è il {OGGI}. Cerca sul portale inPA (www.inpa.gov.it) i bandi di concorso, gli avvisi "
                    f"di selezione e gli elenchi di idonei ancora aperti per: {argomento}. Per ognuno scrivi "
                    "l'indirizzo completo della pagina di dettaglio inPA, quella che contiene "
@@ -474,14 +502,16 @@ def leggi_pagina(url):
 
 # ---------------------------------------------------------------- intelligenza artificiale
 
-def prompt_ai(fonte, url, testo, profilo):
+def prompt_ai(fonte, url, testo, profilo, ambiti=None):
+    ambiti = [a for a in (ambiti or AMBITI_TESTO) if a in AMBITI_TESTO] or list(AMBITI_TESTO)
+    dove = "; oppure ".join(AMBITI_TESTO[a] for a in ambiti)
     return f"""Oggi è il {OGGI}. Ti fornisco il testo di una pagina pubblicata da "{fonte}".
 Indirizzo: {url}
 
 Decidi se è un bando di concorso, un avviso di selezione o un elenco di idonei che:
 1) riguarda questo profilo: {profilo}
 2) è ancora aperto: scadenza delle domande uguale o successiva a oggi, oppure non indicata;
-3) ha posti in Sardegna, oppure è nazionale con possibilità di sede in Sardegna, oppure è un elenco di idonei o una selezione unica da cui possono assumere enti sardi.
+3) rientra in almeno uno di questi casi: {dove}.
 
 Rispondi solo con un oggetto JSON, senza altro testo:
 {{"pertinente": true, "motivo": "massimo 15 parole", "titolo": "titolo breve del profilo", "ente": "ente",
@@ -700,17 +730,33 @@ def main():
     stato = carica_stato()
     primo_avvio = not stato["visti"]
     parole = carica_parole()
-    profilo = " ".join(leggi_righe("profilo.txt"))
     problemi = []
 
     # 1-3. raccolta dei link nuovi, lettura e primo filtro
+    log(f"Modalità: {'ricerca approfondita' if APPROFONDITA else 'controllo completo'}, "
+        f"profilo: {'parole chiave' if PROFILO_MODO == 'parole' else 'profilo.txt'}, parole: {', '.join(parole)}")
+    if AMBITI_RICHIESTA:
+        log("Ambiti:", ", ".join(sorted(AMBITI_RICHIESTA)))
+    noti = {l for c in stato["concorsi"].values() for l in c.get("link", [])}
+    firma = hashlib.sha1("|".join(sorted(parole)).encode()).hexdigest()[:12]
+    rilettura = APPROFONDITA
+    if not APPROFONDITA and not PAROLE_RICHIESTA:
+        if stato.get("firma_parole") and stato["firma_parole"] != firma:
+            rilettura = True
+            log("Le parole chiave sono cambiate dall'ultimo controllo: rileggo anche le pagine già viste")
+        stato["firma_parole"] = firma
     for fonte in leggi_fonti():
         nome = fonte["nome"]
+        if FONTI_RICHIESTA and nome not in FONTI_RICHIESTA:
+            continue
         log(f"\n== {nome}")
         try:
             candidati = raccogli_da_inpa(stato) if fonte["url"].lower() == "inpa" else raccogli_da_pagine(fonte, stato)
-            nuovi = [c for c in candidati if c["url"] not in stato["visti"]]
-            log(f"   {len(candidati)} link a bandi, {len(nuovi)} nuovi")
+            # nella ricerca approfondita rileggo anche le pagine già viste: le parole chiave possono essere cambiate
+            gia_visto = (lambda u: u in noti or u in letti_ora) if rilettura else (lambda u: u in stato["visti"])
+            letti_ora = set()
+            nuovi = [c for c in candidati if not gia_visto(c["url"])]
+            log(f"   {len(candidati)} link a bandi, {len(nuovi)} da leggere")
             da_leggere = deque(nuovi)
             gia_in_coda = {v["url"] for v in stato["coda"]}
             letti = 0
@@ -719,8 +765,9 @@ def main():
                     log(f"   raggiunto il limite di {MAX_DETTAGLI_PER_FONTE} pagine: le altre domani")
                     break
                 c = da_leggere.popleft()
-                if c["url"] in stato["visti"]:
+                if gia_visto(c["url"]):
                     continue
+                letti_ora.add(c["url"])
                 try:
                     testo, link = leggi_pagina(c["url"])
                 except Exception as e:
@@ -737,7 +784,7 @@ def main():
                     grande = len(link) > 30
                     aggiunti = 0
                     for u, t, ctx in link:
-                        if u in stato["visti"] or u == c["url"]:
+                        if gia_visto(u) or u == c["url"]:
                             continue
                         if grande and not contiene_parole(f"{t} {ctx}", parole):
                             continue  # elenchi lunghi: seguo solo i titoli che contengono le parole chiave
@@ -756,7 +803,9 @@ def main():
                 if fonte["nazionale"] and not riguarda_sardegna(tutto):
                     continue
                 if c["url"] not in gia_in_coda:
-                    stato["coda"].append({"url": c["url"], "fonte": nome, "testo": tutto[:MAX_TESTO]})
+                    stato["coda"].append({"url": c["url"], "fonte": nome, "testo": tutto[:MAX_TESTO],
+                                          "profilo": PROFILO_MODO, "parole": parole if PROFILO_MODO == "parole" else [],
+                                          "ambiti": sorted(AMBITI_RICHIESTA), "origine": MODALITA})
                     gia_in_coda.add(c["url"])
                     log("   + da analizzare:", (c["titolo"] or c["url"])[:90])
             stato["errori"].pop(nome, None)
@@ -776,7 +825,10 @@ def main():
         voce = coda[0]
         log(f"   analizzo {analizzati + 1}/{min(len(coda) + analizzati, MAX_AI)}: {voce['url'][:100]}")
         try:
-            scheda = pulisci_scheda(chiedi_gemini(prompt_ai(voce["fonte"], voce["url"], voce["testo"], profilo)))
+            modo = voce.get("profilo", "info")
+            scheda = pulisci_scheda(chiedi_gemini(prompt_ai(
+                voce["fonte"], voce["url"], voce["testo"],
+                testo_profilo(modo, voce.get("parole") or parole), voce.get("ambiti"))))
         except QuotaEsaurita as e:
             log("   " + str(e) + ": riprendo domani")
             problemi.append("Gemini: quota gratuita del giorno esaurita, i bandi restanti saranno analizzati domani")
@@ -792,8 +844,16 @@ def main():
             continue
         coda.pop(0)
         analizzati += 1
+        ambiti_ok = voce.get("ambiti") or []
+        if scheda and ambiti_ok and scheda.get("ambito") and scheda["ambito"] not in ambiti_ok:
+            log("   scartato: fuori dagli ambiti scelti -", voce["url"][:90])
+            scheda = None
         if scheda and scheda.get("pertinente") and (not scheda.get("scadenza") or scheda["scadenza"] >= OGGI):
             scheda.pop("pertinente", None)
+            scheda["profilo"] = voce.get("profilo", "info")
+            scheda["origine"] = voce.get("origine", "serale")
+            if voce.get("parole"):
+                scheda["parole"] = voce["parole"]
             if registra(stato, scheda, voce["url"], voce["fonte"]):
                 nuovi_concorsi.append(scheda)
                 log("   NUOVO:", scheda.get("titolo"), "-", scheda.get("ente"))
@@ -820,6 +880,8 @@ def main():
     else:
         for c in nuovi_concorsi:
             invia_telegram("Nuovo concorso\n\n" + messaggio_concorso(c))
+    if APPROFONDITA and not nuovi_concorsi:
+        invia_telegram("Ricerca approfondita completata: nessun concorso nuovo.")
     persistenti = [f"{n} (da {k} giorni)" for n, k in stato["errori"].items() if k >= 3]
     if persistenti:
         invia_telegram("Alcune fonti non rispondono da giorni: " + ", ".join(persistenti)

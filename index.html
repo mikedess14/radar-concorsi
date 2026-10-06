@@ -122,6 +122,37 @@
     dl.kv dd { margin-bottom:8px; }
     .panel { width:min(260px, 86vw); }
   }
+  .seg { display:flex; border:1px solid var(--slate-300); border-radius:var(--radius); overflow:hidden; }
+  .seg button { flex:1; border:0; background:#fff; padding:10px 12px; text-align:left; color:var(--slate-700); font-size:14px; }
+  .seg button + button { border-left:1px solid var(--slate-300); }
+  .seg button[aria-pressed=true] { background:var(--teal-50); color:var(--teal-800); }
+  .seg small { display:block; font-size:12px; color:var(--slate-500); }
+  select { font:inherit; padding:8px 10px; border:1px solid var(--slate-300); border-radius:var(--radius); background:#fff; width:100%; max-width:420px; }
+  .kwlink { display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:14px; color:var(--slate-700); }
+  .nota { font-size:13px; color:var(--slate-600); }
+  .err { font-size:13px; color:var(--red-700); margin:6px 0 0; }
+  .ok { font-size:13px; color:#047857; }
+  .progress { margin-top:18px; padding:14px 16px; border-radius:14px; background:var(--teal-50); color:var(--teal-900); }
+  .progress.fail { background:#fef2f2; color:var(--red-700); }
+  .progress .top { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .progress p { margin:0; font-size:14px; }
+  .bar { height:6px; border-radius:3px; background:#fff; margin-top:10px; overflow:hidden; }
+  .bar div { height:6px; background:var(--teal-700); border-radius:3px; transition:width .5s; }
+  .tools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:0 16px 14px; }
+  .tools input[type=search] { width:220px; flex:1 1 200px; padding:7px 10px; }
+  .kwrow { display:flex; align-items:center; gap:10px; padding:10px 16px; border-top:1px solid var(--slate-200); font-size:14px; }
+  .kwrow span { flex:1; }
+  .kwadd { display:flex; gap:8px; max-width:460px; margin-top:12px; }
+  .kwadd input { flex:1; padding:9px 12px; border:1px solid var(--slate-300); border-radius:var(--radius); font:inherit; }
+  .kwfoot { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:center; padding:12px 16px; border-top:1px solid var(--slate-200); font-size:13px; color:var(--slate-600); }
+  .sezione { margin-top:18px; }
+  .sezione h2 { margin:0; font-size:17px; font-weight:600; }
+  details summary { cursor:pointer; font-weight:600; font-size:15px; }
+  .campo { display:flex; flex-direction:column; gap:4px; margin-top:12px; font-size:14px; }
+  .campo input { padding:9px 12px; border:1px solid var(--slate-300); border-radius:var(--radius); font:inherit; max-width:460px; }
+  ol.passi { margin:8px 0 0; padding-left:20px; font-size:14px; color:var(--slate-700); }
+  ol.passi li { margin:3px 0; }
+  @media (max-width:640px) { .seg { flex-direction:column; } .seg button + button { border-left:0; border-top:1px solid var(--slate-300); } }
 </style>
 </head>
 <body>
@@ -134,24 +165,84 @@
     <p class="muted" id="aggiornato"></p>
   </header>
 
-  <section class="card pad" aria-label="Filtri">
-    <input type="search" id="q" placeholder="Cerca per parola, ente o città" aria-label="Cerca tra i concorsi">
+  <section class="card pad" aria-labelledby="t-ricerca">
+    <h2 id="t-ricerca" style="position:absolute;left:-9999px">Ricerca</h2>
+    <p class="lbl" style="margin-top:0">Tipo di ricerca</p>
+    <div class="seg" role="group" aria-label="Tipo di ricerca">
+      <button type="button" data-modo="risultati">Cerca nei risultati<small>Istantanea, sui bandi del controllo serale</small></button>
+      <button type="button" data-modo="approfondita">Ricerca approfondita<small>Nuovo giro su tutte le fonti, 15-30 minuti</small></button>
+    </div>
+
+    <p class="lbl">Profilo</p>
+    <select id="profilo" aria-label="Profilo">
+      <option value="info">Funzionario informatico (area funzionari, ex D)</option>
+      <option value="parole">Solo le mie parole chiave</option>
+    </select>
+
+    <p class="lbl">Parole chiave</p>
+    <div class="kwlink"><span id="kwcount"></span><a href="#parole">Gestisci parole chiave ↓</a></div>
+
     <p class="lbl">Ambito</p>
     <div class="chips" id="ambiti"></div>
-    <p class="lbl">Filtra per</p>
-    <div class="chips" id="menu"></div>
-    <p class="lbl">Mostra</p>
-    <div class="chips" id="toggles"></div>
+    <p class="lbl">Fonti</p>
+    <div class="chips" id="menuFonti"></div>
+
     <div class="actions">
-      <a class="btn primary" id="avvia" target="_blank" rel="noopener">Avvia un controllo ora</a>
+      <button class="btn primary" id="vai" type="button"></button>
+      <span class="nota" id="vainota"></span>
+    </div>
+    <p class="err" id="vaierr" role="alert"></p>
+  </section>
+
+  <div id="avanzamento" aria-live="polite"></div>
+
+  <section class="card results" aria-live="polite" id="risultati">
+    <div class="rhead"><p id="conta">Carico i concorsi…</p></div>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Filtra per parola, ente o città" aria-label="Filtra i risultati">
+      <div class="chips" id="menu"></div>
+      <div class="chips" id="toggles"></div>
       <button class="linkbtn" id="azzera" type="button">Azzera filtri</button>
+    </div>
+    <ul class="list" id="lista"></ul>
+    <div id="vuoto"></div>
+  </section>
+
+  <section class="card sezione" id="parole" aria-labelledby="t-parole">
+    <div class="pad" style="padding-bottom:12px">
+      <h2 id="t-parole">Parole chiave</h2>
+      <p class="nota" style="margin:4px 0 0">Usate nella ricerca e, se attivi l'opzione qui sotto, anche nel controllo serale. Basta l'inizio della parola: "informatic" trova informatico, informatica e informatici.</p>
+      <div class="kwadd">
+        <input type="text" id="kwin" placeholder="sistemista" aria-label="Nuova parola chiave">
+        <button class="btn outline" type="button" id="kwadd">Aggiungi</button>
+      </div>
+      <p class="err" id="kwerr"></p>
+    </div>
+    <div id="kwlista"></div>
+    <div class="kwfoot">
+      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="kwsync"> Usale anche nel controllo serale</label>
+      <span id="kwstato"></span>
     </div>
   </section>
 
-  <section class="card results" aria-live="polite">
-    <div class="rhead"><p id="conta">Carico i concorsi…</p></div>
-    <ul class="list" id="lista"></ul>
-    <div id="vuoto"></div>
+  <section class="card pad sezione" id="impostazioni">
+    <details id="impDettagli">
+      <summary>Impostazioni</summary>
+      <p class="nota" style="margin-top:10px">Per avviare la ricerca approfondita e salvare le parole chiave nel repository, la pagina ha bisogno di una chiave di accesso GitHub. Resta salvata solo in questo browser.</p>
+      <ol class="passi">
+        <li>Su GitHub apri la tua foto in alto a destra, poi Settings, Developer settings, Personal access tokens, Fine-grained tokens.</li>
+        <li>Premi Generate new token, scegli una scadenza e, in Repository access, solo il repository di questa pagina.</li>
+        <li>In Permissions aggiungi Actions e Contents, entrambi con Read and write.</li>
+        <li>Premi Generate token, copia la chiave e incollala qui sotto.</li>
+      </ol>
+      <label class="campo">Repository<input type="text" id="repo" placeholder="nomeutente/radar-concorsi"></label>
+      <label class="campo">Chiave di accesso<input type="password" id="token" placeholder="github_pat_…" autocomplete="off"></label>
+      <div class="actions" style="border-top:0;padding-top:0">
+        <button class="btn primary" type="button" id="tokSalva">Salva e verifica</button>
+        <button class="linkbtn" type="button" id="tokTogli">Rimuovi la chiave</button>
+        <span id="tokStato" class="nota"></span>
+      </div>
+    </details>
   </section>
 
   <footer>
@@ -172,8 +263,7 @@ const PROVE = { titoli: "Valutazione titoli", pre: "Preselezione", pre_ev: "Pres
 const PROVE_BREVI = { titoli: "Titoli", pre: "Preselezione", pre_ev: "Preselezione eventuale", scritta: "Scritta", pratica: "Pratica", orale: "Orale" };
 const COMPARTI = { FC: "Funzioni centrali", FL: "Funzioni locali", SAN: "Sanità", IR: "Università e ricerca", RAS: "Regione Sardegna", PRIV: "privato", ALTRO: "altro contratto" };
 
-/* Retribuzione annua lorda di ingresso, tempo pieno, dalle tabelle ufficiali dei contratti 2022-2024
-   (stessi valori della app in Claude). */
+/* Retribuzione annua lorda di ingresso, tempo pieno, dalle tabelle ufficiali dei contratti 2022-2024 */
 const RAL = {
   FL: { F: [27643, "Stipendio tabellare dell'area Funzionari con tredicesima e indennità di comparto, secondo il CCNL Funzioni locali 2022-2024.", "A questo si aggiunge il salario accessorio, che varia da ente a ente."],
         I: [24902, "Stipendio tabellare dell'area Istruttori con tredicesima, secondo il CCNL Funzioni locali 2022-2024.", "A questo si aggiungono l'indennità di comparto e il salario accessorio."] },
@@ -187,8 +277,16 @@ const RAL = {
 };
 
 const CHIAVE = "radar-concorsi-web-v1";
+const CHIAVE_TOKEN = "radar-concorsi-token";
+const CHIAVE_REPO = "radar-concorsi-repo";
 const VISTA_INIZIALE = { ambiti: Object.keys(AMBITI), fonti: [], citta: [], prov: [], contratto: [], prove: [],
-                         nascondiScaduti: true, soloPreferiti: false, nascondiVisti: false, q: "" };
+                         nascondiScaduti: true, soloPreferiti: false, nascondiVisti: false, q: "",
+                         modo: "risultati", profilo: "info" };
+const INTESTAZIONE_PAROLE = [
+  "# Parole usate per il primo filtro, prima dell'intelligenza artificiale.",
+  "# Basta l'inizio della parola: \"informatic\" trova informatico, informatica, informatici.",
+  "# Una per riga. Le righe con # sono commenti. Questo file si può modificare anche dalla web app.",
+];
 
 /* ------------------------------------------------------------ utilità */
 
@@ -198,8 +296,12 @@ const norm = (t) => String(t ?? "").toLowerCase().normalize("NFD").replace(/[\u0
 const oggiISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
 const giorni = (da, a) => Math.round((new Date(a + "T00:00:00") - new Date(da + "T00:00:00")) / 86400000);
 const dataIt = (iso, opz = { day: "numeric", month: "long", year: "numeric" }) => iso ? new Date(iso + "T00:00:00").toLocaleDateString("it-IT", opz) : "";
+const oraIt = (iso) => new Date(iso).toLocaleString("it-IT", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
 const euro = (v) => new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(v));
 const valido = (u) => /^https?:\/\//i.test(String(u || ""));
+const attesa = (ms) => new Promise((r) => setTimeout(r, ms));
+const daTesto = (t) => decodeURIComponent(escape(atob(t.replace(/\s/g, ""))));
+const aTesto = (t) => btoa(unescape(encodeURIComponent(t)));
 const OGGI = oggiISO();
 
 const ICONE = {
@@ -207,12 +309,17 @@ const ICONE = {
   occhio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   occhioNo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></svg>',
   giu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>',
+  cestino: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
 };
 
 /* ------------------------------------------------------------ stato */
 
 let concorsi = [];
+let fontiNote = [];
+let aggiornatoIl = null;
 let aperto = null;
+let paroleRepo = [];
+let parolePronte = false;
 let pref = caricaPref();
 const ultimaVisitaPrecedente = pref.ultimaVisita || null;
 pref.ultimaVisita = OGGI;
@@ -221,24 +328,138 @@ salvaPref();
 function caricaPref() {
   try {
     const p = JSON.parse(localStorage.getItem(CHIAVE) || "{}");
-    return { fav: p.fav || {}, visti: p.visti || {}, ultimaVisita: p.ultimaVisita, vista: { ...VISTA_INIZIALE, ...(p.vista || {}) } };
-  } catch { return { fav: {}, visti: {}, vista: { ...VISTA_INIZIALE } }; }
+    return { fav: p.fav || {}, visti: p.visti || {}, ultimaVisita: p.ultimaVisita, vista: { ...VISTA_INIZIALE, ...(p.vista || {}) },
+             paroleLocali: p.paroleLocali || null, sincronizza: p.sincronizza !== false, ricerca: p.ricerca || null,
+             nuoviRicerca: p.nuoviRicerca || {} };
+  } catch { return { fav: {}, visti: {}, vista: { ...VISTA_INIZIALE }, paroleLocali: null, sincronizza: true, ricerca: null, nuoviRicerca: {} }; }
 }
 function salvaPref() { try { localStorage.setItem(CHIAVE, JSON.stringify(pref)); } catch {} }
 const vista = () => pref.vista;
+
+/* ------------------------------------------------------------ GitHub */
+
+function repoPredefinito() {
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
+  const r = location.pathname.split("/").filter(Boolean)[0];
+  return m && r ? `${m[1]}/${r}` : "";
+}
+const repo = () => localStorage.getItem(CHIAVE_REPO) || repoPredefinito();
+const token = () => localStorage.getItem(CHIAVE_TOKEN) || "";
+const puoScrivere = () => !!(token() && repo());
+
+async function gh(percorso, opz = {}) {
+  const r = await fetch(`https://api.github.com/repos/${repo()}${percorso}`, {
+    ...opz,
+    headers: { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28",
+               Authorization: `Bearer ${token()}`, ...(opz.body ? { "Content-Type": "application/json" } : {}) },
+  });
+  if (!r.ok) {
+    const e = new Error(String(r.status));
+    e.status = r.status;
+    throw e;
+  }
+  return r.status === 204 ? null : r.json();
+}
+
+function spiegaErrore(e) {
+  if (e.status === 401) return "La chiave di accesso non è valida o è scaduta. Controllala nelle impostazioni.";
+  if (e.status === 403 || e.status === 404) return "La chiave non ha i permessi necessari su questo repository. Servono Actions e Contents in lettura e scrittura.";
+  if (e.status === 422) return "GitHub non ha accettato la richiesta. Controlla di aver caricato l'ultima versione del file radar.yml.";
+  return "GitHub non risponde. Controlla la connessione e riprova.";
+}
+
+/* ------------------------------------------------------------ parole chiave */
+
+function analizzaParole(testo) {
+  return [...new Set(testo.split(/\r?\n/).map((r) => r.trim().toLowerCase()).filter((r) => r && !r.startsWith("#")))];
+}
+const paroleAttive = () => (pref.sincronizza && puoScrivere() ? paroleRepo : (pref.paroleLocali || paroleRepo));
+
+async function caricaParole() {
+  try {
+    if (puoScrivere()) {
+      const f = await gh("/contents/parole_chiave.txt");
+      paroleRepo = analizzaParole(daTesto(f.content));
+    } else {
+      const r = await fetch("parole_chiave.txt?t=" + Date.now(), { cache: "no-store" });
+      if (r.ok) paroleRepo = analizzaParole(await r.text());
+    }
+  } catch (e) {
+    statoParole(spiegaErrore(e), true);
+  }
+  parolePronte = true;
+  disegnaParole();
+  disegnaRicerca();
+}
+
+let salvataggioInCorso = Promise.resolve();
+function salvaParoleRepo(nuove) {
+  statoParole("Salvataggio…");
+  salvataggioInCorso = salvataggioInCorso.then(async () => {
+    try {
+      const f = await gh("/contents/parole_chiave.txt");
+      const testo = INTESTAZIONE_PAROLE.join("\n") + "\n" + nuove.join("\n") + "\n";
+      await gh("/contents/parole_chiave.txt", { method: "PUT", body: JSON.stringify({
+        message: "Parole chiave aggiornate dalla web app", content: aTesto(testo), sha: f.sha }) });
+      statoParole("Salvate nel repository: il controllo di stasera le userà e rileggerà anche i bandi già visti");
+    } catch (e) {
+      statoParole(spiegaErrore(e), true);
+    }
+  });
+}
+
+function statoParole(testo, errore = false) {
+  const el = $("kwstato");
+  el.textContent = testo;
+  el.className = errore ? "err" : "ok";
+}
+
+function cambiaParole(nuove) {
+  if (pref.sincronizza && puoScrivere()) {
+    paroleRepo = nuove;
+    salvaParoleRepo(nuove);
+  } else {
+    pref.paroleLocali = nuove;
+    salvaPref();
+    statoParole("Salvate solo in questo browser");
+  }
+  disegnaParole();
+  disegnaRicerca();
+  disegnaLista();
+}
+
+function disegnaParole() {
+  const lista = paroleAttive();
+  $("kwlista").innerHTML = !parolePronte ? '<p class="nota" style="padding:10px 16px;margin:0">Carico le parole chiave…</p>'
+    : lista.length ? lista.map((p, i) => `<div class="kwrow"><span>${esc(p)}</span>
+        <button type="button" class="icon" data-kwdel="${i}" aria-label="Elimina ${esc(p)}">${ICONE.cestino}</button></div>`).join("")
+    : '<p class="nota" style="padding:10px 16px;margin:0">Nessuna parola chiave. Aggiungine una qui sopra.</p>';
+  const sync = $("kwsync");
+  sync.checked = pref.sincronizza && puoScrivere();
+  sync.disabled = !puoScrivere();
+  sync.parentElement.title = puoScrivere() ? "" : "Per salvarle nel repository aggiungi la chiave di accesso nelle impostazioni";
+  if (!puoScrivere() && !$("kwstato").textContent) statoParole("Salvate solo in questo browser. Per usarle anche la sera aggiungi la chiave di accesso nelle impostazioni.");
+}
+
+function aggiungiParola() {
+  const v = $("kwin").value.trim().toLowerCase();
+  if (!v) { $("kwerr").textContent = "Scrivi una parola prima di aggiungerla."; return; }
+  const lista = paroleAttive();
+  if (lista.includes(v)) { $("kwerr").textContent = "Questa parola è già nell'elenco."; return; }
+  $("kwerr").textContent = "";
+  $("kwin").value = "";
+  cambiaParole([v, ...lista]);
+}
 
 /* ------------------------------------------------------------ dati derivati */
 
 function isNuovo(c) {
   if (pref.visti[c.id] || !c.trovato) return false;
+  if (pref.nuoviRicerca[c.id]) return true;
   if (ultimaVisitaPrecedente) return c.trovato >= ultimaVisitaPrecedente;
   return giorni(c.trovato, OGGI) <= 7;
 }
-
-function linkBando(c) {
-  if (valido(c.link_bando)) return c.link_bando;
-  return (c.link || []).find(valido) || "";
-}
+const linkBando = (c) => (valido(c.link_bando) ? c.link_bando : (c.link || []).find(valido) || "");
 
 function retribuzione(c) {
   const r = Number(c.retribuzione_annua);
@@ -247,7 +468,6 @@ function retribuzione(c) {
   if (t) return { v: Math.round(t[0] / 100) * 100, tipo: "stima", nota: t[1], extra: t[2] };
   return null;
 }
-
 function motivoSenzaStima(c) {
   if (c.area === "P" || c.comparto === "PRIV") return "È una società con contratto privato: la retribuzione dipende dal livello indicato nel bando.";
   if (!c.comparto) return "Il contratto applicato non è stato riconosciuto, quindi non è possibile una stima.";
@@ -269,19 +489,27 @@ function opzioni(estrai, etichetta = (v) => v) {
   return [...mappa.values()].sort((a, b) => b.n - a.n || a.etichetta.localeCompare(b.etichetta, "it"));
 }
 
-const MENU = [
-  { id: "fonti", nome: "Fonti", estrai: (c) => c.fonti || [] },
+const MENU_RISULTATI = [
   { id: "citta", nome: "Città", estrai: (c) => c.comuni || [] },
   { id: "prov", nome: "Provincia", estrai: (c) => c.province || [] },
   { id: "contratto", nome: "Contratto", estrai: (c) => [c.contratto], etichetta: (v) => CONTRATTI[v] || v },
   { id: "prove", nome: "Prove", estrai: (c) => [chiaveProve(c)], etichetta: (v) => testoProve(v.split("+")) },
 ];
+const MENU_FONTI = [{ id: "fonti", nome: "Fonti", estrai: (c) => c.fonti || [], tutte: () => fontiNote }];
+
+function corrispondeParole(c, parole) {
+  const testo = " " + norm([c.titolo, c.ente, c.sede, c.titolo_studio, c.posti, c.motivo].join(" ")) + " ";
+  return parole.some((p) => testo.includes(" " + norm(p)));
+}
 
 function filtrati() {
   const v = vista();
   const parole = norm(v.q).split(" ").filter(Boolean);
   const dentro = (sel, valori) => !sel.length || valori.some((x) => sel.includes(norm(x)));
+  const mie = paroleAttive();
   return concorsi.filter((c) => {
+    if (v.profilo === "info" && c.profilo === "parole") return false;
+    if (v.profilo === "parole" && mie.length && !corrispondeParole(c, mie)) return false;
     if (c.ambito && !v.ambiti.includes(c.ambito)) return false;
     if (v.nascondiScaduti && c.scadenza && c.scadenza < OGGI && !pref.fav[c.id]) return false;
     if (v.soloPreferiti && !pref.fav[c.id]) return false;
@@ -301,30 +529,54 @@ function filtrati() {
 
 /* ------------------------------------------------------------ disegno */
 
-function disegnaFiltri() {
+function menuHtml(m) {
+  const v = vista();
+  let opz = opzioni(m.estrai, m.etichetta);
+  if (m.tutte) {
+    const conteggi = new Map(opz.map((o) => [o.valore, o.n]));
+    opz = m.tutte().map((n) => ({ valore: norm(n), etichetta: n, n: conteggi.get(norm(n)) || 0 }));
+  }
+  const sel = v[m.id];
+  const testo = !sel.length ? `${m.nome}: tutte`
+    : sel.length === 1 ? `${m.nome}: ${(opz.find((o) => o.valore === sel[0]) || { etichetta: sel[0] }).etichetta}`
+    : `${m.nome}: ${sel.length} scelte`;
+  return `<div class="dd" data-menu="${m.id}">
+    <button type="button" class="${sel.length ? "on" : ""}" aria-haspopup="true" aria-expanded="false" ${opz.length ? "" : "disabled"}>
+      <span>${esc(testo)}</span>${ICONE.giu.replace("<svg", '<svg width="14" height="14"')}
+    </button>
+    <div class="panel" hidden>
+      ${sel.length ? `<button type="button" class="reset" data-reset="${m.id}">Mostra tutte</button>` : ""}
+      ${opz.map((o) => `<label><input type="checkbox" data-opz="${m.id}" value="${esc(o.valore)}" ${sel.includes(o.valore) ? "checked" : ""}>
+        <span>${esc(o.etichetta)}</span><span class="cnt">${o.n}</span></label>`).join("")}
+    </div></div>`;
+}
+
+function disegnaRicerca() {
+  const v = vista();
+  document.querySelectorAll("[data-modo]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.modo === v.modo)));
+  $("profilo").value = v.profilo;
+  const n = paroleAttive().length;
+  $("kwcount").textContent = parolePronte ? `${n === 1 ? "1 parola attiva" : n + " parole attive"}` : "Carico le parole chiave…";
+  $("ambiti").innerHTML = Object.entries(AMBITI).map(([k, nome]) =>
+    `<button type="button" class="chip" data-ambito="${k}" aria-pressed="${v.ambiti.includes(k)}">${esc(nome)}</button>`).join("");
+  $("menuFonti").innerHTML = menuHtml(MENU_FONTI[0]);
+  const approfondita = v.modo === "approfondita";
+  const inCorso = !!pref.ricerca && !pref.ricerca.finita;
+  $("vai").textContent = approfondita ? (inCorso ? "Ricerca approfondita in corso" : "Avvia ricerca approfondita") : "Mostra i risultati";
+  $("vai").disabled = approfondita && inCorso;
+  $("vainota").textContent = approfondita
+    ? (puoScrivere() ? "Usa profilo, parole chiave, ambiti e fonti scelti qui. Richiede 15-30 minuti e puoi chiudere la pagina."
+                     : "Per avviarla serve la chiave di accesso GitHub: aggiungila nelle impostazioni in fondo alla pagina.")
+    : "I filtri si applicano subito ai bandi già trovati.";
+}
+
+function disegnaFiltriRisultati() {
   const v = vista();
   $("q").value = v.q;
-  $("ambiti").innerHTML = Object.entries(AMBITI).map(([k, n]) =>
-    `<button type="button" class="chip" data-ambito="${k}" aria-pressed="${v.ambiti.includes(k)}">${esc(n)}</button>`).join("");
   $("toggles").innerHTML = [
     ["nascondiScaduti", "Nascondi scaduti"], ["soloPreferiti", "Solo preferiti"], ["nascondiVisti", "Nascondi già visti"],
   ].map(([k, n]) => `<button type="button" class="chip" data-toggle="${k}" aria-pressed="${!!v[k]}">${n}</button>`).join("");
-  $("menu").innerHTML = MENU.map((m) => {
-    const opz = opzioni(m.estrai, m.etichetta);
-    const sel = v[m.id];
-    const testo = !sel.length ? `${m.nome}: tutte`
-      : sel.length === 1 ? `${m.nome}: ${(opz.find((o) => o.valore === sel[0]) || { etichetta: sel[0] }).etichetta}`
-      : `${m.nome}: ${sel.length} scelte`;
-    return `<div class="dd" data-menu="${m.id}">
-      <button type="button" class="${sel.length ? "on" : ""}" aria-haspopup="true" aria-expanded="false" ${opz.length ? "" : "disabled"}>
-        <span>${esc(testo)}</span>${ICONE.giu.replace("<svg", '<svg width="14" height="14"')}
-      </button>
-      <div class="panel" hidden>
-        ${sel.length ? `<button type="button" class="reset" data-reset="${m.id}">Mostra tutte</button>` : ""}
-        ${opz.map((o) => `<label><input type="checkbox" data-opz="${m.id}" value="${esc(o.valore)}" ${sel.includes(o.valore) ? "checked" : ""}>
-          <span>${esc(o.etichetta)}</span><span class="cnt">${o.n}</span></label>`).join("")}
-      </div></div>`;
-  }).join("");
+  $("menu").innerHTML = MENU_RISULTATI.map(menuHtml).join("");
 }
 
 function scadenzaHtml(c) {
@@ -349,7 +601,7 @@ function dettaglioHtml(c) {
     ["Provincia", (c.province || []).join(", ")],
     ["Titolo di studio", c.titolo_studio],
     ["Come candidarsi", c.come_candidarsi],
-    ["Trovato il", dataIt(c.trovato)],
+    ["Trovato il", dataIt(c.trovato) + (c.origine === "approfondita" ? " con una ricerca approfondita" : "")],
     ["Fonti", (c.fonti || []).join(", ")],
   ].filter(([, v]) => v);
   const prove = (c.prove || []).length
@@ -416,26 +668,147 @@ function disegnaLista() {
   $("lista").innerHTML = elenco.map(rigaHtml).join("");
   $("vuoto").innerHTML = n ? "" : concorsi.length
     ? `<div class="empty"><p><b>Nessun concorso corrisponde ai filtri attivi</b></p><p><button class="btn outline" type="button" id="mostraTutto">Mostra tutto l'archivio</button></p></div>`
-    : `<div class="empty"><p><b>Ancora nessun concorso in archivio</b></p><p class="muted">Il primo controllo giornaliero li aggiungerà qui.</p></div>`;
+    : `<div class="empty"><p><b>Ancora nessun concorso in archivio</b></p><p class="muted">Il controllo serale li aggiungerà qui, oppure avvia una ricerca approfondita.</p></div>`;
 }
 
-function disegna() { disegnaFiltri(); disegnaLista(); }
+function disegna() { disegnaRicerca(); disegnaFiltriRisultati(); disegnaLista(); }
+
+/* ------------------------------------------------------------ ricerca approfondita */
+
+const FASI = { "Set up job": "Preparazione", "Installa i componenti": "Preparazione",
+               "Controlla le fonti": "Controllo delle fonti e analisi dei bandi", "Salva i risultati": "Salvataggio dei risultati" };
+
+function disegnaAvanzamento() {
+  const r = pref.ricerca;
+  const box = $("avanzamento");
+  if (!r) { box.innerHTML = ""; return; }
+  const min = Math.max(0, Math.round((Date.now() - new Date(r.avviata)) / 60000));
+  const link = r.url ? ` <a href="${esc(r.url)}" target="_blank" rel="noopener">Registro su GitHub</a>` : "";
+  if (r.finita) {
+    const fallita = r.esito === "errore";
+    box.innerHTML = `<div class="progress ${fallita ? "fail" : ""}"><div class="top">
+      <p><b>${fallita ? "La ricerca approfondita non è riuscita" : "Ricerca approfondita completata"}</b></p>
+      <button class="linkbtn" type="button" id="chiudiRicerca">Chiudi</button></div>
+      <p style="margin-top:6px">${esc(r.messaggio || "")}${link}</p></div>`;
+    return;
+  }
+  const perc = r.fase === "Salvataggio dei risultati" ? 85 : r.fase === "Pubblicazione dei risultati" ? 95
+    : Math.min(80, 8 + min * 3);
+  box.innerHTML = `<div class="progress"><div class="top">
+    <p><b>Ricerca approfondita in corso</b></p><p>avviata alle ${new Date(r.avviata).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}, da ${min} min</p></div>
+    <div class="bar"><div style="width:${perc}%"></div></div>
+    <p style="margin-top:8px;font-size:13px">${esc(r.fase || "In attesa che GitHub la avvii")}.${link ? link + "." : ""}
+    Puoi chiudere la pagina: quando finisce, i risultati nuovi compaiono qui con l'etichetta Nuovo.</p></div>`;
+}
+
+async function avviaApprofondita() {
+  $("vaierr").textContent = "";
+  if (!puoScrivere()) {
+    $("vaierr").textContent = "Per avviare la ricerca approfondita aggiungi la chiave di accesso GitHub nelle impostazioni in fondo alla pagina.";
+    $("impDettagli").open = true;
+    return;
+  }
+  const v = vista();
+  const parole = paroleAttive();
+  if (v.profilo === "parole" && !parole.length) { $("vaierr").textContent = "Aggiungi almeno una parola chiave oppure scegli il profilo funzionario informatico."; return; }
+  if (!v.ambiti.length) { $("vaierr").textContent = "Scegli almeno un ambito."; return; }
+  const id = Date.now().toString(36);
+  const fontiScelte = v.fonti.length ? fontiNote.filter((n) => v.fonti.includes(norm(n))) : [];
+  try {
+    $("vai").disabled = true;
+    const info = await gh("");
+    await gh("/actions/workflows/radar.yml/dispatches", { method: "POST", body: JSON.stringify({
+      ref: info.default_branch || "main",
+      inputs: { richiesta: id, profilo: v.profilo, parole: parole.join("|"),
+                ambiti: v.ambiti.length === Object.keys(AMBITI).length ? "" : v.ambiti.join(","),
+                fonti: fontiScelte.join("|") },
+    }) });
+  } catch (e) {
+    $("vai").disabled = false;
+    $("vaierr").textContent = spiegaErrore(e);
+    return;
+  }
+  pref.ricerca = { id, avviata: new Date().toISOString(), prima: concorsi.map((c) => c.id), aggiornatoPrima: aggiornatoIl, fase: "" };
+  salvaPref();
+  disegnaRicerca();
+  disegnaAvanzamento();
+  segui();
+}
+
+let seguendo = false;
+async function segui() {
+  if (seguendo) return;
+  seguendo = true;
+  while (pref.ricerca && !pref.ricerca.finita) {
+    const r = pref.ricerca;
+    try {
+      if (!r.runId) {
+        const elenco = await gh("/actions/runs?event=workflow_dispatch&per_page=20");
+        const run = (elenco.workflow_runs || []).find((w) => (w.display_title || w.name || "").includes(r.id));
+        if (run) { r.runId = run.id; r.url = run.html_url; }
+        else if (Date.now() - new Date(r.avviata) > 5 * 60000) {
+          Object.assign(r, { finita: true, esito: "errore", messaggio: "GitHub non ha avviato la ricerca. Controlla che il file radar.yml sia aggiornato." });
+        }
+      }
+      if (r.runId && !r.finita) {
+        const run = await gh(`/actions/runs/${r.runId}`);
+        if (run.status !== "completed") {
+          r.fase = run.status === "queued" ? "In coda: parte appena termina un controllo già in corso" : "Preparazione";
+          if (run.status === "in_progress") {
+            const job = ((await gh(`/actions/runs/${r.runId}/jobs`)).jobs || [])[0];
+            const passo = job && (job.steps || []).find((s) => s.status === "in_progress");
+            if (passo) r.fase = FASI[passo.name] || r.fase;
+          }
+        } else if (!r.salvata) {
+          r.salvata = true;
+          r.esitoRun = run.conclusion;
+          r.fase = "Pubblicazione dei risultati";
+        }
+      }
+      if (r.salvata && !r.finita) {
+        const d = await (await fetch("data/concorsi.json?t=" + Date.now(), { cache: "no-store" })).json();
+        if (d.aggiornato && d.aggiornato !== r.aggiornatoPrima) {
+          applicaDati(d);
+          const nuovi = concorsi.filter((c) => !r.prima.includes(c.id));
+          nuovi.forEach((c) => (pref.nuoviRicerca[c.id] = true));
+          Object.assign(r, { finita: true, esito: r.esitoRun === "success" ? "ok" : "parziale",
+            messaggio: (nuovi.length ? (nuovi.length === 1 ? "1 concorso nuovo: lo trovi nell'elenco con l'etichetta Nuovo." : `${nuovi.length} concorsi nuovi: li trovi nell'elenco con l'etichetta Nuovo.`) : "Nessun concorso nuovo rispetto all'archivio.")
+              + (r.esitoRun === "success" ? "" : " La ricerca si è interrotta prima della fine: i bandi rimasti verranno analizzati nel controllo serale.") });
+          disegna();
+        } else if (Date.now() - new Date(r.avviata) > 70 * 60000) {
+          Object.assign(r, { finita: true, esito: "parziale", messaggio: "La ricerca è terminata ma la pagina non si è ancora aggiornata. Ricaricala tra qualche minuto." });
+        }
+      }
+    } catch (e) {
+      r.fase = "Collegamento a GitHub non riuscito, riprovo";
+      if (e.status === 401 || e.status === 403) Object.assign(r, { finita: true, esito: "errore", messaggio: spiegaErrore(e) });
+    }
+    salvaPref();
+    disegnaAvanzamento();
+    disegnaRicerca();
+    if (!r.finita) await attesa(15000);
+  }
+  seguendo = false;
+}
 
 /* ------------------------------------------------------------ eventi */
 
 document.addEventListener("click", (e) => {
   const t = e.target;
+  const modo = t.closest("[data-modo]");
+  if (modo) { vista().modo = modo.dataset.modo; $("vaierr").textContent = ""; salvaPref(); return disegnaRicerca(); }
   const ambito = t.closest("[data-ambito]");
   if (ambito) {
     const k = ambito.dataset.ambito, a = vista().ambiti;
     vista().ambiti = a.includes(k) ? a.filter((x) => x !== k) : [...a, k];
-    salvaPref(); return disegna();
+    salvaPref(); disegnaRicerca(); return disegnaLista();
   }
   const tog = t.closest("[data-toggle]");
-  if (tog) { vista()[tog.dataset.toggle] = !vista()[tog.dataset.toggle]; salvaPref(); return disegna(); }
-
+  if (tog) { vista()[tog.dataset.toggle] = !vista()[tog.dataset.toggle]; salvaPref(); disegnaFiltriRisultati(); return disegnaLista(); }
   const reset = t.closest("[data-reset]");
   if (reset) { vista()[reset.dataset.reset] = []; salvaPref(); return disegna(); }
+  const del = t.closest("[data-kwdel]");
+  if (del) { const l = [...paroleAttive()]; l.splice(Number(del.dataset.kwdel), 1); return cambiaParole(l); }
 
   const dd = t.closest(".dd");
   document.querySelectorAll(".dd .panel").forEach((p) => {
@@ -447,17 +820,16 @@ document.addEventListener("click", (e) => {
     dd.querySelector("button").setAttribute("aria-expanded", String(!p.hidden));
     return;
   }
-
-  if (t.id === "mostraTutto") {
-    pref.vista = { ...VISTA_INIZIALE, nascondiScaduti: false };
-    salvaPref(); return disegna();
-  }
+  if (t.id === "mostraTutto") { pref.vista = { ...VISTA_INIZIALE, modo: vista().modo, nascondiScaduti: false }; salvaPref(); return disegna(); }
+  if (t.id === "chiudiRicerca") { pref.ricerca = null; salvaPref(); disegnaAvanzamento(); return disegnaRicerca(); }
 
   const act = t.closest("[data-act]");
   if (act) {
     const id = act.closest("li.item").dataset.id;
     if (act.dataset.act === "fav") { pref.fav[id] ? delete pref.fav[id] : (pref.fav[id] = true); }
-    if (act.dataset.act === "visto") { pref.visti[id] ? delete pref.visti[id] : (pref.visti[id] = true); }
+    if (act.dataset.act === "visto") {
+      if (pref.visti[id]) delete pref.visti[id]; else { pref.visti[id] = true; delete pref.nuoviRicerca[id]; }
+    }
     if (act.dataset.act === "apri") aperto = aperto === id ? null : id;
     salvaPref(); disegnaLista();
   }
@@ -475,41 +847,81 @@ document.addEventListener("change", (e) => {
   if (dd) { dd.querySelector(".panel").hidden = false; dd.querySelector("button").setAttribute("aria-expanded", "true"); }
 });
 
+$("profilo").addEventListener("change", (e) => { vista().profilo = e.target.value; salvaPref(); disegnaLista(); });
 $("q").addEventListener("input", (e) => { vista().q = e.target.value; salvaPref(); disegnaLista(); });
 $("azzera").addEventListener("click", () => {
-  pref.vista = { ...VISTA_INIZIALE, ambiti: vista().ambiti, nascondiScaduti: vista().nascondiScaduti };
+  Object.assign(vista(), { citta: [], prov: [], contratto: [], prove: [], q: "", soloPreferiti: false, nascondiVisti: false });
   salvaPref(); disegna();
+});
+$("vai").addEventListener("click", () => {
+  if (vista().modo === "approfondita") return avviaApprofondita();
+  $("risultati").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+$("kwadd").addEventListener("click", aggiungiParola);
+$("kwin").addEventListener("keydown", (e) => { if (e.key === "Enter") aggiungiParola(); });
+$("kwin").addEventListener("input", () => ($("kwerr").textContent = ""));
+$("kwsync").addEventListener("change", (e) => {
+  pref.sincronizza = e.target.checked;
+  if (!pref.sincronizza && !pref.paroleLocali) pref.paroleLocali = [...paroleRepo];
+  salvaPref();
+  statoParole(pref.sincronizza ? "Le modifiche verranno salvate nel repository" : "Le modifiche restano solo in questo browser");
+  disegnaParole(); disegnaRicerca(); disegnaLista();
 });
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") document.querySelectorAll(".dd .panel").forEach((p) => (p.hidden = true));
 });
 
-/* Pulsante "Avvia un controllo ora": apre la pagina del workflow su GitHub */
-(function () {
-  const a = $("avvia");
-  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
-  const repo = location.pathname.split("/").filter(Boolean)[0];
-  if (m && repo) a.href = `https://github.com/${m[1]}/${repo}/actions/workflows/radar.yml`;
-  else a.style.display = "none";
-})();
+$("repo").value = repo();
+$("token").value = token() ? "••••••••" : "";
+$("tokSalva").addEventListener("click", async () => {
+  const r = $("repo").value.trim().replace(/^https?:\/\/github\.com\//, "").replace(/\/$/, "");
+  const t = $("token").value.trim();
+  if (!/^[\w.-]+\/[\w.-]+$/.test(r)) { $("tokStato").textContent = "Scrivi il repository nella forma nomeutente/nome-repository."; return; }
+  if (!t) { $("tokStato").textContent = "Incolla la chiave di accesso."; return; }
+  localStorage.setItem(CHIAVE_REPO, r);
+  if (!t.startsWith("••")) localStorage.setItem(CHIAVE_TOKEN, t);
+  $("tokStato").textContent = "Verifica in corso…";
+  try {
+    await gh("/contents/parole_chiave.txt");
+    await gh("/actions/workflows/radar.yml");
+    $("tokStato").textContent = "Chiave valida: ricerca approfondita e salvataggio delle parole chiave sono attivi.";
+    $("token").value = "••••••••";
+    caricaParole();
+  } catch (e) {
+    $("tokStato").textContent = spiegaErrore(e);
+  }
+  disegna();
+});
+$("tokTogli").addEventListener("click", () => {
+  localStorage.removeItem(CHIAVE_TOKEN);
+  $("token").value = "";
+  $("tokStato").textContent = "Chiave rimossa da questo browser.";
+  caricaParole(); disegna();
+});
 
 /* ------------------------------------------------------------ avvio */
 
+function applicaDati(d) {
+  const lista = Array.isArray(d) ? d : d.concorsi || [];
+  concorsi = lista.map((c, i) => ({ ...c, id: String(c.id || i) }));
+  fontiNote = Array.isArray(d.fonti) && d.fonti.length ? d.fonti
+    : [...new Set(concorsi.flatMap((c) => c.fonti || []))].sort((a, b) => a.localeCompare(b, "it"));
+  aggiornatoIl = d.aggiornato || null;
+  if (aggiornatoIl) $("aggiornato").textContent = "Ultimo controllo: " + oraIt(aggiornatoIl);
+}
+
+disegna();
+disegnaParole();
+disegnaAvanzamento();
+caricaParole();
 fetch("data/concorsi.json?t=" + Date.now(), { cache: "no-store" })
   .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then((d) => {
-    const lista = Array.isArray(d) ? d : d.concorsi || [];
-    concorsi = lista.map((c, i) => ({ ...c, id: String(c.id || i) }));
-    if (d.aggiornato) {
-      $("aggiornato").textContent = "Ultimo controllo: " + new Date(d.aggiornato).toLocaleString("it-IT", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
-    }
-    disegna();
-  })
+  .then((d) => { applicaDati(d); disegna(); })
   .catch(() => {
     $("conta").textContent = "Dati non ancora disponibili";
-    $("vuoto").innerHTML = '<div class="empty"><p><b>Non trovo i risultati</b></p><p class="muted">Avvia il primo controllo dalla scheda Actions del repository: al termine i concorsi compariranno qui.</p></div>';
-    disegnaFiltri();
-  });
+    $("vuoto").innerHTML = '<div class="empty"><p><b>Non trovo i risultati</b></p><p class="muted">Avvia una ricerca approfondita oppure attendi il controllo serale: al termine i concorsi compariranno qui.</p></div>';
+  })
+  .finally(() => { if (pref.ricerca && !pref.ricerca.finita) segui(); });
 </script>
 </body>
 </html>
