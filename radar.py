@@ -49,14 +49,14 @@ EXPORT = "data/concorsi.json"
 PAGINA = "CONCORSI.md"
 
 MAX_DETTAGLI_PER_FONTE = int(os.getenv("MAX_DETTAGLI_PER_FONTE", "40"))  # pagine lette per fonte e per giorno
-MAX_AI = int(os.getenv("MAX_AI", "40"))  # bandi analizzati dall'AI per giorno
+MAX_AI = int(os.getenv("MAX_AI", "80"))  # bandi analizzati dall'AI per giorno
 PAUSA_AI = 7  # secondi tra due chiamate a Gemini (resta sotto i limiti gratuiti)
 PAUSA_WEB = 1.5  # secondi tra due pagine dello stesso sito
 MAX_TESTO = 15000  # caratteri di testo inviati all'AI per ogni bando
 
 GEMINI_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 GEMINI_MODELLI = [m for m in [os.getenv("GEMINI_MODEL", "").strip(),
-                              "gemini-flash-lite-latest", "gemini-flash-latest", "gemini-2.5-flash-lite"] if m]
+                              "gemini-flash-lite-latest", "gemini-3.5-flash-lite", "gemini-flash-latest"] if m]
 # Ricerca approfondita avviata dalla web app: profilo, parole, ambiti e fonti scelti nella pagina
 MODALITA = os.getenv("RADAR_MODALITA", "serale").strip() or "serale"
 PROFILO_MODO = "parole" if os.getenv("RADAR_PROFILO", "").strip() == "parole" else "info"
@@ -69,6 +69,7 @@ AMBITI_TESTO = {"R": "posti in enti con sede in Sardegna",
                 "NN": "concorsi nazionali con possibilità di scegliere una sede in Sardegna",
                 "EL": "elenchi di idonei o selezioni uniche nazionali da cui possono assumere enti sardi"}
 
+TAVILY_KEY = os.getenv("TAVILY_API_KEY", "").strip()  # ricerca web gratuita (1.000 ricerche al mese) per inPA
 TG_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 TG_CHAT = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
@@ -93,9 +94,15 @@ SEMBRA_BANDO = re.compile(r"concors|selezion|avvis|bando|bandi|mobilit|idone|rec
                           r"recruit|lavora con noi|offerte di lavoro|caricaDettaglio", re.I)
 SOLO_AGGIORNAMENTO = re.compile(r"graduatori|esit[oi]|ammess|diario|calendario|convocazion|rettific|"
                                 r"commissione|punteggi|verbal|tracce|sede (della |delle )?prov|"
-                                r"tabella riepilogativa|espletat|stabilizzazion|bandi di gara|gare e contratti", re.I)
+                                r"tabella riepilogativa|espletat|stabilizzazion|bandi di gara|gare e contratti|"
+                                r"iter selettivo|proroga", re.I)
 SOCIAL = re.compile(r"facebook\.com|twitter\.com|x\.com/intent|linkedin\.com|whatsapp|telegram\.me|"
                     r"instagram\.com|youtube\.com|mailto:", re.I)
+ESCLUDI = re.compile(r"incarich[io] di ricerca|assegn[io] di ricerca|borse? di ricerca|borse? di studio|insegnament|"
+                     r"tutorat|tutoraggio|docent|ricercator|dottorat|post.?lauream|studenti|lavoro autonomo|"
+                     r"\bgar[ae]\b|appalt|manifestazion[ei] di interesse|indagine di mercato|affidament|"
+                     r"qualit[aà] dell.aria|monitoraggio", re.I)
+SCADUTI = re.compile(r"scadut|chius[ei]|archivio|ante 20\d\d|conclus[ei]|espletat|ulteriori selezioni", re.I)
 DATATA = re.compile(r"\b\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}\b|n[°o.]\s*\d+", re.I)
 SEZIONE = re.compile(r"bandi di concorso|concorsi e selezioni|concorsi|selezion[ei] del personale|"
                      r"selezioni|lavora con noi|reclutamento|avvisi di selezione|offerte di lavoro|"
@@ -127,6 +134,7 @@ sessione_compatibile.headers.update(sessione.headers)
 sessione_compatibile.mount("https://", SSLCompatibile())
 _robots = {}
 _ultima_visita = {}
+_bloccati = set()
 
 
 # ---------------------------------------------------------------- utilità
@@ -207,9 +215,11 @@ def consentito(url):
 
 def scarica(url):
     """Scarica una pagina rispettando robots.txt e una pausa tra visite allo stesso sito."""
+    host = urlparse(url).netloc
+    if host in _bloccati:
+        raise PermissionError(f"il sito blocca le visite automatiche dai server di GitHub ({host})")
     if not consentito(url):
         raise PermissionError(f"il sito non consente l'accesso automatico a {url}")
-    host = urlparse(url).netloc
     attesa = PAUSA_WEB - (time.time() - _ultima_visita.get(host, 0))
     if attesa > 0:
         time.sleep(attesa)
@@ -219,6 +229,7 @@ def scarica(url):
     except requests.exceptions.SSLError:
         r = sessione_compatibile.get(url, timeout=30, allow_redirects=True)
     if r.status_code in (401, 403):
+        _bloccati.add(host)
         raise PermissionError(f"il sito blocca le visite automatiche dai server di GitHub (errore {r.status_code})")
     r.raise_for_status()
     return r
@@ -229,7 +240,7 @@ def testo_da_risposta(r):
     if "pdf" in tipo or r.url.lower().endswith(".pdf"):
         return testo_pdf(r.content), None
     soup = BeautifulSoup(r.content, "html.parser")  # legge la codifica dichiarata nella pagina
-    for tag in soup(["script", "style", "noscript", "nav", "header", "footer", "form"]):
+    for tag in soup(["script", "style", "noscript", "nav", "header", "footer"]):
         tag.decompose()
     for tag in soup.select('[role=navigation], [class*=breadcrumb], [id*=breadcrumb], [class*=social], '
                            '[class*=share], [id*=cookie], [class*=cookie]'):
@@ -256,6 +267,8 @@ def testo_pdf(contenuto):
 def link_utile(url, base, testo, intorno):
     if SOCIAL.search(url):
         return False
+    if ESCLUDI.search(testo) or SCADUTI.search(testo):
+        return False
     if not (stesso_sito(url, base) or url.lower().split("?")[0].endswith(".pdf")):
         return False
     if SOLO_AGGIORNAMENTO.search(testo):
@@ -275,8 +288,19 @@ def link_della_pagina(soup, base):
             continue
         visti.add(url)
         testo = re.sub(r"\s+", " ", a.get_text(" ", strip=True) or a.get("title", ""))
-        contenitore = a.find_parent(["li", "tr", "article", "p", "div"])
-        intorno = re.sub(r"\s+", " ", contenitore.get_text(" ", strip=True))[:400] if contenitore else ""
+        intorno = ""
+        nodo = a
+        for _ in range(5):  # salgo finché il blocco contiene solo questo link (la riga del bando)
+            padre = nodo.parent
+            if padre is None or padre.name in ("body", "html") or len(padre.find_all("a", href=True)) > 1:
+                break
+            nodo = padre
+        if nodo is not a:
+            intorno = re.sub(r"\s+", " ", nodo.get_text(" ", strip=True))[:500]
+        else:
+            fratelli = " ".join(t.get_text(" ", strip=True) if hasattr(t, "get_text") else str(t)
+                                for t in list(a.next_siblings)[:4] + list(a.previous_siblings)[:2])
+            intorno = re.sub(r"\s+", " ", fratelli)[:500]
         risultati.append((url, testo, intorno))
     return risultati
 
@@ -388,6 +412,9 @@ def primo_valore(diz, chiavi):
 def raccogli_da_inpa(stato):
     """Usa il servizio di ricerca pubblico del portale inPA (lo stesso usato dal sito)."""
     if not consentito(INPA_API):
+        if TAVILY_KEY:
+            log("   il servizio di ricerca interno di inPA non è consentito: cerco le pagine dei bandi con Tavily")
+            return cerca_inpa_con_tavily()
         log("   il servizio di ricerca interno di inPA non è consentito: cerco le pagine dei bandi con Google")
         return cerca_inpa_con_google()
     trovati = {}
@@ -428,6 +455,39 @@ def raccogli_da_inpa(stato):
     return candidati
 
 
+def cerca_inpa_con_tavily():
+    """Cerca le pagine di dettaglio dei bandi su inpa.gov.it con il servizio di ricerca Tavily."""
+    domande = ["concorso funzionario informatico Sardegna", "concorso istruttore informatico Sardegna",
+               "funzionario sistemi informativi ICT Sardegna", "concorso informatico sedi Sardegna nazionale",
+               "elenco idonei profili informatici enti locali", "selezione specialista ICT cybersecurity Sardegna"]
+    if PROFILO_MODO == "parole" and PAROLE_RICHIESTA:
+        domande = [f"concorso {p} Sardegna" for p in PAROLE_RICHIESTA[:6]]
+    trovati = {}
+    for d in domande:
+        try:
+            r = requests.post("https://api.tavily.com/search", timeout=40,
+                              headers={"Authorization": f"Bearer {TAVILY_KEY}"},
+                              json={"query": d, "include_domains": ["inpa.gov.it"], "max_results": 20,
+                                    "search_depth": "basic", "api_key": TAVILY_KEY})
+        except Exception as e:
+            log(f"   Tavily non raggiungibile: {e}")
+            break
+        if r.status_code != 200:
+            log(f"   Tavily, ricerca '{d}': risposta {r.status_code} {r.text[:200]}")
+            if r.status_code in (401, 403, 429, 432, 433):
+                break
+            continue
+        for ris in r.json().get("results", []):
+            m = re.search(r"concorso_id=([0-9a-fA-F]{16,})", ris.get("url", ""))
+            if m:
+                ident = m.group(1).lower()
+                trovati[ident] = {"url": INPA_DETTAGLIO.format(ident), "titolo": ris.get("title", "")[:200],
+                                  "contesto": ris.get("content", "")[:400], "livello": 2}
+        time.sleep(1)
+    log(f"   inPA tramite Tavily: {len(trovati)} pagine di bandi trovate")
+    return list(trovati.values())
+
+
 def cerca_inpa_con_google():
     """Chiede a Gemini, con la ricerca Google, le pagine di dettaglio inPA dei bandi pertinenti."""
     if not GEMINI_KEY:
@@ -444,6 +504,7 @@ def cerca_inpa_con_google():
                    "'dettaglio-bando-avviso/?concorso_id='. Rispondi solo con gli indirizzi, uno per riga.")
         corpo = {"contents": [{"parts": [{"text": domanda}]}], "tools": [{"google_search": {}}]}
         risposta = None
+        r = None
         for modello in list(GEMINI_MODELLI):
             try:
                 r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{modello}:generateContent",
@@ -456,6 +517,9 @@ def cerca_inpa_con_google():
                 break
             log(f"   ricerca Google con {modello}: risposta {r.status_code} {r.text[:200]}")
         if not risposta:
+            if r is not None and r.status_code == 429:
+                log("   La ricerca Google tramite Gemini non è disponibile con il livello gratuito: inPA saltato.")
+                break
             continue
         cand = (risposta.get("candidates") or [{}])[0]
         testo = "".join(p.get("text", "") for p in cand.get("content", {}).get("parts", []))
@@ -768,6 +832,8 @@ def main():
                 if gia_visto(c["url"]):
                     continue
                 letti_ora.add(c["url"])
+                if urlparse(c["url"]).netloc in _bloccati:
+                    continue
                 try:
                     testo, link = leggi_pagina(c["url"])
                 except Exception as e:
@@ -795,8 +861,8 @@ def main():
                         elenchi = stato.setdefault("elenchi", {}).setdefault(nome, [])
                         if c["url"] not in elenchi and len(elenchi) < 6:
                             elenchi.append(c["url"])  # lo ricontrollo ogni giorno, come una sezione
-                    if len(link) >= 15:
-                        continue
+                    if not contiene_parole(c["titolo"], parole):
+                        continue  # è un elenco: analizzo i singoli bandi, non la pagina-elenco
 
                 if not contiene_parole(tutto, parole):
                     continue
@@ -804,6 +870,7 @@ def main():
                     continue
                 if c["url"] not in gia_in_coda:
                     stato["coda"].append({"url": c["url"], "fonte": nome, "testo": tutto[:MAX_TESTO],
+                                          "titolo": c["titolo"][:200], "contesto": c["contesto"][:300],
                                           "profilo": PROFILO_MODO, "parole": parole if PROFILO_MODO == "parole" else [],
                                           "ambiti": sorted(AMBITI_RICHIESTA), "origine": MODALITA})
                     gia_in_coda.add(c["url"])
@@ -819,8 +886,18 @@ def main():
     # 4. analisi con l'intelligenza artificiale
     nuovi_concorsi = []
     analizzati = 0
+    def priorita(v):
+        punti = 0
+        if contiene_parole(v.get("titolo", ""), parole):
+            punti += 3
+        if contiene_parole(v.get("contesto", ""), parole):
+            punti += 1
+        if ESCLUDI.search(v.get("titolo", "")) or SCADUTI.search(v.get("titolo", "")):
+            punti -= 3
+        return punti
+    stato["coda"].sort(key=priorita, reverse=True)
     coda = stato["coda"]
-    log(f"\n== Analisi AI: {len(coda)} bandi in coda")
+    log(f"\n== Analisi AI: {len(coda)} bandi in coda, prima quelli con le parole chiave nel titolo")
     while coda and analizzati < MAX_AI:
         voce = coda[0]
         log(f"   analizzo {analizzati + 1}/{min(len(coda) + analizzati, MAX_AI)}: {voce['url'][:100]}")

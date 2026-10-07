@@ -25,7 +25,8 @@ ARES Sardegna | https://www.aressardegna.it/
 # AOU Cagliari blocca i server di GitHub: i suoi bandi arrivano comunque da inPA e Gazzetta
 # AOU Cagliari | https://www.aoucagliari.it/
 AOU Sassari | https://www.aousassari.it/
-ARNAS Brotzu | https://www.aobrotzu.it/aobinforma/concorsi.html
+# ARNAS Brotzu blocca i server di GitHub: i suoi bandi arrivano da inPA e Gazzetta
+# ARNAS Brotzu | https://www.aobrotzu.it/aobinforma/concorsi.html
 
 # --- Università ---
 Università di Cagliari | https://www.unica.it/
@@ -35,7 +36,8 @@ Università di Sassari | https://www.uniss.it/
 Abbanoa | https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale
 Sardegna Ricerche | https://www.sardegnaricerche.it/
 ARPAS | https://www.sardegnaambiente.it/arpas/
-Forestas | https://www.sardegnaforeste.it/
+# Forestas rifiuta la connessione dai server di GitHub
+# Forestas | https://www.sardegnaforeste.it/
 Laore e Agris | https://www.sardegnaagricoltura.it/
 # CTM blocca i server di GitHub: i suoi bandi si possono aggiungere con "Aggiungi bando" nell'app in Claude
 # CTM Cagliari | https://www.ctmcagliari.it/

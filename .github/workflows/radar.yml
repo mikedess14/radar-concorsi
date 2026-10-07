@@ -47,6 +47,7 @@ jobs:
         run: python radar.py
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           RADAR_MODALITA: ${{ inputs.richiesta && 'approfondita' || 'serale' }}
