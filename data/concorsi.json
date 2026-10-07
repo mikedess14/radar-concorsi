@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-07T08:05+00:00",
+ "aggiornato": "2026-10-07T08:18+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -17,33 +17,25 @@
  ],
  "concorsi": [
   {
-   "motivo": "Selezione dirigente commerciale Abbanoa a Cagliari, requisiti e scadenza validi.",
-   "titolo": "Dirigente Responsabile Direzione Commerciale",
-   "ente": "Abbanoa s.p.a.",
    "ambito": "R",
-   "tipo": "S",
    "area": "D",
-   "sede": "Cagliari",
+   "come_candidarsi": "Inviare email a ricercacomabb@spencerstuart.com",
+   "comparto": "PRIV",
    "comuni": [
     "Cagliari"
    ],
-   "province": [
-    "Cagliari"
-   ],
-   "scadenza": "2026-10-15",
-   "ora": "23:59",
-   "posti": "1",
    "contratto": "indeterminato",
-   "titolo_studio": "Laurea",
-   "prove": [
-    "orale"
+   "ente": "Abbanoa s.p.a.",
+   "fonti": [
+    "Abbanoa"
    ],
-   "come_candidarsi": "Inviare email a ricercacomabb@spencerstuart.com",
+   "link": [
+    "https://www.abbanoa.it/Documenti-e-dati/Documenti-tecnici-di-supporto/Avviso-Selezione-Responsabile-Direzione-Commerciale"
+   ],
    "link_bando": "https://www.abbanoa.it/Documenti-e-dati/Documenti-tecnici-di-supporto/Avviso-Selezione-Responsabile-Direzione-Commerciale",
    "link_candidatura": "ricercacomabb@spencerstuart.com",
-   "retribuzione_annua": 150000,
-   "comparto": "PRIV",
-   "profilo": "parole",
+   "motivo": "Selezione dirigente commerciale Abbanoa a Cagliari, requisiti e scadenza validi.",
+   "ora": "23:59",
    "origine": "approfondita",
    "parole": [
     "istruttore informatico",
@@ -60,12 +52,20 @@
     "reti e sistemi",
     "maxi avviso"
    ],
-   "link": [
-    "https://www.abbanoa.it/Documenti-e-dati/Documenti-tecnici-di-supporto/Avviso-Selezione-Responsabile-Direzione-Commerciale"
+   "posti": "1",
+   "profilo": "parole",
+   "prove": [
+    "orale"
    ],
-   "fonti": [
-    "Abbanoa"
+   "province": [
+    "Cagliari"
    ],
+   "retribuzione_annua": 150000,
+   "scadenza": "2026-10-15",
+   "sede": "Cagliari",
+   "tipo": "S",
+   "titolo": "Dirigente Responsabile Direzione Commerciale",
+   "titolo_studio": "Laurea",
    "trovato": "2026-10-07",
    "id": "e0352c2d786e"
   }
