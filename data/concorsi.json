@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-07T08:55+00:00",
+ "aggiornato": "2026-10-07T23:43+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -14,6 +14,45 @@
   "Laore e Agris"
  ],
  "concorsi": [
+  {
+   "ambito": "R",
+   "area": "I",
+   "come_candidarsi": "Portale inPA",
+   "comparto": "FL",
+   "comuni": [
+    "Cagliari"
+   ],
+   "contratto": "indeterminato",
+   "ente": "Città Metropolitana di Cagliari",
+   "fonti": [
+    "inPA"
+   ],
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5"
+   ],
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5",
+   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5",
+   "motivo": "Concorso per istruttore informatico presso la Città Metropolitana di Cagliari.",
+   "ora": "23:59",
+   "origine": "approfondita",
+   "posti": "2",
+   "profilo": "info",
+   "prove": [
+    "scritta",
+    "orale"
+   ],
+   "province": [
+    "Cagliari"
+   ],
+   "retribuzione_annua": 0,
+   "scadenza": "2026-10-21",
+   "sede": "Cagliari",
+   "tipo": "C",
+   "titolo": "Istruttore informatico",
+   "titolo_studio": "Diploma di scuola secondaria di secondo grado",
+   "trovato": "2026-10-07",
+   "id": "86e0db1eff25"
+  },
   {
    "ambito": "R",
    "area": "D",
@@ -68,112 +107,64 @@
    "id": "e0352c2d786e"
   },
   {
-   "motivo": "Concorso per funzionario informatico in ente con sede in Sardegna",
-   "titolo": "Funzionario Informatico",
-   "ente": "Città Metropolitana di Cagliari",
    "ambito": "R",
-   "tipo": "C",
    "area": "F",
-   "sede": "Cagliari",
+   "come_candidarsi": "Portale inPA",
+   "comparto": "FL",
    "comuni": [
     "Cagliari"
    ],
-   "province": [
-    "Cagliari"
-   ],
-   "scadenza": "2026-10-21",
-   "ora": "23:59",
-   "posti": "1",
    "contratto": "indeterminato",
-   "titolo_studio": "Laurea",
+   "ente": "Città Metropolitana di Cagliari",
+   "fonti": [
+    "inPA"
+   ],
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3"
+   ],
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3",
+   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3",
+   "motivo": "Concorso per funzionario informatico in ente con sede in Sardegna",
+   "ora": "23:59",
+   "origine": "approfondita",
+   "posti": "1",
+   "profilo": "info",
    "prove": [
     "scritta",
     "orale"
    ],
-   "come_candidarsi": "Portale inPA",
-   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3",
-   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3",
+   "province": [
+    "Cagliari"
+   ],
    "retribuzione_annua": 0,
-   "comparto": "FL",
-   "profilo": "info",
-   "origine": "approfondita",
-   "link": [
-    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3"
-   ],
-   "fonti": [
-    "inPA"
-   ],
+   "scadenza": "2026-10-21",
+   "sede": "Cagliari",
+   "tipo": "C",
+   "titolo": "Funzionario Informatico",
+   "titolo_studio": "Laurea",
    "trovato": "2026-10-07",
    "id": "e8752100c1e4"
   },
   {
-   "motivo": "Concorso per istruttore informatico presso la Città Metropolitana di Cagliari.",
-   "titolo": "Istruttore informatico",
-   "ente": "Città Metropolitana di Cagliari",
    "ambito": "R",
-   "tipo": "C",
-   "area": "I",
-   "sede": "Cagliari",
-   "comuni": [
-    "Cagliari"
-   ],
-   "province": [
-    "Cagliari"
-   ],
-   "scadenza": "2026-10-21",
-   "ora": "23:59",
-   "posti": "2",
-   "contratto": "indeterminato",
-   "titolo_studio": "Diploma di scuola secondaria di secondo grado",
-   "prove": [
-    "scritta",
-    "orale"
-   ],
-   "come_candidarsi": "Portale inPA",
-   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5",
-   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5",
-   "retribuzione_annua": 0,
-   "comparto": "FL",
-   "profilo": "info",
-   "origine": "approfondita",
-   "link": [
-    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5"
-   ],
-   "fonti": [
-    "inPA"
-   ],
-   "trovato": "2026-10-07",
-   "id": "86e0db1eff25"
-  },
-  {
-   "motivo": "Assegno di ricerca in informatica presso l'Università di Cagliari.",
-   "titolo": "Assegnista di ricerca in informatica",
-   "ente": "Università di Cagliari",
-   "ambito": "R",
-   "tipo": "C",
    "area": "F",
-   "sede": "Cagliari",
+   "come_candidarsi": "Tramite portale PICA online",
+   "comparto": "IR",
    "comuni": [
     "Cagliari"
    ],
-   "province": [
-    "Cagliari"
-   ],
-   "scadenza": "2026-10-12",
-   "ora": "23:59",
-   "posti": "1",
    "contratto": "determinato",
-   "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
-   "prove": [
-    "titoli",
-    "orale"
+   "ente": "Università di Cagliari",
+   "fonti": [
+    "Università di Cagliari"
    ],
-   "come_candidarsi": "Tramite portale PICA online",
+   "link": [
+    "https://web.unica.it/unica/protected/545483/0/def/ref/DOC545474/"
+   ],
    "link_bando": "https://web.unica.it/unica/protected/545483/0/def/ref/DOC545474/",
    "link_candidatura": "https://pica.cineca.it/unica/",
-   "retribuzione_annua": 40952,
-   "comparto": "IR",
-   "profilo": "parole",
+   "motivo": "Assegno di ricerca in informatica presso l'Università di Cagliari.",
+   "ora": "23:59",
    "origine": "approfondita",
    "parole": [
     "istruttore informatico",
@@ -190,12 +181,21 @@
     "reti e sistemi",
     "maxi avviso"
    ],
-   "link": [
-    "https://web.unica.it/unica/protected/545483/0/def/ref/DOC545474/"
+   "posti": "1",
+   "profilo": "parole",
+   "prove": [
+    "titoli",
+    "orale"
    ],
-   "fonti": [
-    "Università di Cagliari"
+   "province": [
+    "Cagliari"
    ],
+   "retribuzione_annua": 40952,
+   "scadenza": "2026-10-12",
+   "sede": "Cagliari",
+   "tipo": "C",
+   "titolo": "Assegnista di ricerca in informatica",
+   "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
    "trovato": "2026-10-07",
    "id": "f9b44ea8743e"
   }
