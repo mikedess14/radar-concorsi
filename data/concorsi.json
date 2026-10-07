@@ -1,18 +1,16 @@
 {
- "aggiornato": "2026-10-07T08:18+00:00",
+ "aggiornato": "2026-10-07T08:55+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
   "Regione Sardegna",
   "ARES Sardegna",
   "AOU Sassari",
-  "ARNAS Brotzu",
   "Università di Cagliari",
   "Università di Sassari",
   "Abbanoa",
   "Sardegna Ricerche",
   "ARPAS",
-  "Forestas",
   "Laore e Agris"
  ],
  "concorsi": [
@@ -68,6 +66,138 @@
    "titolo_studio": "Laurea",
    "trovato": "2026-10-07",
    "id": "e0352c2d786e"
+  },
+  {
+   "motivo": "Concorso per funzionario informatico in ente con sede in Sardegna",
+   "titolo": "Funzionario Informatico",
+   "ente": "Città Metropolitana di Cagliari",
+   "ambito": "R",
+   "tipo": "C",
+   "area": "F",
+   "sede": "Cagliari",
+   "comuni": [
+    "Cagliari"
+   ],
+   "province": [
+    "Cagliari"
+   ],
+   "scadenza": "2026-10-21",
+   "ora": "23:59",
+   "posti": "1",
+   "contratto": "indeterminato",
+   "titolo_studio": "Laurea",
+   "prove": [
+    "scritta",
+    "orale"
+   ],
+   "come_candidarsi": "Portale inPA",
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3",
+   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3",
+   "retribuzione_annua": 0,
+   "comparto": "FL",
+   "profilo": "info",
+   "origine": "approfondita",
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a474ab0fe4bd471a89b5bc6497d27ea3"
+   ],
+   "fonti": [
+    "inPA"
+   ],
+   "trovato": "2026-10-07",
+   "id": "e8752100c1e4"
+  },
+  {
+   "motivo": "Concorso per istruttore informatico presso la Città Metropolitana di Cagliari.",
+   "titolo": "Istruttore informatico",
+   "ente": "Città Metropolitana di Cagliari",
+   "ambito": "R",
+   "tipo": "C",
+   "area": "I",
+   "sede": "Cagliari",
+   "comuni": [
+    "Cagliari"
+   ],
+   "province": [
+    "Cagliari"
+   ],
+   "scadenza": "2026-10-21",
+   "ora": "23:59",
+   "posti": "2",
+   "contratto": "indeterminato",
+   "titolo_studio": "Diploma di scuola secondaria di secondo grado",
+   "prove": [
+    "scritta",
+    "orale"
+   ],
+   "come_candidarsi": "Portale inPA",
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5",
+   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5",
+   "retribuzione_annua": 0,
+   "comparto": "FL",
+   "profilo": "info",
+   "origine": "approfondita",
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6e1c48935a9148e3b87d896c50fe5cb5"
+   ],
+   "fonti": [
+    "inPA"
+   ],
+   "trovato": "2026-10-07",
+   "id": "86e0db1eff25"
+  },
+  {
+   "motivo": "Assegno di ricerca in informatica presso l'Università di Cagliari.",
+   "titolo": "Assegnista di ricerca in informatica",
+   "ente": "Università di Cagliari",
+   "ambito": "R",
+   "tipo": "C",
+   "area": "F",
+   "sede": "Cagliari",
+   "comuni": [
+    "Cagliari"
+   ],
+   "province": [
+    "Cagliari"
+   ],
+   "scadenza": "2026-10-12",
+   "ora": "23:59",
+   "posti": "1",
+   "contratto": "determinato",
+   "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
+   "prove": [
+    "titoli",
+    "orale"
+   ],
+   "come_candidarsi": "Tramite portale PICA online",
+   "link_bando": "https://web.unica.it/unica/protected/545483/0/def/ref/DOC545474/",
+   "link_candidatura": "https://pica.cineca.it/unica/",
+   "retribuzione_annua": 40952,
+   "comparto": "IR",
+   "profilo": "parole",
+   "origine": "approfondita",
+   "parole": [
+    "istruttore informatico",
+    "informatic",
+    "ict",
+    "sistemi informativi",
+    "sistema informativo",
+    "programmator",
+    "sviluppator",
+    "software",
+    "sistemista",
+    "cyber",
+    "sicurezza informatica",
+    "reti e sistemi",
+    "maxi avviso"
+   ],
+   "link": [
+    "https://web.unica.it/unica/protected/545483/0/def/ref/DOC545474/"
+   ],
+   "fonti": [
+    "Università di Cagliari"
+   ],
+   "trovato": "2026-10-07",
+   "id": "f9b44ea8743e"
   }
  ]
 }
