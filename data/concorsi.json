@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-07T23:43+00:00",
+ "aggiornato": "2026-10-08T23:56+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -198,6 +198,41 @@
    "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
    "trovato": "2026-10-07",
    "id": "f9b44ea8743e"
+  },
+  {
+   "motivo": "Maxi avviso Asmel 2026 per elenchi di idonei utilizzabili da enti locali anche in Sardegna.",
+   "titolo": "Maxi Avviso Asmel 2026 Elenchi Idonei",
+   "ente": "Comune di Altavilla Silentina",
+   "ambito": "EL",
+   "tipo": "E",
+   "area": "F",
+   "sede": "Nazionale",
+   "comuni": [],
+   "province": [],
+   "scadenza": "2026-10-15",
+   "ora": "12:00",
+   "posti": "1000",
+   "contratto": "indeterminato",
+   "titolo_studio": "Diploma o Laurea in base al profilo",
+   "prove": [
+    "scritta",
+    "orale"
+   ],
+   "come_candidarsi": "Tramite il portale Asmelab www.asmelab.it",
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=de84971ad8794b8ab62112c77c0f06ea",
+   "link_candidatura": "https://www.asmelab.it",
+   "retribuzione_annua": 0,
+   "comparto": "FL",
+   "profilo": "info",
+   "origine": "serale",
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=de84971ad8794b8ab62112c77c0f06ea"
+   ],
+   "fonti": [
+    "inPA"
+   ],
+   "trovato": "2026-10-08",
+   "id": "8c7404db4fdc"
   }
  ]
 }
