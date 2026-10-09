@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-08T23:56+00:00",
+ "aggiornato": "2026-10-09T23:05+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -52,6 +52,41 @@
    "titolo_studio": "Diploma di scuola secondaria di secondo grado",
    "trovato": "2026-10-07",
    "id": "86e0db1eff25"
+  },
+  {
+   "ambito": "EL",
+   "area": "F",
+   "come_candidarsi": "Tramite il portale Asmelab www.asmelab.it",
+   "comparto": "FL",
+   "comuni": [],
+   "contratto": "indeterminato",
+   "ente": "Comune di Altavilla Silentina",
+   "fonti": [
+    "inPA"
+   ],
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=de84971ad8794b8ab62112c77c0f06ea"
+   ],
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=de84971ad8794b8ab62112c77c0f06ea",
+   "link_candidatura": "https://www.asmelab.it",
+   "motivo": "Maxi avviso Asmel 2026 per elenchi di idonei utilizzabili da enti locali anche in Sardegna.",
+   "ora": "12:00",
+   "origine": "serale",
+   "posti": "1000",
+   "profilo": "info",
+   "prove": [
+    "scritta",
+    "orale"
+   ],
+   "province": [],
+   "retribuzione_annua": 0,
+   "scadenza": "2026-10-15",
+   "sede": "Nazionale",
+   "tipo": "E",
+   "titolo": "Maxi Avviso Asmel 2026 Elenchi Idonei",
+   "titolo_studio": "Diploma o Laurea in base al profilo",
+   "trovato": "2026-10-08",
+   "id": "8c7404db4fdc"
   },
   {
    "ambito": "R",
@@ -198,41 +233,6 @@
    "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
    "trovato": "2026-10-07",
    "id": "f9b44ea8743e"
-  },
-  {
-   "motivo": "Maxi avviso Asmel 2026 per elenchi di idonei utilizzabili da enti locali anche in Sardegna.",
-   "titolo": "Maxi Avviso Asmel 2026 Elenchi Idonei",
-   "ente": "Comune di Altavilla Silentina",
-   "ambito": "EL",
-   "tipo": "E",
-   "area": "F",
-   "sede": "Nazionale",
-   "comuni": [],
-   "province": [],
-   "scadenza": "2026-10-15",
-   "ora": "12:00",
-   "posti": "1000",
-   "contratto": "indeterminato",
-   "titolo_studio": "Diploma o Laurea in base al profilo",
-   "prove": [
-    "scritta",
-    "orale"
-   ],
-   "come_candidarsi": "Tramite il portale Asmelab www.asmelab.it",
-   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=de84971ad8794b8ab62112c77c0f06ea",
-   "link_candidatura": "https://www.asmelab.it",
-   "retribuzione_annua": 0,
-   "comparto": "FL",
-   "profilo": "info",
-   "origine": "serale",
-   "link": [
-    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=de84971ad8794b8ab62112c77c0f06ea"
-   ],
-   "fonti": [
-    "inPA"
-   ],
-   "trovato": "2026-10-08",
-   "id": "8c7404db4fdc"
   }
  ]
 }
