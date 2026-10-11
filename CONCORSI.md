@@ -1,6 +1,6 @@
 # Concorsi aperti
 
-Aggiornato il 10 ottobre 2026. Concorsi aperti: 5.
+Aggiornato il 11 ottobre 2026. Concorsi aperti: 5.
 
 | Scadenza | Concorso | Ente e sede | Contratto | Prove | Bando |
 |---|---|---|---|---|---|
