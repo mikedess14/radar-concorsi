@@ -819,8 +819,8 @@ async function segui() {
         const elenco = await gh("/actions/runs?event=workflow_dispatch&per_page=20");
         const run = (elenco.workflow_runs || []).find((w) => (w.display_title || w.name || "").includes(r.id));
         if (run) { r.runId = run.id; r.url = run.html_url; }
-        else if (Date.now() - new Date(r.avviata) > 5 * 60000) {
-          Object.assign(r, { finita: true, esito: "errore", messaggio: "GitHub non ha avviato la ricerca. Controlla che il file radar.yml sia aggiornato." });
+        else if (Date.now() - new Date(r.avviata) > 4 * 60000) {
+          Object.assign(r, { finita: true, esito: "errore", messaggio: "GitHub non ha ricevuto il comando. La chiave di accesso potrebbe essere scaduta: inseriscila in Impostazioni e riprova." });
         }
       }
       if (r.runId && !r.finita) {
@@ -985,6 +985,11 @@ function applicaDati(d) {
   if (aggiornatoIl) $("aggiornato").textContent = "Ultimo controllo: " + oraIt(aggiornatoIl);
 }
 
+// Se la ricerca è rimasta bloccata senza che GitHub l'abbia mai ricevuta, la azzeriamo
+if (pref.ricerca && !pref.ricerca.finita && !pref.ricerca.runId) {
+  const minuti = Math.round((Date.now() - new Date(pref.ricerca.avviata)) / 60000);
+  if (minuti > 10) { pref.ricerca = null; salvaPref(); }
+}
 disegna();
 disegnaAvanzamento();
 caricaParole();
