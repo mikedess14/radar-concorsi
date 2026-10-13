@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulatore esame – Radar concorsi</title>
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  :root {
+    --teal-50:#f0fdfa; --teal-600:#0d9488; --teal-700:#0f766e; --teal-800:#115e59; --teal-900:#134e4a;
+    --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-200:#e2e8f0; --slate-300:#cbd5e1; --slate-400:#94a3b8;
+    --slate-500:#64748b; --slate-600:#475569; --slate-700:#334155; --slate-800:#1e293b; --slate-900:#0f172a;
+    --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-700:#b45309; --amber-800:#92400e;
+    --green-50:#f0fdf4; --green-700:#15803d; --green-800:#166534;
+    --red-50:#fef2f2; --red-700:#b91c1c; --red-800:#991b1b;
+    --violet-50:#f5f3ff; --violet-700:#6d28d9; --violet-800:#5b21b6;
+    --radius:8px;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--slate-50); color:var(--slate-900);
+    font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; -webkit-text-size-adjust:100%; }
+  a { color:var(--teal-700); }
+  button { font:inherit; cursor:pointer; }
+  .wrap { max-width:860px; margin:0 auto; padding:24px 14px 60px; }
+  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:8px; margin-bottom:20px; }
+  h1 { margin:0; font-size:26px; letter-spacing:-.02em; color:var(--teal-900); }
+  .back { font-size:14px; color:var(--teal-700); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
+  .card { background:#fff; border:1px solid var(--slate-200); border-radius:14px; }
+  .pad { padding:20px; }
+  .lbl { font-size:13px; color:var(--slate-600); margin:16px 0 8px; }
+  .lbl:first-child { margin-top:0; }
+  .mat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:6px; }
+  .mat { display:flex; align-items:center; gap:8px; padding:9px 12px; border:1px solid var(--slate-300);
+    border-radius:var(--radius); font-size:14px; cursor:pointer; background:#fff; color:var(--slate-700); }
+  .mat:has(input:checked) { border-color:var(--teal-600); background:var(--teal-50); color:var(--teal-800); }
+  .mat input { accent-color:var(--teal-700); width:16px; height:16px; flex-shrink:0; }
+  .row { display:flex; flex-wrap:wrap; gap:8px; }
+  select { font:inherit; padding:9px 12px; border:1px solid var(--slate-300); border-radius:var(--radius);
+    background:#fff; color:var(--slate-700); width:100%; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    padding:10px 18px; border-radius:var(--radius); font-size:14px; font-weight:500; border:0;
+    cursor:pointer; text-decoration:none; }
+  .btn.primary { background:var(--teal-700); color:#fff; }
+  .btn.primary:hover { background:var(--teal-800); }
+  .btn.primary:disabled { opacity:.65; cursor:not-allowed; }
+  .btn.outline { background:#fff; color:var(--slate-700); border:1px solid var(--slate-300); }
+  .btn.outline:hover { background:var(--slate-50); }
+  .btn.danger { background:var(--red-50); color:var(--red-700); border:1px solid #fecaca; }
+  .err { font-size:13px; color:var(--red-700); margin:8px 0 0; }
+  .nota { font-size:13px; color:var(--slate-500); }
+
+  /* Esame */
+  .top-bar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .pill { font-size:13px; padding:4px 10px; border-radius:20px; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-600); }
+  .pill.materia { background:var(--violet-50); color:var(--violet-700); border-color:var(--violet-700); }
+  .timer { font-size:15px; font-weight:500; color:var(--slate-700); font-variant-numeric:tabular-nums; }
+  .timer.urg { color:var(--red-700); }
+  .pbar { height:5px; background:var(--slate-200); border-radius:3px; margin-bottom:20px; }
+  .pbar-fill { height:5px; background:var(--teal-600); border-radius:3px; transition:width .4s; }
+  .domanda-testo { font-size:17px; line-height:1.55; margin:0 0 20px; color:var(--slate-900); }
+  .opzioni { display:flex; flex-direction:column; gap:8px; }
+  .opt { display:flex; align-items:flex-start; gap:12px; padding:13px 14px;
+    border:1px solid var(--slate-300); border-radius:10px; cursor:pointer; background:#fff; transition:border-color .12s,background .12s; }
+  .opt:hover:not(.bloccata) { border-color:var(--teal-600); background:var(--teal-50); }
+  .opt.sel { border-color:var(--teal-600); background:var(--teal-50); }
+  .opt.ok { border-color:var(--green-700); background:var(--green-50); }
+  .opt.err { border-color:var(--red-700); background:var(--red-50); }
+  .opt.bloccata { cursor:default; }
+  .lettera { width:28px; height:28px; border-radius:50%; border:1.5px solid var(--slate-300);
+    display:grid; place-items:center; font-size:13px; font-weight:600; flex-shrink:0; color:var(--slate-600); }
+  .opt.sel .lettera { background:var(--teal-700); border-color:var(--teal-700); color:#fff; }
+  .opt.ok .lettera { background:var(--green-700); border-color:var(--green-700); color:#fff; }
+  .opt.err .lettera { background:var(--red-700); border-color:var(--red-700); color:#fff; }
+  .opt-testo { font-size:15px; line-height:1.4; color:var(--slate-800); padding-top:4px; }
+  .spiegazione { margin-top:14px; padding:12px 14px; background:var(--amber-50); border:1px solid var(--amber-100); border-radius:var(--radius); font-size:14px; color:var(--amber-800); }
+  .nav { display:flex; justify-content:space-between; align-items:center; margin-top:20px; flex-wrap:wrap; gap:8px; }
+  .salva-btn { font-size:13px; color:var(--teal-700); background:none; border:0; cursor:pointer; padding:0; }
+  .salvata-badge { font-size:12px; padding:2px 8px; border-radius:6px; background:var(--amber-100); color:var(--amber-800); }
+
+  /* Risultato */
+  .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0; }
+  .stat { background:var(--slate-50); border-radius:10px; padding:14px; text-align:center; }
+  .stat .val { font-size:26px; font-weight:600; }
+  .stat .nome { font-size:12px; color:var(--slate-500); margin-top:2px; }
+  .val.ok { color:var(--green-700); }
+  .val.err { color:var(--red-700); }
+  .val.gray { color:var(--slate-500); }
+  .materia-riga { display:flex; justify-content:space-between; align-items:center; padding:8px 0;
+    border-top:1px solid var(--slate-100); font-size:14px; }
+  .materia-riga:first-child { border-top:0; }
+  .pbar-mat { height:4px; background:var(--slate-200); border-radius:2px; width:80px; flex-shrink:0; }
+  .pbar-mat div { height:4px; border-radius:2px; }
+
+  /* Domande salvate */
+  .domanda-salvata { padding:14px; border:1px solid var(--slate-200); border-radius:10px; background:#fff; }
+  .domanda-salvata + .domanda-salvata { margin-top:8px; }
+  .ds-testo { font-size:15px; margin:0 0 10px; }
+  .ds-opzioni { display:flex; flex-direction:column; gap:4px; font-size:14px; }
+  .ds-opz { padding:6px 10px; border-radius:6px; }
+  .ds-opz.corretta { background:var(--green-50); color:var(--green-800); font-weight:500; }
+  .ds-spieg { font-size:13px; color:var(--amber-800); margin-top:8px; padding:8px 10px; background:var(--amber-50); border-radius:6px; }
+  .tag { font-size:12px; padding:2px 8px; border-radius:6px; background:var(--violet-50); color:var(--violet-700); }
+
+  /* Progressi */
+  .sessione { display:flex; justify-content:space-between; align-items:center; padding:10px 0;
+    border-top:1px solid var(--slate-100); font-size:14px; gap:8px; flex-wrap:wrap; }
+  .sessione:first-child { border-top:0; }
+
+  /* Nav tabs */
+  .tabs { display:flex; gap:2px; border-bottom:1px solid var(--slate-200); margin-bottom:20px; }
+  .tab { padding:10px 16px; font-size:14px; color:var(--slate-500); border:0; background:none;
+    cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
+  .tab.on { color:var(--teal-700); border-bottom-color:var(--teal-700); font-weight:500; }
+
+  /* Loading spinner */
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .spinner { width:20px; height:20px; border:2px solid var(--slate-200); border-top-color:var(--teal-700);
+    border-radius:50%; animation:spin .7s linear infinite; }
+
+  @media (max-width:600px) {
+    .stat-grid { grid-template-columns:1fr 1fr; }
+    .stat-grid .stat:last-child { grid-column:span 2; }
+    .mat-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <a class="back" href="index.html">← Radar concorsi</a>
+      <h1 style="margin-top:4px">Simulatore esame</h1>
+    </div>
+  </header>
+
+  <!-- ============================================================ TABS -->
+  <div class="tabs" role="tablist">
+    <button class="tab on" data-tab="esame" role="tab" aria-selected="true">Esame</button>
+    <button class="tab" data-tab="salvate" role="tab" aria-selected="false">Domande salvate <span id="cnt-salvate"></span></button>
+    <button class="tab" data-tab="progressi" role="tab" aria-selected="false">Progressi <span id="cnt-sessioni"></span></button>
+  </div>
+
+  <!-- ============================================================ TAB ESAME -->
+  <div id="tab-esame">
+
+    <!-- Configurazione -->
+    <div id="schermo-cfg" class="card pad">
+      <p class="lbl" style="margin-top:0">Materie</p>
+      <div class="mat-grid" id="materie-grid"></div>
+      <div class="row" style="margin-top:16px">
+        <div style="flex:1;min-width:160px">
+          <p class="lbl">Numero di domande</p>
+          <select id="cfg-numero">
+            <option value="20">20 domande (veloce)</option>
+            <option value="30" selected>30 domande (standard)</option>
+            <option value="40">40 domande (completo)</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:160px">
+          <p class="lbl">Tempo per domanda</p>
+          <select id="cfg-tempo">
+            <option value="60">60 secondi</option>
+            <option value="90" selected>90 secondi</option>
+            <option value="120">120 secondi</option>
+            <option value="0">Nessun limite</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:160px">
+          <p class="lbl">Difficoltà</p>
+          <select id="cfg-difficolta">
+            <option value="facile">Facile</option>
+            <option value="medio" selected>Medio (come al concorso)</option>
+            <option value="difficile">Difficile</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" style="margin-top:16px">
+        <div style="flex:1;min-width:160px">
+          <p class="lbl">Modalità</p>
+          <select id="cfg-modalita">
+            <option value="esame">Esame (risultati alla fine)</option>
+            <option value="studio">Studio (spiegazione subito)</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" style="margin-top:20px; align-items:center">
+        <button class="btn primary" id="btn-inizia">Genera le domande</button>
+        <p class="nota">Le domande vengono generate in 5-15 secondi. Sempre nuove.</p>
+      </div>
+      <p class="err" id="cfg-err"></p>
+
+      <details style="margin-top:20px">
+        <summary style="font-size:13px;color:var(--slate-500);cursor:pointer">Impostazioni</summary>
+        <div style="margin-top:12px">
+          <p class="lbl">Indirizzo del Worker Cloudflare</p>
+          <div class="row">
+            <input type="url" id="worker-url" placeholder="https://radar-esame.tuonome.workers.dev"
+              style="flex:1;padding:9px 12px;border:1px solid var(--slate-300);border-radius:var(--radius);font:inherit;">
+            <button class="btn outline" id="btn-salva-url">Salva</button>
+          </div>
+          <p class="err" id="url-err"></p>
+          <p class="nota" style="margin-top:6px" id="url-stato"></p>
+        </div>
+      </details>
+    </div>
+
+    <!-- Loading -->
+    <div id="schermo-loading" hidden class="card pad" style="text-align:center;padding:40px 20px">
+      <div class="spinner" style="margin:0 auto 16px"></div>
+      <p style="margin:0;font-size:15px;color:var(--slate-600)">Gemini sta preparando le domande…</p>
+      <p class="nota" style="margin:6px 0 0">Di solito ci vogliono 5-15 secondi.</p>
+    </div>
+
+    <!-- Domanda -->
+    <div id="schermo-domanda" hidden>
+      <div class="card pad">
+        <div class="top-bar">
+          <div class="row" style="gap:6px">
+            <span class="pill" id="num-domanda"></span>
+            <span class="pill materia" id="pill-materia"></span>
+          </div>
+          <div class="row" style="gap:10px;align-items:center">
+            <button class="salva-btn" id="btn-salva-domanda" aria-label="Salva domanda per rivedertela">⭐ Salva</button>
+            <span class="timer" id="timer-display"></span>
+          </div>
+        </div>
+        <div class="pbar"><div class="pbar-fill" id="pbar"></div></div>
+        <p class="domanda-testo" id="testo-domanda"></p>
+        <div class="opzioni" id="lista-opzioni"></div>
+        <div class="spiegazione" id="spiegazione" hidden></div>
+        <div class="nav">
+          <button class="btn outline" id="btn-prec" disabled>← Precedente</button>
+          <button class="btn danger" id="btn-termina">Termina anticipatamente</button>
+          <button class="btn primary" id="btn-succ">Successiva →</button>
+        </div>
+      </div>
+      <p class="nota" style="margin:10px 0 0;text-align:center">Le domande non ancora risposte contano come non date.</p>
+    </div>
+
+    <!-- Risultato -->
+    <div id="schermo-risultato" hidden class="card pad">
+      <p style="font-size:20px;font-weight:600;margin:0 0 4px" id="res-titolo"></p>
+      <p class="nota" id="res-sottotitolo"></p>
+      <div class="stat-grid">
+        <div class="stat"><div class="val ok" id="res-corrette"></div><div class="nome">Corrette</div></div>
+        <div class="stat"><div class="val err" id="res-errate"></div><div class="nome">Errate</div></div>
+        <div class="stat"><div class="val gray" id="res-ndate"></div><div class="nome">Non date</div></div>
+      </div>
+      <p class="lbl">Per materia</p>
+      <div id="res-materie"></div>
+      <div class="row" style="margin-top:20px;gap:8px;flex-wrap:wrap">
+        <button class="btn primary" id="btn-ricomincia">Ricomincia</button>
+        <button class="btn outline" id="btn-rivedi">Rivedi le risposte</button>
+      </div>
+
+      <!-- Revisione risposte -->
+      <div id="revisione" hidden style="margin-top:24px;border-top:1px solid var(--slate-200);padding-top:20px">
+        <p style="font-size:16px;font-weight:500;margin:0 0 12px">Revisione delle risposte</p>
+        <div id="lista-revisione"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================ TAB SALVATE -->
+  <div id="tab-salvate" hidden>
+    <div id="salvate-vuoto" class="card pad" style="text-align:center;color:var(--slate-500)">
+      <p style="margin:0;font-size:15px">Nessuna domanda salvata.</p>
+      <p class="nota">Durante l'esame premi ⭐ Salva su una domanda per tenerla qui.</p>
+    </div>
+    <div id="lista-salvate"></div>
+    <div id="salvate-azioni" hidden style="margin-top:12px;text-align:right">
+      <button class="btn danger" id="btn-svuota-salvate">Svuota l'elenco</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ TAB PROGRESSI -->
+  <div id="tab-progressi" hidden>
+    <div id="progressi-vuoto" class="card pad" style="text-align:center;color:var(--slate-500)">
+      <p style="margin:0;font-size:15px">Ancora nessuna sessione completata.</p>
+      <p class="nota">I risultati compaiono qui dopo ogni esame.</p>
+    </div>
+    <div class="card" id="lista-progressi-wrap" hidden>
+      <div id="lista-progressi" style="padding:0 16px"></div>
+    </div>
+    <div id="progressi-azioni" hidden style="margin-top:12px;text-align:right">
+      <button class="btn danger" id="btn-svuota-progressi">Cancella storico</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+/* ------------------------------------------------------------------ costanti */
+
+const CHIAVE = "radar-esame-v1";
+const MATERIE_DEFAULT = [
+  "Informatica e reti TCP/IP",
+  "Sicurezza informatica e cybersecurity",
+  "Basi di dati e SQL",
+  "Sistemi operativi e cloud",
+  "Gestione progetti IT",
+  "Diritto amministrativo e procedimento",
+  "CAD e codice digitale (D.Lgs. 82/2005)",
+  "Privacy e GDPR",
+  "Organizzazione della PA",
+  "Contabilità pubblica",
+];
+const SOGLIA_PROMOZIONE = 0.6;
+
+/* ------------------------------------------------------------------ stato */
+
+let domande = [];
+let indice = 0;
+let risposte = {};
+let timerInt = null;
+let secondiRimasti = 0;
+let modalita = "esame";
+let inEsame = false;
+
+function caricaDati() {
+  try { return JSON.parse(localStorage.getItem(CHIAVE) || "{}"); } catch { return {}; }
+}
+function salvaDati(d) { try { localStorage.setItem(CHIAVE, JSON.stringify(d)); } catch {} }
+
+const dati = caricaDati();
+dati.salvate = dati.salvate || [];
+dati.progressi = dati.progressi || [];
+dati.workerUrl = dati.workerUrl || "https://radar-esame.michele-dessi7.workers.dev";
+
+/* ------------------------------------------------------------------ utilità */
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const mostra = (id, v = true) => $(id).hidden = !v;
+const dataIt = (iso) => new Date(iso).toLocaleDateString("it-IT", { day:"numeric", month:"long", year:"numeric", hour:"2-digit", minute:"2-digit" });
+const fmtSec = (s) => `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+const colorePerc = (p) => p >= 0.8 ? "var(--green-700)" : p >= 0.6 ? "var(--amber-700)" : "var(--red-700)";
+
+/* ------------------------------------------------------------------ tabs */
+
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".tab").forEach(b => { b.classList.remove("on"); b.setAttribute("aria-selected","false"); });
+    btn.classList.add("on"); btn.setAttribute("aria-selected","true");
+    ["esame","salvate","progressi"].forEach(t => mostra("tab-"+t, t === btn.dataset.tab));
+    if (btn.dataset.tab === "salvate") disegnaSalvate();
+    if (btn.dataset.tab === "progressi") disegnaProgressi();
+  };
+});
+
+/* ------------------------------------------------------------------ configurazione */
+
+function costruisciCfg() {
+  const g = $("materie-grid");
+  MATERIE_DEFAULT.forEach(m => {
+    const l = document.createElement("label");
+    l.className = "mat";
+    l.innerHTML = `<input type="checkbox" value="${esc(m)}" checked><span>${esc(m)}</span>`;
+    g.appendChild(l);
+  });
+  const url = dati.workerUrl;
+  if (url) {
+    $("worker-url").value = url;
+    $("url-stato").textContent = `Worker configurato: ${url}`;
+  }
+  aggiornaBadge();
+}
+
+$("btn-salva-url").onclick = () => {
+  const v = $("worker-url").value.trim().replace(/\/$/, "");
+  if (!/^https?:\/\/.+/.test(v)) { $("url-err").textContent = "Inserisci un indirizzo che inizia con https://"; return; }
+  $("url-err").textContent = "";
+  dati.workerUrl = v;
+  salvaDati(dati);
+  $("url-stato").textContent = `Salvato: ${v}`;
+};
+
+$("btn-inizia").onclick = avviaEsame;
+
+async function avviaEsame() {
+  const materieScelte = [...document.querySelectorAll("#materie-grid input:checked")].map(i => i.value);
+  if (!materieScelte.length) { $("cfg-err").textContent = "Scegli almeno una materia."; return; }
+  if (!dati.workerUrl) { $("cfg-err").textContent = "Configura prima l'indirizzo del Worker nelle impostazioni qui sotto."; return; }
+  $("cfg-err").textContent = "";
+
+  const numero = parseInt($("cfg-numero").value);
+  const tempo = parseInt($("cfg-tempo").value);
+  modalita = $("cfg-modalita").value;
+  const difficolta = $("cfg-difficolta").value;
+
+  mostra("schermo-cfg", false);
+  mostra("schermo-loading");
+
+  try {
+    const risposta = await fetch(dati.workerUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ materie: materieScelte, numero, difficolta, domandePrecedenti: dati.domandePrecedenti || [] }),
+    });
+    const datiRaw = await risposta.json();
+    if (!risposta.ok || datiRaw.errore) throw new Error(datiRaw.errore || `Errore ${risposta.status}`);
+    if (!Array.isArray(datiRaw) || !datiRaw.length) throw new Error("Gemini non ha restituito domande. Riprova.");
+
+    domande = datiRaw;
+    indice = 0;
+    risposte = {};
+    inEsame = true;
+
+    dati.domandePrecedenti = [...(dati.domandePrecedenti || []), ...domande.map(d => d.testo)].slice(-60);
+    salvaDati(dati);
+
+    mostra("schermo-loading", false);
+    mostra("schermo-domanda");
+    mostraDomanda(tempo);
+
+  } catch(e) {
+    mostra("schermo-loading", false);
+    mostra("schermo-cfg");
+    $("cfg-err").textContent = "Non riesco a generare le domande: " + (e.message || "controlla la connessione e riprova.");
+  }
+}
+
+/* ------------------------------------------------------------------ esame */
+
+function mostraDomanda(tempoPerDomanda) {
+  if (indice >= domande.length) { terminaEsame(); return; }
+  const d = domande[indice];
+
+  $("num-domanda").textContent = `Domanda ${indice+1} di ${domande.length}`;
+  $("pill-materia").textContent = d.materia;
+  $("testo-domanda").innerHTML = esc(d.testo);
+  $("pbar").style.width = `${((indice)/domande.length)*100}%`;
+
+  const isSalvata = dati.salvate.some(s => s.testo === d.testo);
+  $("btn-salva-domanda").textContent = isSalvata ? "⭐ Salvata" : "⭐ Salva";
+
+  const risposta = risposte[indice] || null;
+  const rivelata = (modalita === "studio" && risposta) || (risposta && risposta === "__rivelata");
+  const lista = $("lista-opzioni");
+  lista.innerHTML = "";
+
+  ["A","B","C","D"].forEach(lett => {
+    const div = document.createElement("div");
+    div.className = "opt" + (risposta === lett ? " sel" : "");
+    if (rivelata) {
+      div.classList.add("bloccata");
+      if (lett === d.corretta) div.classList.add("ok");
+      else if (risposta === lett && lett !== d.corretta) div.classList.add("err");
+    }
+    div.innerHTML = `<div class="lettera">${lett}</div><div class="opt-testo">${esc(d.opzioni[lett])}</div>`;
+    if (!rivelata) div.onclick = () => selezionaRisposta(lett, tempoPerDomanda);
+    lista.appendChild(div);
+  });
+
+  mostra("spiegazione", rivelata && modalita === "studio");
+  if (rivelata && modalita === "studio") $("spiegazione").textContent = d.spiegazione || "";
+
+  $("btn-prec").disabled = indice === 0;
+  $("btn-succ").textContent = indice === domande.length-1 ? "Concludi esame" : "Successiva →";
+
+  avviaTimer(tempoPerDomanda);
+}
+
+function avviaTimer(secondi) {
+  clearInterval(timerInt);
+  if (!secondi) { $("timer-display").textContent = ""; return; }
+  secondiRimasti = secondi;
+  const aggiorna = () => {
+    $("timer-display").textContent = fmtSec(secondiRimasti);
+    $("timer-display").className = "timer" + (secondiRimasti <= 10 ? " urg" : "");
+    if (secondiRimasti <= 0) { clearInterval(timerInt); passaAvanti(); return; }
+    secondiRimasti--;
+  };
+  aggiorna();
+  timerInt = setInterval(aggiorna, 1000);
+}
+
+function passaAvanti() {
+  clearInterval(timerInt);
+  const tempo = parseInt($("cfg-tempo").value);
+  if (indice >= domande.length - 1) { terminaEsame(); return; }
+  indice++;
+  mostraDomanda(tempo);
+}
+
+function selezionaRisposta(lett, tempoPerDomanda) {
+  risposte[indice] = lett;
+  if (modalita === "studio") {
+    clearInterval(timerInt);
+    mostraDomanda(0);
+  } else {
+    document.querySelectorAll(".opt").forEach(o => {
+      o.classList.toggle("sel", o.querySelector(".lettera").textContent === lett);
+    });
+  }
+}
+
+$("btn-succ").onclick = passaAvanti;
+$("btn-prec").onclick = () => { clearInterval(timerInt); indice--; mostraDomanda(parseInt($("cfg-tempo").value)); };
+$("btn-termina").onclick = () => { if (confirm("Terminare l'esame adesso?")) terminaEsame(); };
+$("btn-ricomincia").onclick = tornaAllaConfig;
+$("btn-rivedi").onclick = mostraRevisione;
+
+$("btn-salva-domanda").onclick = () => {
+  const d = domande[indice];
+  if (!d) return;
+  const gia = dati.salvate.findIndex(s => s.testo === d.testo);
+  if (gia !== -1) {
+    dati.salvate.splice(gia, 1);
+    $("btn-salva-domanda").textContent = "⭐ Salva";
+  } else {
+    dati.salvate.unshift({ ...d, salvataIl: new Date().toISOString() });
+    $("btn-salva-domanda").textContent = "⭐ Salvata";
+  }
+  salvaDati(dati);
+  aggiornaBadge();
+};
+
+function terminaEsame() {
+  clearInterval(timerInt);
+  inEsame = false;
+  mostra("schermo-domanda", false);
+
+  const tot = domande.length;
+  let corrette = 0, errate = 0;
+  const perMateria = {};
+
+  domande.forEach((d, i) => {
+    const risp = risposte[i];
+    if (!perMateria[d.materia]) perMateria[d.materia] = { ok:0, tot:0 };
+    perMateria[d.materia].tot++;
+    if (risp === d.corretta) { corrette++; perMateria[d.materia].ok++; }
+    else if (risp) errate++;
+  });
+
+  const ndate = tot - corrette - errate;
+  const perc = corrette / tot;
+  const promosso = perc >= SOGLIA_PROMOZIONE;
+
+  $("res-titolo").textContent = promosso ? `Promosso — ${Math.round(perc*100)}%` : `Non promosso — ${Math.round(perc*100)}%`;
+  $("res-sottotitolo").textContent = promosso ? "Soglia di promozione raggiunta (60%)." : "Soglia di promozione non raggiunta (60%).";
+  $("res-corrette").textContent = corrette;
+  $("res-errate").textContent = errate;
+  $("res-ndate").textContent = ndate;
+
+  const mr = $("res-materie");
+  mr.innerHTML = Object.entries(perMateria).map(([m, s]) => {
+    const p = s.tot ? s.ok/s.tot : 0;
+    return `<div class="materia-riga">
+      <span>${esc(m)}</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="pbar-mat"><div style="width:${Math.round(p*100)}%;background:${colorePerc(p)};height:4px;border-radius:2px"></div></div>
+        <span style="font-size:13px;color:${colorePerc(p)};width:36px;text-align:right">${s.ok}/${s.tot}</span>
+      </div></div>`;
+  }).join("");
+
+  mostra("revisione", false);
+  mostra("schermo-risultato");
+
+  dati.progressi.unshift({
+    data: new Date().toISOString(),
+    corrette, errate, ndate, tot,
+    perc: Math.round(perc*100),
+    promosso,
+    materie: Object.fromEntries(Object.entries(perMateria).map(([m,s]) => [m, { ok:s.ok, tot:s.tot }])),
+  });
+  if (dati.progressi.length > 50) dati.progressi.length = 50;
+  salvaDati(dati);
+  aggiornaBadge();
+}
+
+function mostraRevisione() {
+  const div = $("lista-revisione");
+  div.innerHTML = domande.map((d, i) => {
+    const risp = risposte[i];
+    const ok = risp === d.corretta;
+    const opzioniHtml = ["A","B","C","D"].map(l => {
+      const cls = l === d.corretta ? "ds-opz corretta" : "ds-opz";
+      return `<div class="${cls}">${l}. ${esc(d.opzioni[l])}${l === d.corretta ? " ✓" : ""}${risp === l && l !== d.corretta ? " ✗ (tua risposta)" : ""}</div>`;
+    }).join("");
+    return `<div class="domanda-salvata">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px">
+        <span class="tag">${esc(d.materia)}</span>
+        <span style="font-size:13px;color:${ok ? "var(--green-700)" : risp ? "var(--red-700)" : "var(--slate-500)"}">
+          ${ok ? "Corretta" : risp ? "Errata" : "Non data"}</span>
+      </div>
+      <p class="ds-testo">${i+1}. ${esc(d.testo)}</p>
+      <div class="ds-opzioni">${opzioniHtml}</div>
+      ${d.spiegazione ? `<div class="ds-spieg">${esc(d.spiegazione)}</div>` : ""}
+    </div>`;
+  }).join("");
+  mostra("revisione");
+  $("lista-revisione").scrollIntoView({ behavior:"smooth" });
+}
+
+function tornaAllaConfig() {
+  clearInterval(timerInt);
+  domande = []; indice = 0; risposte = {}; inEsame = false;
+  mostra("schermo-risultato", false);
+  mostra("schermo-loading", false);
+  mostra("schermo-domanda", false);
+  mostra("schermo-cfg");
+}
+
+/* ------------------------------------------------------------------ salvate */
+
+function disegnaSalvate() {
+  const list = dati.salvate;
+  mostra("salvate-vuoto", !list.length);
+  mostra("salvate-azioni", !!list.length);
+  const div = $("lista-salvate");
+  div.innerHTML = list.map((d, i) => {
+    const opzioniHtml = ["A","B","C","D"].map(l => {
+      const cls = l === d.corretta ? "ds-opz corretta" : "ds-opz";
+      return `<div class="${cls}">${l}. ${esc(d.opzioni[l])}${l === d.corretta ? " ✓" : ""}</div>`;
+    }).join("");
+    return `<div class="domanda-salvata">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px">
+        <span class="tag">${esc(d.materia)}</span>
+        <button onclick="rimuoviSalvata(${i})" style="font-size:12px;color:var(--slate-500);background:none;border:0;cursor:pointer">Rimuovi</button>
+      </div>
+      <p class="ds-testo">${esc(d.testo)}</p>
+      <div class="ds-opzioni">${opzioniHtml}</div>
+      ${d.spiegazione ? `<div class="ds-spieg">${esc(d.spiegazione)}</div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+window.rimuoviSalvata = (i) => {
+  dati.salvate.splice(i, 1);
+  salvaDati(dati);
+  aggiornaBadge();
+  disegnaSalvate();
+};
+
+$("btn-svuota-salvate").onclick = () => {
+  if (!confirm("Eliminare tutte le domande salvate?")) return;
+  dati.salvate = [];
+  salvaDati(dati);
+  aggiornaBadge();
+  disegnaSalvate();
+};
+
+/* ------------------------------------------------------------------ progressi */
+
+function disegnaProgressi() {
+  const list = dati.progressi;
+  mostra("progressi-vuoto", !list.length);
+  mostra("lista-progressi-wrap", !!list.length);
+  mostra("progressi-azioni", !!list.length);
+  const div = $("lista-progressi");
+  if (!list.length) { div.innerHTML = ""; return; }
+  const media = Math.round(list.reduce((a, s) => a+s.perc, 0) / list.length);
+  div.innerHTML = `
+    <div style="padding:16px 0;border-bottom:1px solid var(--slate-200);display:flex;gap:16px;flex-wrap:wrap">
+      <div class="stat" style="flex:1;min-width:100px"><div class="val" style="color:var(--teal-700)">${list.length}</div><div class="nome">Sessioni</div></div>
+      <div class="stat" style="flex:1;min-width:100px"><div class="val" style="color:${colorePerc(media/100)}">${media}%</div><div class="nome">Media</div></div>
+      <div class="stat" style="flex:1;min-width:100px"><div class="val" style="color:var(--green-700)">${list.filter(s=>s.promosso).length}</div><div class="nome">Promozioni</div></div>
+    </div>
+    ${list.map(s => `<div class="sessione">
+      <div>
+        <div style="font-size:14px;font-weight:500;color:${s.promosso ? "var(--green-700)" : "var(--red-700)"}">
+          ${s.promosso ? "Promosso" : "Non promosso"} — ${s.perc}%
+        </div>
+        <div style="font-size:13px;color:var(--slate-500)">${dataIt(s.data)}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:14px">${s.corrette}/${s.tot} corrette</div>
+        <div style="font-size:13px;color:var(--slate-500)">${s.errate} errate, ${s.ndate} non date</div>
+      </div>
+    </div>`).join("")}`;
+}
+
+$("btn-svuota-progressi").onclick = () => {
+  if (!confirm("Cancellare tutto lo storico?")) return;
+  dati.progressi = [];
+  salvaDati(dati);
+  aggiornaBadge();
+  disegnaProgressi();
+};
+
+function aggiornaBadge() {
+  const ns = dati.salvate.length;
+  const np = dati.progressi.length;
+  $("cnt-salvate").textContent = ns ? `(${ns})` : "";
+  $("cnt-sessioni").textContent = np ? `(${np})` : "";
+}
+
+/* ------------------------------------------------------------------ avvio */
+costruisciCfg();
+</script>
+</body>
+</html>
