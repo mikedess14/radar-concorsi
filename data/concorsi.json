@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-11T22:38+00:00",
+ "aggiornato": "2026-10-13T01:06+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -233,6 +233,45 @@
    "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
    "trovato": "2026-10-07",
    "id": "f9b44ea8743e"
+  },
+  {
+   "motivo": "Mobilità volontaria per istruttore informatico presso Agris Sardegna a Cagliari.",
+   "titolo": "Istruttore Informatico",
+   "ente": "Agenzia per la ricerca in agricoltura (Agris Sardegna)",
+   "ambito": "R",
+   "tipo": "S",
+   "area": "I",
+   "sede": "Cagliari",
+   "comuni": [
+    "Cagliari"
+   ],
+   "province": [
+    "CA"
+   ],
+   "scadenza": "2026-11-09",
+   "ora": "12:00",
+   "posti": "1",
+   "contratto": "indeterminato",
+   "titolo_studio": "Diploma di istruzione secondaria di secondo grado",
+   "prove": [
+    "titoli",
+    "orale"
+   ],
+   "come_candidarsi": "Domanda online tramite portale dedicato o PEC come indicato nell'avviso",
+   "link_bando": "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
+   "link_candidatura": "https://www.sardegnaagricoltura.it",
+   "retribuzione_annua": 0,
+   "comparto": "RAS",
+   "profilo": "info",
+   "origine": "serale",
+   "link": [
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va="
+   ],
+   "fonti": [
+    "Laore e Agris"
+   ],
+   "trovato": "2026-10-13",
+   "id": "4fcde92b2e27"
   }
  ]
 }

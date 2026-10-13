@@ -1,6 +1,44 @@
 {
  "coda": [],
  "concorsi": {
+  "4fcde92b2e27": {
+   "ambito": "R",
+   "area": "I",
+   "come_candidarsi": "Domanda online tramite portale dedicato o PEC come indicato nell'avviso",
+   "comparto": "RAS",
+   "comuni": [
+    "Cagliari"
+   ],
+   "contratto": "indeterminato",
+   "ente": "Agenzia per la ricerca in agricoltura (Agris Sardegna)",
+   "fonti": [
+    "Laore e Agris"
+   ],
+   "link": [
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va="
+   ],
+   "link_bando": "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
+   "link_candidatura": "https://www.sardegnaagricoltura.it",
+   "motivo": "Mobilità volontaria per istruttore informatico presso Agris Sardegna a Cagliari.",
+   "ora": "12:00",
+   "origine": "serale",
+   "posti": "1",
+   "profilo": "info",
+   "prove": [
+    "titoli",
+    "orale"
+   ],
+   "province": [
+    "CA"
+   ],
+   "retribuzione_annua": 0,
+   "scadenza": "2026-11-09",
+   "sede": "Cagliari",
+   "tipo": "S",
+   "titolo": "Istruttore Informatico",
+   "titolo_studio": "Diploma di istruzione secondaria di secondo grado",
+   "trovato": "2026-10-13"
+  },
   "86e0db1eff25": {
    "ambito": "R",
    "area": "I",
@@ -1033,6 +1071,16 @@
    "f": "Università di Cagliari",
    "t": "Avviso 15.pdf"
   },
+  "https://web.unica.it/unica/protected/547751/0/def/ref/DOC547750/": {
+   "d": "2026-10-13",
+   "f": "Università di Cagliari",
+   "t": "Bando_tutores_SEA2_26-27_SIGNED_rep158.pdf"
+  },
+  "https://web.unica.it/unica/protected/547776/0/def/ref/DOC547774/": {
+   "d": "2026-10-13",
+   "f": "Università di Cagliari",
+   "t": "Bando2_tutores_SPOL_BLENDED_26-27_signed_rep166_2026.pdf"
+  },
   "https://www.abbanoa.it/Documenti-e-dati/Documenti-funzionamento-interno/Regolamento-per-il-reclutamento-del-personale": {
    "d": "2026-10-07",
    "f": "Abbanoa",
@@ -1501,6 +1549,16 @@
    "f": "ARES Sardegna",
    "t": "Pubblica selezione per il conferimento di un incarico quinquennale, rinnovabile, di Direttore S.C.CHIRURGIA GENERALE, de"
   },
+  "https://www.aressardegna.it/ap/pubblici-concorsi-unificati-per-titoli-ed-esami-per-la-copertura-a-tempo-indeterminato-di-n-3-posti-di-d-m-disciplina-di-cardiochirurgia-per-le-esigenze-dell-arnas-brotzu-e-dell-aou-ss-2713/": {
+   "d": "2026-10-13",
+   "f": "ARES Sardegna",
+   "t": "Pubblici Concorsi unificati, per titoli ed esami, per la copertura a tempo indeterminato di: n. 3 posti di D M disciplin"
+  },
+  "https://www.aressardegna.it/ap/pubblici-concorsi-unificati-per-titoli-ed-esami-per-la-copertura-a-tempo-indeterminato-di-n-5-posti-d-m-disciplina-di-neurochirurgia-dell-aou-sassari-e-della-asl-nuoro-2713/": {
+   "d": "2026-10-13",
+   "f": "ARES Sardegna",
+   "t": "Pubblici Concorsi unificati, per titoli ed esami, per la copertura a tempo indeterminato di: n. 5 posti D M disciplina d"
+  },
   "https://www.aressardegna.it/wp-content/uploads/2022/12/Concorsi-espletati-anno-2022-1.pdf": {
    "d": "2026-10-06",
    "f": "ARES Sardegna",
@@ -1811,6 +1869,11 @@
    "f": "inPA",
    "t": "AVVISO PUBBLICO PER IL RECLUTAMENTO MEDIANTE PASSAGGIO DIRETTO TRA PUBBLICHE AMMINISTRAZIONI (MOBILITA’) AI SENSI DELL’A"
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0894b5dd2b144391a326f645cfe7a796": {
+   "d": "2026-10-13",
+   "f": "inPA",
+   "t": "BANDO DI CONCORSOPER SOLI ESAMI PER L’ASSUNZIONE DI N. 3 AGENTI DI POLIZIA LOCALE – APPARTENENTI ALL’AREA DEGLI ISTRUTTO"
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0967ca43c8ef46da8201e90ff120137f": {
    "d": "2026-10-07",
    "f": "inPA",
@@ -1851,6 +1914,11 @@
    "f": "inPA",
    "t": "Concorso pubblico per n.548 unità di personale a tempo pieno e indeterminato, di cui n. 485 unità da inquadrare, nell’Ar"
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=1291aca378a24906b7866fca813a07ea": {
+   "d": "2026-10-13",
+   "f": "inPA",
+   "t": "Concorso pubblico, per n.18 unità di personale, da ..."
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=1752bead9eb644baa6c1739e36db7b8e": {
    "d": "2026-10-08",
    "f": "inPA",
@@ -1866,6 +1934,11 @@
    "f": "inPA",
    "t": "Bando di Concorso Pubblico per esami, per la copertura di n. 1 posto a tempo pieno e indeterminato di Istruttore Informa"
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=1e2e91df7dd44cdcbd8cf1a4a4820d8d": {
+   "d": "2026-10-13",
+   "f": "inPA",
+   "t": "AVVISO di selezione pubblica per titoli ed esami a valere ..."
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=1f686d53b62542b9b95499d13662ef37": {
    "d": "2026-10-09",
    "f": "inPA",
@@ -1880,6 +1953,11 @@
    "d": "2026-10-09",
    "f": "inPA",
    "t": "Avviso 0750/2026 per la selezione di n. 2 risorse (oltre 7 ..."
+  },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=24592c1103a84480a6f9bc8b1fd52831": {
+   "d": "2026-10-13",
+   "f": "inPA",
+   "t": "AREA DEI FUNZIONARI E DELLA ELEVATA ..."
   },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2479a6e7761b48f2be7fa54b3699cb98": {
    "d": "2026-10-07",
@@ -2040,6 +2118,11 @@
    "d": "2026-10-07",
    "f": "inPA",
    "t": "AREA DEGLI ISTRUTTORI, CON RISERVA DI N. 1 POSTO ..."
+  },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6022fb5a44a741eeba378481c0b6cd4b": {
+   "d": "2026-10-13",
+   "f": "inPA",
+   "t": "SPECIALISTA INFORMATICO (FUNZIONARI E ELEVATE ..."
   },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=64051e592a564f5fabce426c0816bb27": {
    "d": "2026-10-08",
@@ -2415,6 +2498,11 @@
    "d": "2026-10-07",
    "f": "Laore e Agris",
    "t": "BANDI E CONCORSI"
+  },
+  "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=": {
+   "d": "2026-10-13",
+   "f": "Laore e Agris",
+   "t": "AP 258 - Procedura di mobilità volontaria, per titoli e colloquio, mediante passaggio diretto di personale tra amministr"
   },
   "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922": {
    "d": "2026-10-07",
