@@ -41,3 +41,10 @@ ARPAS | https://www.sardegnaambiente.it/arpas/
 Laore e Agris | https://www.sardegnaagricoltura.it/
 # CTM blocca i server di GitHub: i suoi bandi si possono aggiungere con "Aggiungi bando" nell'app in Claude
 # CTM Cagliari | https://www.ctmcagliari.it/
+
+# --- Banca d'Italia e Autorità indipendenti (nazionali, con sedi in tutta Italia) ---
+Banca d'Italia | https://www.bancaditalia.it/chi-siamo/lavorare-bi/informazioni-concorsi/bandi/index.html | nazionale
+AGCOM (Autorità Garanzie Comunicazioni) | https://www.agcom.it/opportunita-di-lavoro | nazionale
+AGCM (Antitrust) | https://www.agcm.it/chi-siamo/lavora-con-noi | nazionale
+ARERA (Autorità Energia Reti Ambiente) | https://www.arera.it/chi-siamo/lavora-con-noi | nazionale
+Consob | https://www.consob.it/web/area-pubblica/lavora-con-noi | nazionale
