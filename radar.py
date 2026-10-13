@@ -53,6 +53,7 @@ MAX_AI = int(os.getenv("MAX_AI", "80"))  # bandi analizzati dall'AI per giorno
 PAUSA_AI = 7  # secondi tra due chiamate a Gemini (resta sotto i limiti gratuiti)
 PAUSA_WEB = 1.5  # secondi tra due pagine dello stesso sito
 MAX_TESTO = 15000  # caratteri di testo inviati all'AI per ogni bando
+MAX_TESTO_INPA = 6000  # le pagine inPA sono lunghe: ne mandiamo meno all'AI
 
 GEMINI_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 GEMINI_MODELLI = [m for m in [os.getenv("GEMINI_MODEL", "").strip(),
@@ -463,11 +464,13 @@ def cerca_inpa_con_tavily():
     if PROFILO_MODO == "parole" and PAROLE_RICHIESTA:
         domande = [f"concorso {p} Sardegna" for p in PAROLE_RICHIESTA[:6]]
     trovati = {}
+    anni_passati = [str(a) for a in range(2020, int(OGGI[:4]))]
     for d in domande:
+        query = f"{d} {OGGI[:4]} aperti"   # anno corrente per favorire risultati recenti
         try:
             r = requests.post("https://api.tavily.com/search", timeout=40,
                               headers={"Authorization": f"Bearer {TAVILY_KEY}"},
-                              json={"query": d, "include_domains": ["inpa.gov.it"], "max_results": 20,
+                              json={"query": query, "include_domains": ["inpa.gov.it"], "max_results": 20,
                                     "search_depth": "basic", "api_key": TAVILY_KEY})
         except Exception as e:
             log(f"   Tavily non raggiungibile: {e}")
@@ -479,10 +482,15 @@ def cerca_inpa_con_tavily():
             continue
         for ris in r.json().get("results", []):
             m = re.search(r"concorso_id=([0-9a-fA-F]{16,})", ris.get("url", ""))
-            if m:
-                ident = m.group(1).lower()
-                trovati[ident] = {"url": INPA_DETTAGLIO.format(ident), "titolo": ris.get("title", "")[:200],
-                                  "contesto": ris.get("content", "")[:400], "livello": 2}
+            if not m:
+                continue
+            # Scarta se il contenuto segnala una scadenza chiaramente passata
+            testo_ris = (ris.get("content", "") + " " + ris.get("title", "")).lower()
+            if any(("scad" in testo_ris or "chiuso" in testo_ris or "conclus" in testo_ris) and a in testo_ris for a in anni_passati):
+                continue
+            ident = m.group(1).lower()
+            trovati[ident] = {"url": INPA_DETTAGLIO.format(ident), "titolo": ris.get("title", "")[:200],
+                              "contesto": ris.get("content", "")[:400], "livello": 2}
         time.sleep(1)
     log(f"   inPA tramite Tavily: {len(trovati)} pagine di bandi trovate")
     return list(trovati.values())
@@ -614,7 +622,7 @@ def chiedi_gemini(prompt):
                  "generationConfig": {"responseMimeType": "application/json", "temperature": 0.1}}
         for tentativo in range(3):
             try:
-                r = requests.post(url, json=corpo, headers={"x-goog-api-key": GEMINI_KEY}, timeout=(15, 75))
+                r = requests.post(url, json=corpo, headers={"x-goog-api-key": GEMINI_KEY}, timeout=(15, 120))
             except Exception as e:
                 ultimo_errore = f"rete: {e}"
                 log(f"   Gemini non risponde ({modello}, tentativo {tentativo + 1}): {e}")
@@ -869,7 +877,8 @@ def main():
                 if fonte["nazionale"] and not riguarda_sardegna(tutto):
                     continue
                 if c["url"] not in gia_in_coda:
-                    stato["coda"].append({"url": c["url"], "fonte": nome, "testo": tutto[:MAX_TESTO],
+                    limite = MAX_TESTO_INPA if nome == "inPA" and c.get("livello") == 2 else MAX_TESTO
+                    stato["coda"].append({"url": c["url"], "fonte": nome, "testo": tutto[:limite],
                                           "titolo": c["titolo"][:200], "contesto": c["contesto"][:300],
                                           "profilo": PROFILO_MODO, "parole": parole if PROFILO_MODO == "parole" else [],
                                           "ambiti": sorted(AMBITI_RICHIESTA), "origine": MODALITA})
