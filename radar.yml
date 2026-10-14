@@ -3,11 +3,11 @@ run-name: ${{ inputs.richiesta && format('Ricerca approfondita {0}', inputs.rich
 
 on:
   schedule:
-    - cron: "0 19 * * *"   # ogni sera alle 21:00 (ora legale) o alle 20:00 (ora solare)
-  workflow_dispatch:        # avvio a mano o dalla web app ("Ricerca approfondita")
+    - cron: "0 19 * * *"
+  workflow_dispatch:
     inputs:
       richiesta:
-        description: "Identificativo della ricerca (lo imposta la web app, lascia vuoto per un controllo completo)"
+        description: "Identificativo della ricerca"
         required: false
         default: ""
       profilo:
@@ -15,15 +15,15 @@ on:
         required: false
         default: "info"
       parole:
-        description: "Parole chiave separate da | (vuoto = parole_chiave.txt)"
+        description: "Parole chiave separate da |"
         required: false
         default: ""
       ambiti:
-        description: "Ambiti separati da virgola: R,NS,NN,EL (vuoto = tutti)"
+        description: "Ambiti separati da virgola: R,NS,NN,EL"
         required: false
         default: ""
       fonti:
-        description: "Fonti separate da | (vuoto = tutte)"
+        description: "Fonti separate da |"
         required: false
         default: ""
 
@@ -38,6 +38,8 @@ jobs:
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -47,6 +49,7 @@ jobs:
         run: python radar.py
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           RADAR_MODALITA: ${{ inputs.richiesta && 'approfondita' || 'serale' }}
@@ -60,8 +63,13 @@ jobs:
           git config user.name "radar-bot"
           git config user.email "radar-bot@users.noreply.github.com"
           git add -A
-          git diff --cached --quiet || git commit -m "Aggiornamento concorsi $(date +%F)"
+          git diff --cached --quiet && exit 0
+          git stash
           git fetch origin main
           git checkout main
-          git rebase FETCH_HEAD || (git rebase --abort && git reset --soft FETCH_HEAD && git commit -m "Aggiornamento concorsi $(date +%F)")
+          git pull origin main --no-rebase
+          git stash pop || true
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "Aggiornamento concorsi $(date +%F)"
           git push origin main
