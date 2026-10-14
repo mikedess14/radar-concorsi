@@ -768,7 +768,11 @@ function disegnaAvanzamento() {
   const perc = r.fase === "Salvataggio dei risultati" ? 85 : r.fase === "Pubblicazione dei risultati" ? 95
     : Math.min(80, 8 + min * 3);
   box.innerHTML = `<div class="progress"><div class="top">
-    <p><b>Ricerca approfondita in corso</b></p><p>avviata alle ${new Date(r.avviata).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}, da ${min} min</p></div>
+    <p><b>Ricerca approfondita in corso</b></p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <p>avviata alle ${new Date(r.avviata).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}, da ${min} min</p>
+      <button class="linkbtn" type="button" id="chiudiRicerca" style="color:var(--teal-800)">Interrompi</button>
+    </div></div>
     <div class="bar"><div style="width:${perc}%"></div></div>
     <p style="margin-top:8px;font-size:13px">${esc(r.fase || "In attesa che GitHub la avvii")}.${link ? link + "." : ""}
     Puoi chiudere la pagina: quando finisce, i risultati nuovi compaiono qui con l'etichetta Nuovo.</p></div>`;
@@ -808,12 +812,26 @@ async function avviaApprofondita() {
   segui();
 }
 
+const LIMITE_RICERCA = 75 * 60000;   // oltre questo tempo la ricerca viene chiusa comunque
+const MAX_ERRORI = 6;                // dopo sei tentativi falliti di fila smettiamo di riprovare
+
+/* Una ricerca non resta mai in sospeso: oltre il tempo limite viene chiusa */
+function scadutaDaTroppo(r) {
+  return Date.now() - new Date(r.avviata) > LIMITE_RICERCA;
+}
+
 let seguendo = false;
 async function segui() {
   if (seguendo) return;
   seguendo = true;
   while (pref.ricerca && !pref.ricerca.finita) {
     const r = pref.ricerca;
+    if (scadutaDaTroppo(r)) {
+      Object.assign(r, { finita: true, esito: "parziale",
+        messaggio: "Non ho più notizie della ricerca dopo più di un'ora. Controlla il registro su GitHub: se è andata a buon fine, i risultati compaiono ricaricando la pagina." });
+      salvaPref(); disegnaAvanzamento(); disegnaRicerca();
+      break;
+    }
     try {
       if (!r.runId) {
         const elenco = await gh("/actions/runs?event=workflow_dispatch&per_page=20");
@@ -852,9 +870,16 @@ async function segui() {
           Object.assign(r, { finita: true, esito: "parziale", messaggio: "La ricerca è terminata ma la pagina non si è ancora aggiornata. Ricaricala tra qualche minuto." });
         }
       }
+      r.errori = 0;
     } catch (e) {
-      r.fase = "Collegamento a GitHub non riuscito, riprovo";
-      if (e.status === 401 || e.status === 403) Object.assign(r, { finita: true, esito: "errore", messaggio: spiegaErrore(e) });
+      r.errori = (r.errori || 0) + 1;
+      r.fase = `Collegamento a GitHub non riuscito, riprovo (${r.errori} di ${MAX_ERRORI})`;
+      if (e.status === 401 || e.status === 403) {
+        Object.assign(r, { finita: true, esito: "errore", messaggio: spiegaErrore(e) });
+      } else if (r.errori >= MAX_ERRORI) {
+        Object.assign(r, { finita: true, esito: "errore",
+          messaggio: "Non riesco a contattare GitHub. Controlla la connessione e la chiave di accesso nelle impostazioni, poi riprova." });
+      }
     }
     salvaPref();
     disegnaAvanzamento();
@@ -985,10 +1010,17 @@ function applicaDati(d) {
   if (aggiornatoIl) $("aggiornato").textContent = "Ultimo controllo: " + oraIt(aggiornatoIl);
 }
 
-// Se la ricerca è rimasta bloccata senza che GitHub l'abbia mai ricevuta, la azzeriamo
-if (pref.ricerca && !pref.ricerca.finita && !pref.ricerca.runId) {
+// All'apertura: nessuna ricerca resta appesa. Quelle troppo vecchie vengono chiuse o azzerate.
+if (pref.ricerca && !pref.ricerca.finita) {
   const minuti = Math.round((Date.now() - new Date(pref.ricerca.avviata)) / 60000);
-  if (minuti > 10) { pref.ricerca = null; salvaPref(); }
+  if (!pref.ricerca.runId && minuti > 10) {
+    pref.ricerca = null;          // GitHub non l'ha mai ricevuta: la dimentichiamo
+  } else if (minuti > 75) {
+    pref.ricerca = null;          // troppo vecchia per essere ancora in corso
+  } else {
+    pref.ricerca.errori = 0;      // nuova sessione: riparte il conteggio degli errori
+  }
+  salvaPref();
 }
 disegna();
 disegnaAvanzamento();
