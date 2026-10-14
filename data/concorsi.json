@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-14T07:44+00:00",
+ "aggiornato": "2026-10-14T10:02+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -58,6 +58,40 @@
    "titolo_studio": "Diploma di istruzione secondaria di secondo grado",
    "trovato": "2026-10-13",
    "id": "4fcde92b2e27"
+  },
+  {
+   "ambito": "NS",
+   "area": "F",
+   "come_candidarsi": "Tramite portale inPA",
+   "comparto": "FL",
+   "comuni": [],
+   "contratto": "indeterminato",
+   "ente": "Dipartimento per le politiche di coesione e per il Sud",
+   "fonti": [
+    "inPA"
+   ],
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5b4762b9ab8a447f982997cd9f44a982"
+   ],
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5b4762b9ab8a447f982997cd9f44a982",
+   "link_candidatura": "https://www.inpa.gov.it",
+   "motivo": "Concorso nazionale con posti in Sardegna e profili informatici/ICT",
+   "origine": "approfondita",
+   "posti": "2200",
+   "profilo": "info",
+   "prove": [
+    "pre",
+    "scritta",
+    "orale"
+   ],
+   "province": [],
+   "retribuzione_annua": 0,
+   "sede": "Sardegna",
+   "tipo": "C",
+   "titolo": "Funzionario Informatico / Specialista ICT",
+   "titolo_studio": "Laurea",
+   "trovato": "2026-10-14",
+   "id": "65ae61a6bce7"
   },
   {
    "ambito": "R",
@@ -280,38 +314,54 @@
    "id": "f9b44ea8743e"
   },
   {
-   "motivo": "Concorso nazionale con posti in Sardegna e profili informatici/ICT",
-   "titolo": "Funzionario Informatico / Specialista ICT",
-   "ente": "Dipartimento per le politiche di coesione e per il Sud",
-   "ambito": "NS",
+   "motivo": "Maxi concorso RIPAM assistenti informatici con sedi anche in Sardegna",
+   "titolo": "Assistente Informatico",
+   "ente": "Formez PA / Commissione RIPAM",
+   "ambito": "NN",
    "tipo": "C",
-   "area": "F",
-   "sede": "Sardegna",
+   "area": "I",
+   "sede": "Varie sedi territoriali incluse la Sardegna",
    "comuni": [],
    "province": [],
-   "posti": "2200",
+   "posti": "583",
    "contratto": "indeterminato",
-   "titolo_studio": "Laurea",
+   "titolo_studio": "Diploma di scuola secondaria di secondo grado",
    "prove": [
     "pre",
     "scritta",
     "orale"
    ],
    "come_candidarsi": "Tramite portale inPA",
-   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5b4762b9ab8a447f982997cd9f44a982",
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2479a6e7761b48f2be7fa54b3699cb98",
    "link_candidatura": "https://www.inpa.gov.it",
    "retribuzione_annua": 0,
-   "comparto": "FL",
-   "profilo": "info",
+   "comparto": "FC",
+   "profilo": "parole",
    "origine": "approfondita",
+   "parole": [
+    "ripam",
+    "istruttore informatico",
+    "informatic",
+    "ict",
+    "sistemi informativi",
+    "sistema informativo",
+    "programmator",
+    "sviluppator",
+    "software",
+    "sistemista",
+    "cyber",
+    "sicurezza informatica",
+    "reti e sistemi",
+    "maxi avviso"
+   ],
    "link": [
-    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5b4762b9ab8a447f982997cd9f44a982"
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2479a6e7761b48f2be7fa54b3699cb98"
    ],
    "fonti": [
     "inPA"
    ],
    "trovato": "2026-10-14",
-   "id": "65ae61a6bce7"
+   "id": "43f0cfba294f"
   }
  ]
 }
