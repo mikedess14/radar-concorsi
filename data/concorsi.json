@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-14T10:02+00:00",
+ "aggiornato": "2026-10-14T10:39+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -19,6 +19,56 @@
   "Consob"
  ],
  "concorsi": [
+  {
+   "ambito": "NN",
+   "area": "I",
+   "come_candidarsi": "Tramite portale inPA",
+   "comparto": "FC",
+   "comuni": [],
+   "contratto": "indeterminato",
+   "ente": "Formez PA / Commissione RIPAM",
+   "fonti": [
+    "inPA"
+   ],
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2479a6e7761b48f2be7fa54b3699cb98"
+   ],
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2479a6e7761b48f2be7fa54b3699cb98",
+   "link_candidatura": "https://www.inpa.gov.it",
+   "motivo": "Maxi concorso RIPAM assistenti informatici con sedi anche in Sardegna",
+   "origine": "approfondita",
+   "parole": [
+    "ripam",
+    "istruttore informatico",
+    "informatic",
+    "ict",
+    "sistemi informativi",
+    "sistema informativo",
+    "programmator",
+    "sviluppator",
+    "software",
+    "sistemista",
+    "cyber",
+    "sicurezza informatica",
+    "reti e sistemi",
+    "maxi avviso"
+   ],
+   "posti": "583",
+   "profilo": "parole",
+   "prove": [
+    "pre",
+    "scritta",
+    "orale"
+   ],
+   "province": [],
+   "retribuzione_annua": 0,
+   "sede": "Varie sedi territoriali incluse la Sardegna",
+   "tipo": "C",
+   "titolo": "Assistente Informatico",
+   "titolo_studio": "Diploma di scuola secondaria di secondo grado",
+   "trovato": "2026-10-14",
+   "id": "43f0cfba294f"
+  },
   {
    "ambito": "R",
    "area": "I",
@@ -312,56 +362,6 @@
    "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
    "trovato": "2026-10-07",
    "id": "f9b44ea8743e"
-  },
-  {
-   "motivo": "Maxi concorso RIPAM assistenti informatici con sedi anche in Sardegna",
-   "titolo": "Assistente Informatico",
-   "ente": "Formez PA / Commissione RIPAM",
-   "ambito": "NN",
-   "tipo": "C",
-   "area": "I",
-   "sede": "Varie sedi territoriali incluse la Sardegna",
-   "comuni": [],
-   "province": [],
-   "posti": "583",
-   "contratto": "indeterminato",
-   "titolo_studio": "Diploma di scuola secondaria di secondo grado",
-   "prove": [
-    "pre",
-    "scritta",
-    "orale"
-   ],
-   "come_candidarsi": "Tramite portale inPA",
-   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2479a6e7761b48f2be7fa54b3699cb98",
-   "link_candidatura": "https://www.inpa.gov.it",
-   "retribuzione_annua": 0,
-   "comparto": "FC",
-   "profilo": "parole",
-   "origine": "approfondita",
-   "parole": [
-    "ripam",
-    "istruttore informatico",
-    "informatic",
-    "ict",
-    "sistemi informativi",
-    "sistema informativo",
-    "programmator",
-    "sviluppator",
-    "software",
-    "sistemista",
-    "cyber",
-    "sicurezza informatica",
-    "reti e sistemi",
-    "maxi avviso"
-   ],
-   "link": [
-    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2479a6e7761b48f2be7fa54b3699cb98"
-   ],
-   "fonti": [
-    "inPA"
-   ],
-   "trovato": "2026-10-14",
-   "id": "43f0cfba294f"
   }
  ]
 }
