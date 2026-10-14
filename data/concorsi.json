@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-13T23:28+00:00",
+ "aggiornato": "2026-10-14T07:44+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -33,7 +33,8 @@
     "Laore e Agris"
    ],
    "link": [
-    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va="
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922"
    ],
    "link_bando": "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
    "link_candidatura": "https://www.sardegnaagricoltura.it",
@@ -277,6 +278,40 @@
    "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
    "trovato": "2026-10-07",
    "id": "f9b44ea8743e"
+  },
+  {
+   "motivo": "Concorso nazionale con posti in Sardegna e profili informatici/ICT",
+   "titolo": "Funzionario Informatico / Specialista ICT",
+   "ente": "Dipartimento per le politiche di coesione e per il Sud",
+   "ambito": "NS",
+   "tipo": "C",
+   "area": "F",
+   "sede": "Sardegna",
+   "comuni": [],
+   "province": [],
+   "posti": "2200",
+   "contratto": "indeterminato",
+   "titolo_studio": "Laurea",
+   "prove": [
+    "pre",
+    "scritta",
+    "orale"
+   ],
+   "come_candidarsi": "Tramite portale inPA",
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5b4762b9ab8a447f982997cd9f44a982",
+   "link_candidatura": "https://www.inpa.gov.it",
+   "retribuzione_annua": 0,
+   "comparto": "FL",
+   "profilo": "info",
+   "origine": "approfondita",
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5b4762b9ab8a447f982997cd9f44a982"
+   ],
+   "fonti": [
+    "inPA"
+   ],
+   "trovato": "2026-10-14",
+   "id": "65ae61a6bce7"
   }
  ]
 }
