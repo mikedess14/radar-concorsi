@@ -21,16 +21,16 @@ Regione Sardegna | https://www.regione.sardegna.it/
 # SardegnaLavoro (ASPAL) | https://www.sardegnalavoro.it/
 
 # --- Sanità ---
-ARES Sardegna | https://www.aressardegna.it/
+ARES Sardegna | https://www.aressardegna.it/albo-pretorio/bandi-di-concorso-e-selezione/
 # AOU Cagliari blocca i server di GitHub: i suoi bandi arrivano comunque da inPA e Gazzetta
 # AOU Cagliari | https://www.aoucagliari.it/
-AOU Sassari | https://www.aousassari.it/
+AOU Sassari | https://www.aousassari.it/amministrazione-trasparente/bandi-di-concorso/bandi-di-concorso-e-selezione/
 # ARNAS Brotzu blocca i server di GitHub: i suoi bandi arrivano da inPA e Gazzetta
 # ARNAS Brotzu | https://www.aobrotzu.it/aobinforma/concorsi.html
 
 # --- Università ---
-Università di Cagliari | https://www.unica.it/
-Università di Sassari | https://www.uniss.it/
+Università di Cagliari | https://www.unica.it/unica/it/ateneo_s14.page
+Università di Sassari | https://www.uniss.it/it/bandi-pta
 
 # --- Società ed enti pubblici sardi ---
 Abbanoa | https://www.abbanoa.it/Societa-Trasparente/Selezione-del-Personale
@@ -44,7 +44,7 @@ Laore e Agris | https://www.sardegnaagricoltura.it/
 
 # --- Banca d'Italia e Autorità indipendenti (nazionali, con sedi in tutta Italia) ---
 Banca d'Italia | https://www.bancaditalia.it/chi-siamo/lavorare-bi/informazioni-concorsi/bandi/index.html | nazionale
-AGCOM (Autorità Garanzie Comunicazioni) | https://www.agcom.it/opportunita-di-lavoro | nazionale
-AGCM (Antitrust) | https://www.agcm.it/chi-siamo/lavora-con-noi | nazionale
-ARERA (Autorità Energia Reti Ambiente) | https://www.arera.it/chi-siamo/lavora-con-noi | nazionale
-Consob | https://www.consob.it/web/area-pubblica/lavora-con-noi | nazionale
+AGCOM (Autorità Garanzie Comunicazioni) | https://www.agcom.it/chi-siamo/selezione-del-personale | nazionale
+AGCM (Antitrust) | https://www.agcm.it/chi-siamo/l-agcm/lavora-con-noi | nazionale
+ARERA (Autorità Energia Reti Ambiente) | https://www.arera.it/it/lavora-con-noi.htm | nazionale
+Consob | https://www.consob.it/web/consob/lavora-con-noi | nazionale

@@ -3,11 +3,11 @@ run-name: ${{ inputs.richiesta && format('Ricerca approfondita {0}', inputs.rich
 
 on:
   schedule:
-    - cron: "0 19 * * *"
-  workflow_dispatch:
+    - cron: "0 19 * * *"   # ogni sera alle 21:00 (ora legale) o alle 20:00 (ora solare)
+  workflow_dispatch:        # avvio a mano o dalla web app ("Ricerca approfondita")
     inputs:
       richiesta:
-        description: "Identificativo della ricerca"
+        description: "Identificativo della ricerca (lo imposta la web app, lascia vuoto per un controllo completo)"
         required: false
         default: ""
       profilo:
@@ -15,15 +15,15 @@ on:
         required: false
         default: "info"
       parole:
-        description: "Parole chiave separate da |"
+        description: "Parole chiave separate da | (vuoto = parole_chiave.txt)"
         required: false
         default: ""
       ambiti:
-        description: "Ambiti separati da virgola: R,NS,NN,EL"
+        description: "Ambiti separati da virgola: R,NS,NN,EL (vuoto = tutti)"
         required: false
         default: ""
       fonti:
-        description: "Fonti separate da |"
+        description: "Fonti separate da | (vuoto = tutte)"
         required: false
         default: ""
 
@@ -64,12 +64,7 @@ jobs:
           git config user.email "radar-bot@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git stash
-          git fetch origin main
-          git checkout main
-          git pull origin main --no-rebase
-          git stash pop || true
-          git add -A
-          git diff --cached --quiet && exit 0
           git commit -m "Aggiornamento concorsi $(date +%F)"
-          git push origin main
+          git fetch origin main
+          git rebase origin/main -X ours
+          git push origin HEAD:main
