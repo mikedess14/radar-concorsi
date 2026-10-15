@@ -346,6 +346,7 @@ let aggiornatoIl = null;
 let aperto = null;
 let paroleRepo = [];
 let parolePronte = false;
+let erroreParole = "";
 let pref = caricaPref();
 const ultimaVisitaPrecedente = pref.ultimaVisita || null;
 pref.ultimaVisita = OGGI;
@@ -407,17 +408,38 @@ function analizzaParole(testo) {
 }
 const paroleAttive = () => (pref.sincronizza && puoScrivere() ? paroleRepo : (pref.paroleLocali || paroleRepo));
 
+async function leggiParoleDalSito() {
+  const r = await fetch("parole_chiave.txt?t=" + Date.now(), { cache: "no-store" });
+  if (!r.ok) throw new Error("file non raggiungibile");
+  return analizzaParole(await r.text());
+}
+
 async function caricaParole() {
-  try {
-    if (puoScrivere()) {
+  erroreParole = "";
+  let daGitHub = null;
+  if (puoScrivere()) {
+    try {
       const f = await gh("/contents/parole_chiave.txt");
-      paroleRepo = analizzaParole(daTesto(f.content));
-    } else {
-      const r = await fetch("parole_chiave.txt?t=" + Date.now(), { cache: "no-store" });
-      if (r.ok) paroleRepo = analizzaParole(await r.text());
+      daGitHub = analizzaParole(daTesto(f.content));
+    } catch (e) {
+      erroreParole = "Non riesco a leggere le parole chiave dal repository. " + spiegaErrore(e);
     }
-  } catch (e) {
-    statoParole(spiegaErrore(e), true);
+  }
+  if (daGitHub && daGitHub.length) {
+    paroleRepo = daGitHub;
+  } else {
+    // ripiego: il file pubblicato sul sito, aggiornato a ogni controllo serale
+    try {
+      const daSito = await leggiParoleDalSito();
+      if (daSito.length) {
+        paroleRepo = daSito;
+        if (daGitHub && !daGitHub.length) erroreParole = "";
+      } else if (!erroreParole) {
+        erroreParole = "Il file delle parole chiave risulta vuoto.";
+      }
+    } catch {
+      if (!erroreParole) erroreParole = "Non riesco a leggere il file delle parole chiave.";
+    }
   }
   parolePronte = true;
   disegnaParole();
@@ -449,7 +471,8 @@ function apriPopupParole() {
   $("kwavviso").hidden = true;
   $("kwerr").textContent = "";
   $("kwin").value = "";
-  statoParole(puoScrivere() ? "" : "Senza chiave di accesso le parole restano solo in questo browser. Aggiungila nelle impostazioni per usarle anche nel controllo serale.");
+  if (erroreParole) statoParole(erroreParole + " Premi Annulla e ricarica la pagina invece di salvare.", true);
+  else statoParole(puoScrivere() ? "" : "Senza chiave di accesso le parole restano solo in questo browser. Aggiungila nelle impostazioni per usarle anche nel controllo serale.");
   disegnaParole();
   $("kwdialog").showModal();
   setTimeout(() => $("kwin").focus(), 50);
@@ -495,6 +518,11 @@ function aggiungiParola() {
 
 async function salvaPopupParole() {
   const nuove = [...bozza];
+  if (!nuove.length && paroleRepo.length) {
+    statoParole("L'elenco è vuoto ma nel repository ci sono " + paroleRepo.length + " parole: salvando le cancelleresti. Chiudi con Annulla e ricarica la pagina.", true);
+    return;
+  }
+  if (!nuove.length && !confirm("Vuoi davvero salvare un elenco di parole chiave vuoto?")) return;
   const btn = $("kwsalva");
   btn.disabled = true;
   statoParole("Salvataggio…");
@@ -630,6 +658,9 @@ function disegnaRicerca() {
   $("kwcount").textContent = parolePronte
     ? `${n === 1 ? "1 parola attiva" : n + " parole attive"}, ${pref.sincronizza && puoScrivere() ? "usate anche nel controllo serale" : "salvate solo in questo browser"}.`
     : "Carico le parole chiave…";
+  const avviso = $("kwesito");
+  if (erroreParole) { avviso.textContent = erroreParole; avviso.className = "err"; }
+  else if (avviso.className === "err") { avviso.textContent = ""; avviso.className = "ok"; }
   $("ambiti").innerHTML = Object.entries(AMBITI).map(([k, nome]) =>
     `<button type="button" class="chip" data-ambito="${k}" aria-pressed="${v.ambiti.includes(k)}">${esc(nome)}</button>`).join("");
   $("menuFonti").innerHTML = menuHtml(MENU_FONTI[0]);
