@@ -857,8 +857,12 @@ async function segui() {
         }
       }
       if (r.salvata && !r.finita) {
-        const d = await (await fetch("data/concorsi.json?t=" + Date.now(), { cache: "no-store" })).json();
-        if (d.aggiornato && d.aggiornato !== r.aggiornatoPrima) {
+        let d = null;
+        try {
+          const risposta = await fetch("data/concorsi.json?t=" + Date.now(), { cache: "no-store" });
+          if (risposta.ok) d = await risposta.json();
+        } catch { d = null; }   // il file non è ancora pubblicato: riproviamo al giro dopo
+        if (d && d.aggiornato && d.aggiornato !== r.aggiornatoPrima) {
           applicaDati(d);
           const nuovi = concorsi.filter((c) => !r.prima.includes(c.id));
           nuovi.forEach((c) => (pref.nuoviRicerca[c.id] = true));
@@ -866,8 +870,13 @@ async function segui() {
             messaggio: (nuovi.length ? (nuovi.length === 1 ? "1 concorso nuovo: lo trovi nell'elenco con l'etichetta Nuovo." : `${nuovi.length} concorsi nuovi: li trovi nell'elenco con l'etichetta Nuovo.`) : "Nessun concorso nuovo rispetto all'archivio.")
               + (r.esitoRun === "success" ? "" : " La ricerca si è interrotta prima della fine: i bandi rimasti verranno analizzati nel controllo serale.") });
           disegna();
-        } else if (Date.now() - new Date(r.avviata) > 70 * 60000) {
-          Object.assign(r, { finita: true, esito: "parziale", messaggio: "La ricerca è terminata ma la pagina non si è ancora aggiornata. Ricaricala tra qualche minuto." });
+        } else {
+          r.fase = "Pubblicazione dei risultati su GitHub Pages, ancora un minuto";
+          r.attesePubblicazione = (r.attesePubblicazione || 0) + 1;
+          if (r.attesePubblicazione >= 20) {
+            Object.assign(r, { finita: true, esito: "parziale",
+              messaggio: "La ricerca è terminata ma la pagina dei risultati non si è ancora aggiornata. Ricaricala tra qualche minuto." });
+          }
         }
       }
       r.errori = 0;
@@ -877,8 +886,11 @@ async function segui() {
       if (e.status === 401 || e.status === 403) {
         Object.assign(r, { finita: true, esito: "errore", messaggio: spiegaErrore(e) });
       } else if (r.errori >= MAX_ERRORI) {
+        const dettaglio = e.status ? `GitHub ha risposto con l'errore ${e.status}${e.dettaglio ? ": " + e.dettaglio : ""}.`
+          : location.protocol === "file:" ? "Stai aprendo il file dal computer: apri invece l'indirizzo del sito pubblicato (…github.io/radar-concorsi/)."
+          : `Dettaglio tecnico: ${e.message || "collegamento interrotto"}.`;
         Object.assign(r, { finita: true, esito: "errore",
-          messaggio: "Non riesco a contattare GitHub. Controlla la connessione e la chiave di accesso nelle impostazioni, poi riprova." });
+          messaggio: "Non riesco a contattare GitHub. " + dettaglio + " Controlla la connessione e la chiave di accesso nelle impostazioni." });
       }
     }
     salvaPref();
@@ -1021,6 +1033,13 @@ if (pref.ricerca && !pref.ricerca.finita) {
     pref.ricerca.errori = 0;      // nuova sessione: riparte il conteggio degli errori
   }
   salvaPref();
+}
+if (location.protocol === "file:") {
+  const avviso = document.createElement("p");
+  avviso.className = "err";
+  avviso.style.cssText = "padding:12px 16px;background:#fef2f2;border-radius:10px;margin:0 0 16px";
+  avviso.textContent = "Stai aprendo il file dal computer: ricerche e salvataggi non possono funzionare. Apri l'indirizzo del sito pubblicato, quello che finisce con github.io/radar-concorsi/.";
+  document.querySelector(".wrap").prepend(avviso);
 }
 disegna();
 disegnaAvanzamento();
