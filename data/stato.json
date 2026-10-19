@@ -65,7 +65,8 @@
    ],
    "link": [
     "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
-    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922"
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922",
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&va=&idcatdatelimit=4939,4922&o=1"
    ],
    "link_bando": "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
    "link_candidatura": "https://www.sardegnaagricoltura.it",
@@ -2688,6 +2689,11 @@
    "f": "inPA",
    "t": "AGENZIA DELLE ENTRATE - Selezione pubblica per l’assunzione a tempo indeterminato di 250 unità per l’area dei funzionari"
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=8234c64fb0ca422aabef8a0f11f97bb1": {
+   "d": "2026-10-19",
+   "f": "inPA",
+   "t": "USR SARDEGNA DDG 3122/2024 – Concorso Funzionari ed E.Q ..."
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=8312c5b0e9b14b2e9773a7ac6d066d91": {
    "d": "2026-10-15",
    "f": "inPA",
@@ -2907,6 +2913,11 @@
    "d": "2026-10-09",
    "f": "inPA",
    "t": "AVVISO DI SELEZIONE PUBBLICA, PER CURRICULUM E COLLOQUIO, PER L’ASSUNZIONE AD ORARIO PARZIALE AL 50% (18 ORE SETTIMANALI"
+  },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=ba24d222fba3446b858272663e3ab4db": {
+   "d": "2026-10-19",
+   "f": "inPA",
+   "t": "BANDO DI CONCORSO PUBBLICO, PER ESAMI, PER LA COPERTURA A ..."
   },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=bf0a4fe5f4384b5a9e5573c844f220a3": {
    "d": "2026-10-17",
@@ -3208,10 +3219,20 @@
    "f": "Laore e Agris",
    "t": "AP 258 - Procedura di mobilità volontaria, per titoli e colloquio, mediante passaggio diretto di personale tra amministr"
   },
+  "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117997&va=": {
+   "d": "2026-10-19",
+   "f": "Laore e Agris",
+   "t": "Art. 16, L. 56/87 - Agris azienda di Villasor - Approvazione avviso pubblico di avviamento a selezione per l'assunzione "
+  },
   "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922": {
    "d": "2026-10-14",
    "f": "Laore e Agris",
    "t": "Concorsi e selezioni"
+  },
+  "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&va=&idcatdatelimit=4939,4922&o=1": {
+   "d": "2026-10-19",
+   "f": "Laore e Agris",
+   "t": "scadenza"
   },
   "https://www.sardegnaagricoltura.it/index.php?xsl=2734&v=9&s=14&c=3501&n=10&idcatdatelimit=4939,4922": {
    "d": "2026-10-07",

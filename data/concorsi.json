@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-10-18T21:13+00:00",
+ "aggiornato": "2026-10-19T22:45+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -84,7 +84,8 @@
    ],
    "link": [
     "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
-    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922"
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922",
+    "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&va=&idcatdatelimit=4939,4922&o=1"
    ],
    "link_bando": "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=117947&va=",
    "link_candidatura": "https://www.sardegnaagricoltura.it",
