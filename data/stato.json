@@ -389,20 +389,20 @@
    "u": []
   },
   "https://www.regione.sardegna.it/": {
-   "d": "2026-10-14",
+   "d": "2026-10-22",
    "u": [
     "https://www.regione.sardegna.it/atti-bandi-archivi/atti-amministrativi/concorsi-e-selezioni"
    ]
   },
   "https://www.sardegnaagricoltura.it/": {
-   "d": "2026-10-14",
+   "d": "2026-10-22",
    "u": [
     "https://www.sardegnaagricoltura.it/bandi_concorsi/",
     "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922"
    ]
   },
   "https://www.sardegnaricerche.it/": {
-   "d": "2026-10-14",
+   "d": "2026-10-22",
    "u": [
     "https://www.sardegnaricerche.it/appaltieselezioni/",
     "https://www.sardegnaricerche.it/index.php?xsl=558&v=9&s=13&c=3168&nc=1&tipodoc=2&esito=0&scaduti=0"
@@ -1300,6 +1300,16 @@
    "d": "2026-10-21",
    "f": "Università di Cagliari",
    "t": "app-Bando36.2026-Meloni-H2TRAIN_signed.pdf"
+  },
+  "https://web.unica.it/unica/protected/548973/0/def/ref/DOC548971/": {
+   "d": "2026-10-22",
+   "f": "Università di Cagliari",
+   "t": "Modulistica_bando_di_selezione.docx"
+  },
+  "https://web.unica.it/unica/protected/548974/0/def/ref/DOC548971/": {
+   "d": "2026-10-22",
+   "f": "Università di Cagliari",
+   "t": "Avviso n. 16-2026.pdf"
   },
   "https://www.abbanoa.it/Documenti-e-dati/Documenti-funzionamento-interno/Regolamento-per-il-reclutamento-del-personale": {
    "d": "2026-10-15",
@@ -2629,6 +2639,11 @@
    "f": "inPA",
    "t": "Comune di Sesto San Giovanni - Selezione pubblica per la ..."
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=615f3662753e434c9e681172b83c263f": {
+   "d": "2026-10-22",
+   "f": "inPA",
+   "t": "Concorso pubblico, per n. 577 unità nell’Area funzionari dei ruoli del Ministero della cultura - famiglia professionale "
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=618c6be11cd34afd8ddc7f89dec85248": {
    "d": "2026-10-14",
    "f": "inPA",
@@ -3313,6 +3328,11 @@
    "d": "2026-10-06",
    "f": "ARPAS",
    "t": "Concorso funzionario tecnico fisico D_FIS_26: tracce prova scritta"
+  },
+  "https://www.sardegnaambiente.it/index.php?xsl=2615&tipodoc=2&esito=0&scaduti=0&catrif=4919&enti=17493&s=21&v=9&c=95806&c1=95806&id=118003&va=": {
+   "d": "2026-10-22",
+   "f": "ARPAS",
+   "t": "Bando Concorso per 4 unità di istruttore tecnico categoria C"
   },
   "https://www.sardegnaambiente.it/index.php?xsl=2615&tipodoc=2&esito=0&scaduti=1&catrif=4919&enti=17493&s=21&v=9&c=95806&c1=95806&id=117238&va=": {
    "d": "2026-10-06",
