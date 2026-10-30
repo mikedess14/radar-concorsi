@@ -389,20 +389,20 @@
    "u": []
   },
   "https://www.regione.sardegna.it/": {
-   "d": "2026-10-22",
+   "d": "2026-10-30",
    "u": [
     "https://www.regione.sardegna.it/atti-bandi-archivi/atti-amministrativi/concorsi-e-selezioni"
    ]
   },
   "https://www.sardegnaagricoltura.it/": {
-   "d": "2026-10-22",
+   "d": "2026-10-30",
    "u": [
     "https://www.sardegnaagricoltura.it/bandi_concorsi/",
     "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922"
    ]
   },
   "https://www.sardegnaricerche.it/": {
-   "d": "2026-10-22",
+   "d": "2026-10-30",
    "u": [
     "https://www.sardegnaricerche.it/appaltieselezioni/",
     "https://www.sardegnaricerche.it/index.php?xsl=558&v=9&s=13&c=3168&nc=1&tipodoc=2&esito=0&scaduti=0"
@@ -1939,6 +1939,11 @@
    "f": "ARES Sardegna",
    "t": "Avviso di Mobilità esterna volontaria ex art. 30 d.lgs. n. 165/2001 in ambito regionale ed interregionale di n.2 posti d"
   },
+  "https://www.aressardegna.it/ap/avviso-di-mobilita-esterna-volontaria-ex-art-30-d-lgs-n-165-2001-in-ambito-regionale-ed-interregionale-profilo-di-coadiutore-amministrativo-asl-sassari-02900/": {
+   "d": "2026-10-30",
+   "f": "ARES Sardegna",
+   "t": "Avviso di Mobilità esterna volontaria ex art. 30 D. Lgs. n. 165/2001 in ambito regionale ed interregionale profilo di Co"
+  },
   "https://www.aressardegna.it/ap/avviso-di-mobilita-per-la-copertura-di-n-1-posto-nel-profilo-di-dirigente-medico-disciplina-radiodiagnostica-da-destinare-alla-asl-medio-campidano-02659/": {
    "d": "2026-10-07",
    "f": "ARES Sardegna",
@@ -2344,6 +2349,11 @@
    "f": "Gazzetta Ufficiale - Concorsi",
    "t": "Consulta PDF paginato"
   },
+  "https://www.gazzettaufficiale.it/do/gazzetta/concorsi/0/pdfPaginato?dataPubblicazioneGazzetta=20261030&numeroGazzetta=84&tipoSerie=S4&tipoSupplemento=GU&numeroSupplemento=0&progressivo=0&numPagina=1&edizione=0&elenco30giorni=true": {
+   "d": "2026-10-30",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "Consulta PDF paginato"
+  },
   "https://www.gazzettaufficiale.it/gazzetta/concorsi/caricaDettaglio?dataPubblicazioneGazzetta=2026-09-08&numeroGazzetta=69&elenco30giorni=true": {
    "d": "2026-10-07",
    "f": "Gazzetta Ufficiale - Concorsi",
@@ -2418,6 +2428,11 @@
    "d": "2026-10-27",
    "f": "Gazzetta Ufficiale - Concorsi",
    "t": "n° 83 del 27-10-2026"
+  },
+  "https://www.gazzettaufficiale.it/gazzetta/concorsi/caricaDettaglio?dataPubblicazioneGazzetta=2026-10-30&numeroGazzetta=84&elenco30giorni=true": {
+   "d": "2026-10-30",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "n° 84 del 30-10-2026"
   },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=00d481e19c8549ffae13ef2add3a47df": {
    "d": "2026-10-27",
@@ -3988,6 +4003,11 @@
    "d": "2026-10-15",
    "f": "Università di Sassari",
    "t": "BANDO PER L’AMMISSIONE AL CORSO DI LAUREA IN ORTICOLTURA E FLOROVIVAISMO (CLASSE DI LAUREA LP-02) ANNO ACCADEMICO 2026/2"
+  },
+  "https://www.uniss.it/it/bandi/bando-lassegnazione-di-contributi-iniziative-ricreative-culturali-e-sociali-delle-0": {
+   "d": "2026-10-30",
+   "f": "Università di Sassari",
+   "t": "Bando per l’assegnazione di contributi per iniziative ricreative, culturali e sociali delle Associazioni studentesche is"
   },
   "https://www.uniss.it/it/bandi/cla-avviso-di-selezione-corsi-di-formazione-civico-linguistica-cittadini-di-paesi-terzi-del": {
    "d": "2026-10-27",
