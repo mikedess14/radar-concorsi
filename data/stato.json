@@ -1506,6 +1506,16 @@
    "f": "Università di Cagliari",
    "t": "Avviso 15.2026"
   },
+  "https://web.unica.it/unica/protected/550117/0/def/ref/DOC550115/": {
+   "d": "2026-11-03",
+   "f": "Università di Cagliari",
+   "t": "Bando_Tutor_MC_MED05"
+  },
+  "https://web.unica.it/unica/protected/550123/0/def/ref/DOC550122/": {
+   "d": "2026-11-03",
+   "f": "Università di Cagliari",
+   "t": "Bando tutor D.M. A.A. 2026-27"
+  },
   "https://www.abbanoa.it/Documenti-e-dati/Documenti-funzionamento-interno/Regolamento-per-il-reclutamento-del-personale": {
    "d": "2026-10-27",
    "f": "Abbanoa",
@@ -2294,6 +2304,16 @@
    "f": "Gazzetta Ufficiale - Concorsi",
    "t": "CONCORSO (scad. 19 novembre 2026)"
   },
+  "https://www.gazzettaufficiale.it/atto/concorsi/caricaDettaglioAtto/originario?atto.dataPubblicazioneGazzetta=2026-11-03&atto.codiceRedazionale=26E05931": {
+   "d": "2026-11-03",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "CONCORSO (scad. 3 dicembre 2026)"
+  },
+  "https://www.gazzettaufficiale.it/atto/concorsi/caricaDettaglioAtto/originario?atto.dataPubblicazioneGazzetta=2026-11-03&atto.codiceRedazionale=26E05934": {
+   "d": "2026-11-03",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "CONCORSO"
+  },
   "https://www.gazzettaufficiale.it/do/gazzetta/concorsi/0/pdfPaginato?dataPubblicazioneGazzetta=20260908&numeroGazzetta=69&tipoSerie=S4&tipoSupplemento=GU&numeroSupplemento=0&progressivo=0&numPagina=1&edizione=0&elenco30giorni=true": {
    "d": "2026-10-07",
    "f": "Gazzetta Ufficiale - Concorsi",
@@ -2371,6 +2391,11 @@
   },
   "https://www.gazzettaufficiale.it/do/gazzetta/concorsi/0/pdfPaginato?dataPubblicazioneGazzetta=20261030&numeroGazzetta=84&tipoSerie=S4&tipoSupplemento=GU&numeroSupplemento=0&progressivo=0&numPagina=1&edizione=0&elenco30giorni=true": {
    "d": "2026-10-30",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "Consulta PDF paginato"
+  },
+  "https://www.gazzettaufficiale.it/do/gazzetta/concorsi/0/pdfPaginato?dataPubblicazioneGazzetta=20261103&numeroGazzetta=85&tipoSerie=S4&tipoSupplemento=GU&numeroSupplemento=0&progressivo=0&numPagina=1&edizione=0&elenco30giorni=true": {
+   "d": "2026-11-03",
    "f": "Gazzetta Ufficiale - Concorsi",
    "t": "Consulta PDF paginato"
   },
@@ -2453,6 +2478,11 @@
    "d": "2026-10-30",
    "f": "Gazzetta Ufficiale - Concorsi",
    "t": "n° 84 del 30-10-2026"
+  },
+  "https://www.gazzettaufficiale.it/gazzetta/concorsi/caricaDettaglio?dataPubblicazioneGazzetta=2026-11-03&numeroGazzetta=85&elenco30giorni=true": {
+   "d": "2026-11-03",
+   "f": "Gazzetta Ufficiale - Concorsi",
+   "t": "n° 85 del 03-11-2026"
   },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=00d481e19c8549ffae13ef2add3a47df": {
    "d": "2026-10-27",
@@ -2708,6 +2738,11 @@
    "d": "2026-10-20",
    "f": "inPA",
    "t": "CONCORSO PER ESAMI PER N. 1 POSTO DI FUNZIONARIO TECNICO – FISICO, A TEMPO PIENO E INDETERMINATO, CATEGORIA D - CCRL REG"
+  },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2979c4ce1ef2422a83c14731ed0a50e3": {
+   "d": "2026-11-03",
+   "f": "inPA",
+   "t": "BANDO DI CONCORSO, PER TITOLI ED ESAMI, PER L’ASSUNZIONE A TEMPO INDETERMINATO DI N. 8 UNITÀ DI PERSONALE NEL PROFILO PR"
   },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=2a4e596fe8334eb3866a9335e1025059": {
    "d": "2026-10-14",
@@ -3748,6 +3783,11 @@
    "d": "2026-10-27",
    "f": "Laore e Agris",
    "t": "Art. 16, L. 56/87 - Agris azienda di Villasor - Approvazione avviso pubblico di avviamento a selezione per l'assunzione "
+  },
+  "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&s=14&v=9&c=4137&id=118154&va=": {
+   "d": "2026-11-03",
+   "f": "Laore e Agris",
+   "t": "Art. 16, L. 56/87 - Agris - Approvazione avviso pubblico di avviamento a selezione per l'assunzione a tempo indeterminat"
   },
   "https://www.sardegnaagricoltura.it/index.php?xsl=2734&tdoc=2&v=9&s=14&c=4137&n=10&idcatdatelimit=4939,4922": {
    "d": "2026-10-14",
