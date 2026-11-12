@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-11-10T23:55+00:00",
+ "aggiornato": "2026-11-12T01:15+00:00",
  "fonti": [
   "inPA",
   "Gazzetta Ufficiale - Concorsi",
@@ -363,6 +363,44 @@
    "titolo_studio": "Laurea magistrale in Informatica o equipollenti",
    "trovato": "2026-10-07",
    "id": "f9b44ea8743e"
+  },
+  {
+   "motivo": "Selezione mobilità istruttore informatico comune sardo",
+   "titolo": "Istruttore informatico",
+   "ente": "Comune di Dolianova",
+   "ambito": "R",
+   "tipo": "C",
+   "area": "I",
+   "sede": "Dolianova",
+   "comuni": [
+    "Dolianova"
+   ],
+   "province": [
+    "SU"
+   ],
+   "scadenza": "2026-11-20",
+   "ora": "23:59",
+   "posti": "1",
+   "contratto": "mobilita",
+   "prove": [
+    "titoli",
+    "orale"
+   ],
+   "come_candidarsi": "Tramite portale inPA",
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e346756d62741308142fa617a2da3aa",
+   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e346756d62741308142fa617a2da3aa",
+   "retribuzione_annua": 0,
+   "comparto": "FL",
+   "profilo": "info",
+   "origine": "serale",
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e346756d62741308142fa617a2da3aa"
+   ],
+   "fonti": [
+    "inPA"
+   ],
+   "trovato": "2026-11-12",
+   "id": "8a4a4ec33019"
   }
  ]
 }

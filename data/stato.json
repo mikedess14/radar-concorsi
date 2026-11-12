@@ -161,6 +161,43 @@
    "titolo_studio": "Diploma di scuola secondaria di secondo grado",
    "trovato": "2026-10-07"
   },
+  "8a4a4ec33019": {
+   "ambito": "R",
+   "area": "I",
+   "come_candidarsi": "Tramite portale inPA",
+   "comparto": "FL",
+   "comuni": [
+    "Dolianova"
+   ],
+   "contratto": "mobilita",
+   "ente": "Comune di Dolianova",
+   "fonti": [
+    "inPA"
+   ],
+   "link": [
+    "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e346756d62741308142fa617a2da3aa"
+   ],
+   "link_bando": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e346756d62741308142fa617a2da3aa",
+   "link_candidatura": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e346756d62741308142fa617a2da3aa",
+   "motivo": "Selezione mobilità istruttore informatico comune sardo",
+   "ora": "23:59",
+   "origine": "serale",
+   "posti": "1",
+   "profilo": "info",
+   "prove": [
+    "titoli",
+    "orale"
+   ],
+   "province": [
+    "SU"
+   ],
+   "retribuzione_annua": 0,
+   "scadenza": "2026-11-20",
+   "sede": "Dolianova",
+   "tipo": "C",
+   "titolo": "Istruttore informatico",
+   "trovato": "2026-11-12"
+  },
   "8c7404db4fdc": {
    "ambito": "EL",
    "area": "F",
@@ -3064,6 +3101,11 @@
    "f": "inPA",
    "t": "Istituto Zooprofilattico Sperimentale della Sardegna \"concorso pubblico per titoli ed esami per la copertura a tempo ind"
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e346756d62741308142fa617a2da3aa": {
+   "d": "2026-11-12",
+   "f": "inPA",
+   "t": "N. 1 POSTO DI ISTRUTTORE INFORMATICO – AREA ..."
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4e3c4ef93af645199cdd4cc2ea5a2851": {
    "d": "2026-10-15",
    "f": "inPA",
@@ -3559,6 +3601,11 @@
    "f": "inPA",
    "t": "CONCORSO PUBBLICO PER TITOLI ED ESAMI PER LA COPERTURA A TEMPO PIENO E INDETERMINATO 36 ORE SETTIMANALI DI N. 1 POSTO DI"
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=b31ff1576f62404b8b43e72e0316ac83": {
+   "d": "2026-11-12",
+   "f": "inPA",
+   "t": "Avviso pubblico di mobilità volontaria, per titoli e colloquio, ..."
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=b3d793064e4543df95db0812b584a70b": {
    "d": "2026-10-13",
    "f": "inPA",
@@ -3889,6 +3936,11 @@
    "f": "inPA",
    "t": "RETTIFICA BANDO DI CONCORSO PER L’ASSUNZIONE DI N. 10 UNITÀ DI PERSONALE NON DIRIGENZIALE, COLLABORATORI INFORMATICI, A "
   },
+  "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=fe3144d6fa3f46d99e49ceb9b668f14d": {
+   "d": "2026-11-12",
+   "f": "inPA",
+   "t": "Concorso pubblico, per titoli ed esami, per 1.435 posti per l'accesso all'area ..."
+  },
   "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=fee40e6260384ef9b82a071e20329a37": {
    "d": "2026-10-14",
    "f": "inPA",
@@ -4193,6 +4245,11 @@
    "d": "2026-10-13",
    "f": "Università di Sassari",
    "t": "Bando per 3 Visiting Professor/Scientist 2026 / Open Call Visiting Professor/Scientist 2026"
+  },
+  "https://www.uniss.it/it/bandi/bando-bip-veterinaria-livestock-production-systems-across-europe-aa-20262027": {
+   "d": "2026-11-12",
+   "f": "Università di Sassari",
+   "t": "Bando BIP Veterinaria \"Livestock production systems across Europe\" a.a. 2026/2027"
   },
   "https://www.uniss.it/it/bandi/bando-di-ammissione-alla-scuola-di-specializzazione-beni-archeologici-laa-20262027": {
    "d": "2026-10-27",
