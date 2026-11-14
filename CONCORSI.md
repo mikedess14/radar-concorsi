@@ -1,6 +1,6 @@
 # Concorsi aperti
 
-Aggiornato il 12 novembre 2026. Concorsi aperti: 3.
+Aggiornato il 14 novembre 2026. Concorsi aperti: 3.
 
 | Scadenza | Concorso | Ente e sede | Contratto | Prove | Bando |
 |---|---|---|---|---|---|
